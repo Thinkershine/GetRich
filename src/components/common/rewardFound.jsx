@@ -27,6 +27,8 @@ class RewardFound extends Component {
 
   componentWillUnmount() {}
 
+  // Generate Random Position
+
   render() {
     return (
       <p style={this.state.rewardPosition} className={this.state.classNames}>

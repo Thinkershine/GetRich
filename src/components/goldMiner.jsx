@@ -7,8 +7,8 @@ class GoldMiner extends Component {
   constructor(props) {
     super(props);
 
-    this.state.goldAmount = 0;
-    this.state.basicMining = 5;
+    this.state.goldMined = 0;
+    this.state.basicMining = this.props.miningPower;
     this.state.basicMinerID = 0;
 
     this.state.renderReward = false;
@@ -28,29 +28,43 @@ class GoldMiner extends Component {
   };
 
   digGold = () => {
-    this.setState({ renderReward: true });
+    this.setState({
+      renderReward: true,
+      goldMined: this.state.goldMined + this.state.basicMining
+    });
     this.props.onClick(this.state.basicMining);
   };
 
   hideReward = () => {
-    console.log("Hide Reward");
     setTimeout(this.setState({ renderReward: false }), 100);
-    // this.setState({ renderReward: false });
+  };
+
+  displayRewards = goldFoundAmount => {
+    let rewardsToRender = [];
+
+    for (let i = 0; i < goldFoundAmount; i += 1) {
+      rewardsToRender.push(
+        <RewardFound
+          key={i}
+          rewardAmount={this.state.basicMining}
+          rewardRendered={this.hideReward}
+        />
+      );
+    }
+
+    return rewardsToRender;
   };
 
   render() {
     return (
       <div id="GoldMiner">
-        <h3>You Mined : {this.state.goldAmount} GOLD</h3>
+        <h3>You Mined : {this.state.goldMined} GOLD</h3>
         <button onClick={() => this.digGold()}>DIG IT!</button>
 
         <div>
-          {this.state.renderReward ? (
-            <RewardFound
-              rewardAmount={this.state.basicMining}
-              rewardRendered={this.hideReward}
-            />
-          ) : null}
+          {this.state.renderReward
+            ? this.displayRewards(this.state.basicMining)
+            : null}
         </div>
         {/* <RewardFound rewardAmount={this.state.basicMining} /> */}
       </div>
