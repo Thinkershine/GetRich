@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
-import GoldMine from "./components/goldMine";
+import GoldMine from "./components/locations/goldMine";
+import Mine from "./components/locations/mine";
 import Workers from "./models/workers";
 import { getItems } from "./services/fakeItemService.js";
 
@@ -55,10 +56,20 @@ class App extends Component {
     });
   };
 
-  handleMining = dugAmount => {
+  handleMining = (dugAmount, mineType) => {
     //raise event when new workers comes aboard
 
-    this.setState({ goldAmount: this.state.goldAmount + dugAmount });
+    switch (mineType) {
+      case "gold":
+        this.setState({ goldAmount: this.state.goldAmount + dugAmount });
+        break;
+      case "silver":
+        this.setState({ silverAmount: this.state.silverAmount + dugAmount });
+        break;
+      case "copper":
+        this.setState({ copperAmount: this.state.copperAmount + dugAmount });
+        break;
+    }
   };
 
   buyNewWorker = () => {
@@ -144,12 +155,37 @@ class App extends Component {
             </ul>
           </div>
 
-          <GoldMine
+          <Mine
             miningPower={
               this.state.isEquipped
                 ? this.state.miningEquipment[currentEquipment].miningPower
                 : 1
             }
+            mineType="copper"
+            goldMined={this.state.goldAmount}
+            onInterval={this.handleWorkers}
+            onClick={this.handleMining}
+          />
+
+          <Mine
+            miningPower={
+              this.state.isEquipped
+                ? this.state.miningEquipment[currentEquipment].miningPower
+                : 1
+            }
+            mineType="silver"
+            goldMined={this.state.goldAmount}
+            onInterval={this.handleWorkers}
+            onClick={this.handleMining}
+          />
+
+          <Mine
+            miningPower={
+              this.state.isEquipped
+                ? this.state.miningEquipment[currentEquipment].miningPower
+                : 1
+            }
+            mineType="gold"
             goldMined={this.state.goldAmount}
             onInterval={this.handleWorkers}
             onClick={this.handleMining}

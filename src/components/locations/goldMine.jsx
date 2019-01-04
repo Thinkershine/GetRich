@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import RewardFound from "./common/rewardFound";
+import RewardFound from "../common/rewardFound";
 
 class GoldMine extends Component {
   state = {};
