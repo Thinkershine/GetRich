@@ -16,8 +16,8 @@ export default class Workers {
   workersAmountChanged = false;
 
   constructor() {
-    this.addGoldWorker("Pat");
-    this.addGoldWorker("Sebastian");
+    // this.addGoldWorker("Pat");
+    // this.addGoldWorker("Sebastian");
   }
 
   getCopperWorkers() {

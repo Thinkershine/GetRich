@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import GoldMiner from "./components/goldMiner";
 import Workers from "./models/workers";
+import { getItems } from "./services/fakeItemService.js";
 
 class App extends Component {
   state = {
@@ -12,18 +13,16 @@ class App extends Component {
     goldAmount: 0,
     dollarAmount: 100,
     dollarProduction: 0,
-    miningEquipment: {
-      name: "pickaxe",
-      miningPower: 10,
-      value: 20,
-      energyConsumption: 10
-    },
+    isEquipped: false,
+    itemsForSale: getItems(),
+    currentEquipment: 0,
+    miningEquipment: [],
     workers: new Workers()
   };
 
   componentDidMount() {
     const { workers } = this.state;
-
+    console.log("ITEMSFORSALE", this.state.itemsForSale);
     this.setState({
       goldWorkers: workers.getGoldWorkersCount(),
       goldProduction: workers.getGoldWorkersTotalStrength()
@@ -67,6 +66,8 @@ class App extends Component {
   };
 
   render() {
+    const { currentEquipment } = this.state;
+
     return (
       <div className="App">
         <header>
@@ -103,24 +104,52 @@ class App extends Component {
               </tbody>
             </table>
 
-            <h3>Current Equipment</h3>
-            <p>Name: {this.state.miningEquipment.name}</p>
-            <p>Power: {this.state.miningEquipment.miningPower}</p>
-            <p>Value: {this.state.miningEquipment.value}</p>
-            <p>
-              Energy Consumption: {this.state.miningEquipment.energyConsumption}
-            </p>
+            {this.state.isEquipped &&
+              (() => {
+                return (
+                  <div id="equipment">
+                    <h3>Current Equipment</h3>
+                    <p>
+                      Name: {this.state.miningEquipment[currentEquipment].name}
+                    </p>
+                    <p>
+                      Power:{" "}
+                      {this.state.miningEquipment[currentEquipment].miningPower}
+                    </p>
+                    <p>
+                      Value:{" "}
+                      {this.state.miningEquipment[currentEquipment].value}
+                    </p>
+                    <p>
+                      Energy Consumption:{" "}
+                      {
+                        this.state.miningEquipment[currentEquipment]
+                          .energyConsumption
+                      }
+                    </p>
+                  </div>
+                );
+              })}
 
             <h4>Change Equipment</h4>
             <ul className="list-group">
               <li className="list-group-item">
-                {this.state.miningEquipment.name.toUpperCase()}
+                {this.state.isEquipped &&
+                  (() => {
+                    return this.state.miningEquipment[
+                      currentEquipment
+                    ].name.toUpperCase();
+                  })}
               </li>
             </ul>
           </div>
 
           <GoldMiner
-            miningPower={this.state.miningEquipment.miningPower}
+            miningPower={
+              this.state.isEquipped
+                ? this.state.miningEquipment[currentEquipment].miningPower
+                : 1
+            }
             goldMined={this.state.goldAmount}
             onInterval={this.handleWorkers}
             onClick={this.handleMining}
