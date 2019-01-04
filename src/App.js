@@ -62,6 +62,13 @@ class App extends Component {
             <p>Name: {this.state.miningEquipment.name}</p>
             <p>Power: {this.state.miningEquipment.miningPower}</p>
             <p>Value: {this.state.miningEquipment.value}</p>
+
+            <h4>Change Equipment</h4>
+            <ul className="list-group">
+              <li className="list-group-item">
+                {this.state.miningEquipment.name.toUpperCase()}
+              </li>
+            </ul>
           </div>
 
           <GoldMiner
