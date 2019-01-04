@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import RewardFound from "./common/rewardFound";
 
-class GoldMiner extends Component {
+class GoldMine extends Component {
   state = {};
 
   constructor(props) {
@@ -57,7 +57,7 @@ class GoldMiner extends Component {
 
   render() {
     return (
-      <div id="GoldMiner">
+      <div id="gold-mine">
         <h3>You Mined : {this.state.goldMined} GOLD</h3>
         <button onClick={() => this.digGold()}>DIG IT!</button>
 
@@ -72,4 +72,4 @@ class GoldMiner extends Component {
   }
 }
 
-export default GoldMiner;
+export default GoldMine;

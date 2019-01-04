@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import GoldMiner from "./components/goldMiner";
+import GoldMine from "./components/goldMine";
 import Workers from "./models/workers";
 import { getItems } from "./services/fakeItemService.js";
 
@@ -144,7 +144,7 @@ class App extends Component {
             </ul>
           </div>
 
-          <GoldMiner
+          <GoldMine
             miningPower={
               this.state.isEquipped
                 ? this.state.miningEquipment[currentEquipment].miningPower
