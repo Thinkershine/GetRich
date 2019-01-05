@@ -5,6 +5,8 @@ import Mine from "./components/locations/mine";
 import Store from "./components/locations/store";
 import Workers from "./models/workers";
 import { getItems } from "./services/fakeItemService.js";
+import Navigation from "./components/navigation";
+import { Route } from "react-router-dom";
 
 class App extends Component {
   state = {
@@ -153,6 +155,17 @@ class App extends Component {
       <div className="App">
         <header>
           <h1>Time to Get RICH ! $.$</h1>
+          <Navigation />
+          <Route
+            path="/store"
+            render={props => (
+              <Store
+                itemsForSale={this.state.itemsForSale}
+                handlePurchase={this.handlePurchase}
+                {...props}
+              />
+            )}
+          />
         </header>
 
         <main className="container">
@@ -184,11 +197,6 @@ class App extends Component {
                 </tr>
               </tbody>
             </table>
-
-            <Store
-              itemsForSale={this.state.itemsForSale}
-              handlePurchase={this.handlePurchase}
-            />
 
             {this.state.isEquipped && (
               <div id="equipment">
