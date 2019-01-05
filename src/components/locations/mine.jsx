@@ -6,7 +6,7 @@ class Mine extends Component {
 
   constructor(props) {
     super(props);
-
+    console.log("PROPS of Mine", props);
     this.state.mineType = this.props.mineType;
     this.state.minedAmount = 0;
     this.state.basicMining = this.props.miningPower;
@@ -16,16 +16,16 @@ class Mine extends Component {
   }
 
   componentDidMount() {
-    const minerTimerID = setInterval(this.dig, 1000);
-    this.setState({ minerTimerID });
+    //  const minerTimerID = setInterval(this.dig, 1000);
+    //  this.setState({ minerTimerID });
   }
 
   componentWillUnmount() {
-    clearInterval(this.state.minerTimerID);
+    //  clearInterval(this.state.minerTimerID);
   }
 
   dig = () => {
-    this.props.onInterval();
+    //  this.props.onInterval();
   };
 
   handleDigClick = () => {
@@ -36,6 +36,10 @@ class Mine extends Component {
 
     this.props.onClick(this.state.basicMining, this.props.mineType);
   };
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ basicMining: nextProps.miningPower });
+  }
 
   hideReward = () => {
     setTimeout(this.setState({ renderReward: false }), 100);

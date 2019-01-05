@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import GoldMine from "./components/locations/goldMine";
 import Mine from "./components/locations/mine";
+import Store from "./components/locations/store";
 import Workers from "./models/workers";
 import { getItems } from "./services/fakeItemService.js";
 
@@ -18,12 +19,16 @@ class App extends Component {
     itemsForSale: getItems(),
     currentEquipment: 0,
     miningEquipment: [],
-    workers: new Workers()
+    workers: new Workers(),
+
+    isGoldMining: false,
+    isSilverMining: false,
+    isCopperMining: false
   };
 
   componentDidMount() {
     const { workers } = this.state;
-    console.log("ITEMSFORSALE", this.state.itemsForSale);
+
     this.setState({
       goldWorkers: workers.getGoldWorkersCount(),
       goldProduction: workers.getGoldWorkersTotalStrength()
@@ -34,7 +39,8 @@ class App extends Component {
 
   componentDidUpdate() {
     const { workers } = this.state;
-
+    console.log("UPDATED");
+    console.log("WORKERS CHANGED", workers.workersAmountChanged);
     if (workers.workersAmountChanged) {
       workers.workersAmountChanged = false;
 
@@ -57,8 +63,6 @@ class App extends Component {
   };
 
   handleMining = (dugAmount, mineType) => {
-    //raise event when new workers comes aboard
-
     switch (mineType) {
       case "gold":
         this.setState({ goldAmount: this.state.goldAmount + dugAmount });
@@ -72,12 +76,78 @@ class App extends Component {
     }
   };
 
+  handlePurchase = item => {
+    const itemsOwned = this.state.miningEquipment;
+    itemsOwned.push(item);
+    const indexOfNewItem = itemsOwned.indexOf(item);
+    console.log("Index of NEW ITEM", indexOfNewItem);
+
+    this.setState({
+      miningEquipment: itemsOwned,
+      isEquipped: true,
+      currentEquipment: indexOfNewItem
+    });
+    console.log(
+      "EQ POW",
+      this.state.miningEquipment[indexOfNewItem].miningPower
+    );
+    console.log("Items Owned", itemsOwned);
+  };
+
   buyNewWorker = () => {
+    console.log("NEW WORKER");
     this.state.workers.addGoldWorker("Majka");
+  };
+
+  filterUniqueItemsForDisplay = () => {
+    const { miningEquipment: equipment } = this.state;
+
+    const unique = Array.from(new Set(equipment));
+
+    const uniqueItems = unique.map(item => {
+      return (
+        <li key={item._id} className="list-group-item">
+          {item.name.toUpperCase()}
+        </li>
+      );
+    });
+
+    return uniqueItems;
+  };
+
+  goMining = miningType => {
+    switch (miningType) {
+      case "gold":
+        this.setState({ isGoldMining: true });
+        break;
+      case "silver":
+        this.setState({ isSilverMining: true });
+        break;
+      case "copper":
+        this.setState({ isCopperMining: true });
+        break;
+    }
+  };
+  stopMining = miningType => {
+    switch (miningType) {
+      case "gold":
+        this.setState({ isGoldMining: false });
+        break;
+      case "silver":
+        this.setState({ isSilverMining: false });
+        break;
+      case "copper":
+        this.setState({ isCopperMining: false });
+        break;
+    }
   };
 
   render() {
     const { currentEquipment } = this.state;
+    const miningPower = this.state.isEquipped
+      ? this.state.miningEquipment[currentEquipment].miningPower
+      : 1;
+    console.log("MINING POWER", miningPower);
 
     return (
       <div className="App">
@@ -115,83 +185,89 @@ class App extends Component {
               </tbody>
             </table>
 
-            {this.state.isEquipped &&
-              (() => {
-                return (
-                  <div id="equipment">
-                    <h3>Current Equipment</h3>
-                    <p>
-                      Name: {this.state.miningEquipment[currentEquipment].name}
-                    </p>
-                    <p>
-                      Power:{" "}
-                      {this.state.miningEquipment[currentEquipment].miningPower}
-                    </p>
-                    <p>
-                      Value:{" "}
-                      {this.state.miningEquipment[currentEquipment].value}
-                    </p>
-                    <p>
-                      Energy Consumption:{" "}
-                      {
-                        this.state.miningEquipment[currentEquipment]
-                          .energyConsumption
-                      }
-                    </p>
-                  </div>
-                );
-              })}
+            <Store
+              itemsForSale={this.state.itemsForSale}
+              handlePurchase={this.handlePurchase}
+            />
+
+            {this.state.isEquipped && (
+              <div id="equipment">
+                <h3>Current Equipment</h3>
+                <p>Name: {this.state.miningEquipment[currentEquipment].name}</p>
+                <p>Power: {miningPower}</p>
+                <p>
+                  Value: ${this.state.miningEquipment[currentEquipment].value}
+                </p>
+                <p>
+                  Energy Consumption:{" "}
+                  {
+                    this.state.miningEquipment[currentEquipment]
+                      .energyConsumption
+                  }
+                </p>
+              </div>
+            )}
 
             <h4>Change Equipment</h4>
-            <ul className="list-group">
-              <li className="list-group-item">
-                {this.state.isEquipped &&
-                  (() => {
-                    return this.state.miningEquipment[
-                      currentEquipment
-                    ].name.toUpperCase();
-                  })}
-              </li>
-            </ul>
+            <ul className="list-group">{this.filterUniqueItemsForDisplay()}</ul>
           </div>
 
-          <Mine
-            miningPower={
-              this.state.isEquipped
-                ? this.state.miningEquipment[currentEquipment].miningPower
-                : 1
-            }
-            mineType="copper"
-            goldMined={this.state.goldAmount}
-            onInterval={this.handleWorkers}
-            onClick={this.handleMining}
-          />
+          <h2>Go Mining</h2>
+          <button onClick={() => this.goMining("gold")} className="btn">
+            Go GOLD Mining
+          </button>
+          <span>.</span>
+          <button onClick={() => this.goMining("silver")} className="btn">
+            Go SILVER Mining
+          </button>
+          <span>.</span>
+          <button onClick={() => this.goMining("copper")} className="btn">
+            Go COPPER Mining
+          </button>
+          <hr />
+          <button onClick={() => this.stopMining("gold")} className="btn">
+            STOP GOLD Mining
+          </button>
+          <span>.</span>
+          <button onClick={() => this.stopMining("silver")} className="btn">
+            STOP SILVER Mining
+          </button>
+          <span>.</span>
+          <button onClick={() => this.stopMining("copper")} className="btn">
+            STOP COPPER Mining
+          </button>
 
-          <Mine
-            miningPower={
-              this.state.isEquipped
-                ? this.state.miningEquipment[currentEquipment].miningPower
-                : 1
-            }
-            mineType="silver"
-            goldMined={this.state.goldAmount}
-            onInterval={this.handleWorkers}
-            onClick={this.handleMining}
-          />
+          {this.state.isSilverMining && (
+            <Mine
+              miningPower={miningPower}
+              mineType="silver"
+              goldMined={this.state.goldAmount}
+              //    onInterval={this.handleWorkers}
+              onClick={this.handleMining}
+            />
+          )}
 
-          <Mine
-            miningPower={
-              this.state.isEquipped
-                ? this.state.miningEquipment[currentEquipment].miningPower
-                : 1
-            }
-            mineType="gold"
-            goldMined={this.state.goldAmount}
-            onInterval={this.handleWorkers}
-            onClick={this.handleMining}
-          />
+          {this.state.isGoldMining && (
+            <Mine
+              miningPower={miningPower}
+              mineType="gold"
+              goldMined={this.state.goldAmount}
+              // onInterval={this.handleWorkers}
+              onClick={this.handleMining}
+            />
+          )}
 
-          <h3>STORE</h3>
+          {this.state.isCopperMining && (
+            <Mine
+              miningPower={miningPower}
+              mineType="copper"
+              goldMined={this.state.goldAmount}
+              //   onInterval={this.handleWorkers}
+              onClick={this.handleMining}
+            />
+          )}
+
+          <h2>Workers Den</h2>
           <p>Do You Need More Workers?</p>
           <button onClick={this.buyNewWorker} className="btn btn-primary">
             Buy 1 Worker
