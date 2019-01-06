@@ -8,6 +8,7 @@ import { Route } from "react-router-dom";
 import MyResources from "./models/myResources.js";
 import Resources from "./components/resources";
 import Mining from "./components/locations/mining";
+import Equipment from "./components/equipment";
 
 class App extends Component {
   state = {
@@ -82,22 +83,6 @@ class App extends Component {
     this.state.workers.addGoldWorker("Majka");
   };
 
-  filterUniqueItemsForDisplay = () => {
-    const { miningEquipment: equipment } = this.state;
-
-    const unique = Array.from(new Set(equipment));
-
-    const uniqueItems = unique.map(item => {
-      return (
-        <li key={item._id} className="list-group-item">
-          {item.name.toUpperCase()}
-        </li>
-      );
-    });
-
-    return uniqueItems;
-  };
-
   render() {
     const { currentEquipment } = this.state;
     const miningPower = this.state.isEquipped
@@ -136,24 +121,16 @@ class App extends Component {
               />
             )}
           />
-
-          {this.state.isEquipped && (
-            <div id="equipment">
-              <h3>Current Equipment</h3>
-              <p>Name: {this.state.miningEquipment[currentEquipment].name}</p>
-              <p>Power: {miningPower}</p>
-              <p>
-                Value: ${this.state.miningEquipment[currentEquipment].value}
-              </p>
-              <p>
-                Energy Consumption:{" "}
-                {this.state.miningEquipment[currentEquipment].energyConsumption}
-              </p>
-            </div>
-          )}
-
-          <h4>Change Equipment</h4>
-          <ul className="list-group">{this.filterUniqueItemsForDisplay()}</ul>
+          <Route
+            path="/equipment"
+            render={props => (
+              <Equipment
+                isEquipped={this.state.isEquipped}
+                currentEquipment={this.state.currentEquipment}
+                miningEquipment={this.state.miningEquipment}
+              />
+            )}
+          />
 
           <h2>Workers Den</h2>
           <p>Do You Need More Workers?</p>
