@@ -18,23 +18,24 @@ class App extends Component {
     itemsForSale: getItems(),
     currentEquipment: 0,
     miningEquipment: [],
-    resources: new MyResources(),
+    resources: new MyResources(this.handleButtonMessage.bind(this)),
     workers: new MyWorkers(),
 
     message: {
-      title: "TITLE",
-      message: "Hello Ipsum SMipsum",
-      badge: "success",
-      buttonMessage: "OK",
+      title: "Welcome!",
+      message: "Hello :)",
+      badge: "success", // primary secondary warning danger success info
+      buttonMessage: "Hi!",
       buttonOnClick: this.handleButtonMessage.bind(this)
     },
-    displayMessage: true
+    displayMessage: false
   };
 
-  handleButtonMessage() {
-    console.log("Message HANDLED");
-    this.setState({ displayMessage: false });
-    //this.setState({ displayMessage: false });
+  handleButtonMessage(messageForButton) {
+    this.setState({
+      message: messageForButton,
+      displayMessage: !this.state.displayMessage
+    });
   }
 
   componentDidMount() {
@@ -76,8 +77,26 @@ class App extends Component {
     //  console.log("GOLD", resource.goldAmount);
     this.state.resources.addResource(dugAmount, mineType);
   };
+  displayMessage = message => {
+    console.log("Messasge s", message);
+    const showMessage = this.state.showMessage;
+
+    this.setState({ message, displayMessage: true });
+  };
 
   handlePurchase = item => {
+    if (item.value > this.state.resources.dollarAmount) {
+      this.displayMessage({
+        title: "You are POOR!",
+        message: "You can't even afford your most basic tools.",
+        badge: "danger",
+        buttonMessage: "ok..",
+        buttonOnClick: this.handleButtonMessage.bind(this)
+      });
+      return;
+    }
+
+    this.state.resources.spendResourceAmount("dollar", item.value);
     const itemsOwned = this.state.miningEquipment;
     itemsOwned.push(item);
     const indexOfNewItem = itemsOwned.indexOf(item);

@@ -38,7 +38,32 @@ export default class MyResources {
     }
   };
 
-  constructor() {
+  spendResourceAmount = (mineType, amount) => {
+    switch (mineType) {
+      case "gold":
+        this.goldAmount -= amount;
+        break;
+      case "silver":
+        this.silverAmount -= amount;
+        break;
+      case "copper":
+        this.copperAmount -= amount;
+        break;
+      case "dollar":
+        this.dollarAmount -= amount;
+        break;
+    }
+
+    this.messenger({
+      title: "Purchased!",
+      message: "Congratulations! You've Spent: $" + amount,
+      badge: "success",
+      buttonMessage: "YES!",
+      buttonOnClick: this.messenger
+    });
+  };
+
+  constructor(messenger) {
     this.copperAmount = 0;
     this.copperProduction = 0;
     this.silverAmount = 0;
@@ -47,5 +72,6 @@ export default class MyResources {
     this.goldProduction = 0;
     this.dollarAmount = 100;
     this.dollarProduction = 0;
+    this.messenger = messenger;
   }
 }
