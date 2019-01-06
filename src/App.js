@@ -7,6 +7,8 @@ import Workers from "./models/workers";
 import { getItems } from "./services/fakeItemService.js";
 import Navigation from "./components/navigation";
 import { Route } from "react-router-dom";
+import MyResources from "./models/myResources.js";
+import Resources from "./components/resources";
 
 class App extends Component {
   state = {
@@ -15,12 +17,15 @@ class App extends Component {
     silverAmount: 0,
     silverProduction: 0,
     goldAmount: 0,
+    goldProduction: 0,
     dollarAmount: 100,
     dollarProduction: 0,
+
     isEquipped: false,
     itemsForSale: getItems(),
     currentEquipment: 0,
     miningEquipment: [],
+    resources: new MyResources(),
     workers: new Workers(),
 
     isGoldMining: false,
@@ -35,14 +40,10 @@ class App extends Component {
       goldWorkers: workers.getGoldWorkersCount(),
       goldProduction: workers.getGoldWorkersTotalStrength()
     });
-
-    console.log("App Mounted");
   }
 
   componentDidUpdate() {
     const { workers } = this.state;
-    console.log("UPDATED");
-    console.log("WORKERS CHANGED", workers.workersAmountChanged);
     if (workers.workersAmountChanged) {
       workers.workersAmountChanged = false;
 
@@ -60,22 +61,16 @@ class App extends Component {
     // >> You've Got New Worker!
 
     this.setState({
-      goldAmount: this.state.goldAmount + this.state.goldProduction
+      goldAmount:
+        this.state.resource.goldAmount + this.state.resource.goldProduction
     });
   };
 
   handleMining = (dugAmount, mineType) => {
-    switch (mineType) {
-      case "gold":
-        this.setState({ goldAmount: this.state.goldAmount + dugAmount });
-        break;
-      case "silver":
-        this.setState({ silverAmount: this.state.silverAmount + dugAmount });
-        break;
-      case "copper":
-        this.setState({ copperAmount: this.state.copperAmount + dugAmount });
-        break;
-    }
+    // const resource = this.state;
+    //  console.log("RESOURCES RECEIVED", resource);
+    //  console.log("GOLD", resource.goldAmount);
+    this.state.resources.addResource(dugAmount, mineType);
   };
 
   handlePurchase = item => {
@@ -149,8 +144,7 @@ class App extends Component {
     const miningPower = this.state.isEquipped
       ? this.state.miningEquipment[currentEquipment].miningPower
       : 1;
-    console.log("MINING POWER", miningPower);
-
+    console.log("GOLD", this.state.resources.goldAmount);
     return (
       <div className="App">
         <header>
@@ -169,56 +163,25 @@ class App extends Component {
         </header>
 
         <main className="container">
-          <div id="resources">
-            <table>
-              <tbody>
-                <tr>
-                  <th>Resource</th>
-                  <td>Copper</td>
-                  <td>Silver</td>
-                  <td>Gold</td>
-                  <td>$</td>
-                  <td />
-                </tr>
-                <tr>
-                  <th>Amount</th>
-                  <td>{this.state.copperAmount}</td>
-                  <td>{this.state.silverAmount}</td>
-                  <td>{this.state.goldAmount}</td>
-                  <td>{this.state.dollarAmount}</td>
-                </tr>
-                <tr>
-                  <th>Production</th>
-                  <td>{this.state.copperProduction}</td>
-                  <td>{this.state.silverProduction}</td>
-                  <td>{this.state.goldProduction}</td>
-                  <td>{this.state.dollarProduction}</td>
-                  <td>/second</td>
-                </tr>
-              </tbody>
-            </table>
+          <Resources resources={this.state.resources} />
 
-            {this.state.isEquipped && (
-              <div id="equipment">
-                <h3>Current Equipment</h3>
-                <p>Name: {this.state.miningEquipment[currentEquipment].name}</p>
-                <p>Power: {miningPower}</p>
-                <p>
-                  Value: ${this.state.miningEquipment[currentEquipment].value}
-                </p>
-                <p>
-                  Energy Consumption:{" "}
-                  {
-                    this.state.miningEquipment[currentEquipment]
-                      .energyConsumption
-                  }
-                </p>
-              </div>
-            )}
+          {this.state.isEquipped && (
+            <div id="equipment">
+              <h3>Current Equipment</h3>
+              <p>Name: {this.state.miningEquipment[currentEquipment].name}</p>
+              <p>Power: {miningPower}</p>
+              <p>
+                Value: ${this.state.miningEquipment[currentEquipment].value}
+              </p>
+              <p>
+                Energy Consumption:{" "}
+                {this.state.miningEquipment[currentEquipment].energyConsumption}
+              </p>
+            </div>
+          )}
 
-            <h4>Change Equipment</h4>
-            <ul className="list-group">{this.filterUniqueItemsForDisplay()}</ul>
-          </div>
+          <h4>Change Equipment</h4>
+          <ul className="list-group">{this.filterUniqueItemsForDisplay()}</ul>
 
           <h2>Go Mining</h2>
           <button onClick={() => this.goMining("gold")} className="btn">
@@ -249,7 +212,7 @@ class App extends Component {
             <Mine
               miningPower={miningPower}
               mineType="silver"
-              goldMined={this.state.goldAmount}
+              goldMined={this.state.resources.goldAmount}
               //    onInterval={this.handleWorkers}
               onClick={this.handleMining}
             />
@@ -259,7 +222,7 @@ class App extends Component {
             <Mine
               miningPower={miningPower}
               mineType="gold"
-              goldMined={this.state.goldAmount}
+              goldMined={this.state.resources.goldAmount}
               // onInterval={this.handleWorkers}
               onClick={this.handleMining}
             />
@@ -269,7 +232,7 @@ class App extends Component {
             <Mine
               miningPower={miningPower}
               mineType="copper"
-              goldMined={this.state.goldAmount}
+              goldMined={this.state.resources.goldAmount}
               //   onInterval={this.handleWorkers}
               onClick={this.handleMining}
             />

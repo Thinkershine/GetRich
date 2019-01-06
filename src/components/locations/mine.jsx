@@ -6,7 +6,7 @@ class Mine extends Component {
 
   constructor(props) {
     super(props);
-    console.log("PROPS of Mine", props);
+
     this.state.mineType = this.props.mineType;
     this.state.minedAmount = 0;
     this.state.basicMining = this.props.miningPower;
