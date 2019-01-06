@@ -1,15 +1,16 @@
 import React, { Component } from "react";
-import "./App.css";
-import Store from "./components/locations/store";
-import MyWorkers from "./models/workers";
-import { getItems } from "./services/fakeItemService.js";
-import Navigation from "./components/navigation";
 import { Route } from "react-router-dom";
+import "./App.css";
+import { getItems } from "./services/fakeItemService.js";
+import MyWorkers from "./models/workers";
 import MyResources from "./models/myResources.js";
-import Resources from "./components/resources";
+import Store from "./components/locations/store";
 import Mining from "./components/locations/mining";
+import Navigation from "./components/navigation";
+import Resources from "./components/resources";
 import Equipment from "./components/equipment";
 import Workers from "./components/workers";
+import Message from "./components/common/message";
 
 class App extends Component {
   state = {
@@ -18,8 +19,23 @@ class App extends Component {
     currentEquipment: 0,
     miningEquipment: [],
     resources: new MyResources(),
-    workers: new MyWorkers()
+    workers: new MyWorkers(),
+
+    message: {
+      title: "TITLE",
+      message: "Hello Ipsum SMipsum",
+      badge: "success",
+      buttonMessage: "OK",
+      buttonOnClick: this.handleButtonMessage.bind(this)
+    },
+    displayMessage: true
   };
+
+  handleButtonMessage() {
+    console.log("Message HANDLED");
+    this.setState({ displayMessage: false });
+    //this.setState({ displayMessage: false });
+  }
 
   componentDidMount() {
     const { workers } = this.state;
@@ -139,6 +155,18 @@ class App extends Component {
 
           <Route path="/workers" render={props => <Workers />} />
         </main>
+
+        <div id="tools">
+          {this.state.displayMessage && (
+            <Message
+              messageTitle={this.state.message.title}
+              message={this.state.message.message}
+              badge={this.state.message.badge}
+              buttonMessage={this.state.message.buttonMessage}
+              buttonOnClick={this.state.message.buttonOnClick}
+            />
+          )}
+        </div>
       </div>
     );
   }

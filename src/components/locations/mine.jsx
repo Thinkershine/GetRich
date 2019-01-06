@@ -54,6 +54,7 @@ class Mine extends Component {
           key={i}
           rewardAmount={this.state.basicMining}
           rewardRendered={this.hideReward}
+          rewardType={this.state.mineType}
         />
       );
     }

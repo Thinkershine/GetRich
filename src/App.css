@@ -38,7 +38,7 @@
 
 .rewardStyle {
   z-index: 200;
-  color: goldenrod;
+  /* color: goldenrod; */
   clear: both;
   position: fixed;
   font-weight: 900;
@@ -49,4 +49,39 @@
   transition: 0.1s;
   opacity: 1;
   visibility: visible;
+}
+
+.rewardStyle.silver-mine {
+  color: silver;
+}
+
+.rewardStyle.gold-mine {
+  color: goldenrod;
+}
+
+.rewardStyle.copper-mine {
+  color: #b7410e;
+}
+
+.message {
+  width: 500px;
+  position: absolute;
+  clear: both;
+  top: 250px;
+  left: 250px;
+  z-index: 1070;
+  background-color: rgba(77, 77, 77, 1);
+  color: white;
+  font-weight: 600;
+  -webkit-transition: 0.1s;
+  -moz-transition: 0.1s;
+  -o-transition: 0.1s;
+  transition: 0.1s;
+  opacity: 1;
+  visibility: visible;
+}
+
+.message.hideReward {
+  opacity: 0;
+  visibility: hidden;
 }
