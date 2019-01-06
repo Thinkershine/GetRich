@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import "./App.css";
-import GoldMine from "./components/locations/goldMine";
-import Mine from "./components/locations/mine";
 import Store from "./components/locations/store";
 import Workers from "./models/workers";
 import { getItems } from "./services/fakeItemService.js";
@@ -9,28 +7,16 @@ import Navigation from "./components/navigation";
 import { Route } from "react-router-dom";
 import MyResources from "./models/myResources.js";
 import Resources from "./components/resources";
+import Mining from "./components/locations/mining";
 
 class App extends Component {
   state = {
-    copperAmount: 0,
-    copperProduction: 0,
-    silverAmount: 0,
-    silverProduction: 0,
-    goldAmount: 0,
-    goldProduction: 0,
-    dollarAmount: 100,
-    dollarProduction: 0,
-
     isEquipped: false,
     itemsForSale: getItems(),
     currentEquipment: 0,
     miningEquipment: [],
     resources: new MyResources(),
-    workers: new Workers(),
-
-    isGoldMining: false,
-    isSilverMining: false,
-    isCopperMining: false
+    workers: new Workers()
   };
 
   componentDidMount() {
@@ -112,44 +98,21 @@ class App extends Component {
     return uniqueItems;
   };
 
-  goMining = miningType => {
-    switch (miningType) {
-      case "gold":
-        this.setState({ isGoldMining: true });
-        break;
-      case "silver":
-        this.setState({ isSilverMining: true });
-        break;
-      case "copper":
-        this.setState({ isCopperMining: true });
-        break;
-    }
-  };
-  stopMining = miningType => {
-    switch (miningType) {
-      case "gold":
-        this.setState({ isGoldMining: false });
-        break;
-      case "silver":
-        this.setState({ isSilverMining: false });
-        break;
-      case "copper":
-        this.setState({ isCopperMining: false });
-        break;
-    }
-  };
-
   render() {
     const { currentEquipment } = this.state;
     const miningPower = this.state.isEquipped
       ? this.state.miningEquipment[currentEquipment].miningPower
       : 1;
-    console.log("GOLD", this.state.resources.goldAmount);
+
     return (
       <div className="App">
         <header>
           <h1>Time to Get RICH ! $.$</h1>
           <Navigation />
+        </header>
+
+        <main className="container">
+          <Resources resources={this.state.resources} />
           <Route
             path="/store"
             render={props => (
@@ -160,10 +123,19 @@ class App extends Component {
               />
             )}
           />
-        </header>
-
-        <main className="container">
-          <Resources resources={this.state.resources} />
+          <Route
+            path="/mining"
+            render={props => (
+              <Mining
+                goMining={this.goMining}
+                stopMining={this.stopMining}
+                miningPower={miningPower}
+                resources={this.state.resources}
+                handleMining={this.handleMining}
+                {...props}
+              />
+            )}
+          />
 
           {this.state.isEquipped && (
             <div id="equipment">
@@ -182,61 +154,6 @@ class App extends Component {
 
           <h4>Change Equipment</h4>
           <ul className="list-group">{this.filterUniqueItemsForDisplay()}</ul>
-
-          <h2>Go Mining</h2>
-          <button onClick={() => this.goMining("gold")} className="btn">
-            Go GOLD Mining
-          </button>
-          <span>.</span>
-          <button onClick={() => this.goMining("silver")} className="btn">
-            Go SILVER Mining
-          </button>
-          <span>.</span>
-          <button onClick={() => this.goMining("copper")} className="btn">
-            Go COPPER Mining
-          </button>
-          <hr />
-          <button onClick={() => this.stopMining("gold")} className="btn">
-            STOP GOLD Mining
-          </button>
-          <span>.</span>
-          <button onClick={() => this.stopMining("silver")} className="btn">
-            STOP SILVER Mining
-          </button>
-          <span>.</span>
-          <button onClick={() => this.stopMining("copper")} className="btn">
-            STOP COPPER Mining
-          </button>
-
-          {this.state.isSilverMining && (
-            <Mine
-              miningPower={miningPower}
-              mineType="silver"
-              goldMined={this.state.resources.goldAmount}
-              //    onInterval={this.handleWorkers}
-              onClick={this.handleMining}
-            />
-          )}
-
-          {this.state.isGoldMining && (
-            <Mine
-              miningPower={miningPower}
-              mineType="gold"
-              goldMined={this.state.resources.goldAmount}
-              // onInterval={this.handleWorkers}
-              onClick={this.handleMining}
-            />
-          )}
-
-          {this.state.isCopperMining && (
-            <Mine
-              miningPower={miningPower}
-              mineType="copper"
-              goldMined={this.state.resources.goldAmount}
-              //   onInterval={this.handleWorkers}
-              onClick={this.handleMining}
-            />
-          )}
 
           <h2>Workers Den</h2>
           <p>Do You Need More Workers?</p>
