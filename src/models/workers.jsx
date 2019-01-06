@@ -9,7 +9,7 @@ class Worker {
     this.strength = strength;
   }
 }
-export default class Workers {
+export default class MyWorkers {
   copperWorkers = [];
   silverWorkers = [];
   goldWorkers = [];

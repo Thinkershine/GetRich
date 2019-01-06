@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import Store from "./components/locations/store";
-import Workers from "./models/workers";
+import MyWorkers from "./models/workers";
 import { getItems } from "./services/fakeItemService.js";
 import Navigation from "./components/navigation";
 import { Route } from "react-router-dom";
@@ -9,6 +9,7 @@ import MyResources from "./models/myResources.js";
 import Resources from "./components/resources";
 import Mining from "./components/locations/mining";
 import Equipment from "./components/equipment";
+import Workers from "./components/workers";
 
 class App extends Component {
   state = {
@@ -17,7 +18,7 @@ class App extends Component {
     currentEquipment: 0,
     miningEquipment: [],
     resources: new MyResources(),
-    workers: new Workers()
+    workers: new MyWorkers()
   };
 
   componentDidMount() {
@@ -98,6 +99,7 @@ class App extends Component {
 
         <main className="container">
           <Resources resources={this.state.resources} />
+
           <Route
             path="/store"
             render={props => (
@@ -108,6 +110,7 @@ class App extends Component {
               />
             )}
           />
+
           <Route
             path="/mining"
             render={props => (
@@ -121,6 +124,7 @@ class App extends Component {
               />
             )}
           />
+
           <Route
             path="/equipment"
             render={props => (
@@ -128,15 +132,12 @@ class App extends Component {
                 isEquipped={this.state.isEquipped}
                 currentEquipment={this.state.currentEquipment}
                 miningEquipment={this.state.miningEquipment}
+                {...props}
               />
             )}
           />
 
-          <h2>Workers Den</h2>
-          <p>Do You Need More Workers?</p>
-          <button onClick={this.buyNewWorker} className="btn btn-primary">
-            Buy 1 Worker
-          </button>
+          <Route path="/workers" render={props => <Workers />} />
         </main>
       </div>
     );
