@@ -96,7 +96,7 @@ class App extends Component {
       return;
     }
 
-    this.state.resources.spendResourceAmount("dollar", item.value);
+    this.state.resources.spendResourceAmount("dollar", item);
     const itemsOwned = this.state.miningEquipment;
     itemsOwned.push(item);
     const indexOfNewItem = itemsOwned.indexOf(item);

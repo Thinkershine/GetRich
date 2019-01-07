@@ -38,25 +38,29 @@ export default class MyResources {
     }
   };
 
-  spendResourceAmount = (mineType, amount) => {
-    switch (mineType) {
+  spendResourceAmount = (resourceType, itemPurchased) => {
+    switch (resourceType) {
       case "gold":
-        this.goldAmount -= amount;
+        this.goldAmount -= itemPurchased.value;
         break;
       case "silver":
-        this.silverAmount -= amount;
+        this.silverAmount -= itemPurchased.value;
         break;
       case "copper":
-        this.copperAmount -= amount;
+        this.copperAmount -= itemPurchased.value;
         break;
       case "dollar":
-        this.dollarAmount -= amount;
+        this.dollarAmount -= itemPurchased.value;
         break;
     }
 
     this.messenger({
-      title: "Purchased!",
-      message: "Congratulations! You've Spent: $" + amount,
+      title: "Purchase",
+      message:
+        "Congratulations! You've Bougt " +
+        itemPurchased.name.toUpperCase() +
+        " for $" +
+        itemPurchased.value,
       badge: "success",
       buttonMessage: "YES!",
       buttonOnClick: this.messenger
