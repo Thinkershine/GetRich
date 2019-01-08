@@ -73,10 +73,10 @@
   background-color: rgba(77, 77, 77, 1);
   color: white;
   font-weight: 600;
-  -webkit-transition: 0.1s;
-  -moz-transition: 0.1s;
-  -o-transition: 0.1s;
-  transition: 0.1s;
+  -webkit-transition: 3.1s;
+  -moz-transition: 3.1s;
+  -o-transition: 3.1s;
+  transition: 3.1s;
   opacity: 1;
   visibility: visible;
 }

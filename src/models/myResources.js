@@ -67,13 +67,59 @@ export default class MyResources {
     });
   };
 
+  sellResource(resourceType, amount, todayMarketPrice) {
+    console.log("RESOURCE Type", resourceType);
+    console.log("Today Market Price", todayMarketPrice);
+    switch (resourceType) {
+      case "gold":
+        if (this.goldAmount >= amount) {
+          this.goldAmount -= amount;
+          this.addResource(amount * todayMarketPrice, "dollar");
+          this.messenger({
+            title: "Market Sell",
+            message:
+              amount +
+              " " +
+              resourceType.toUpperCase() +
+              "sold for " +
+              "Current Gold Price of $45",
+            badge: "success",
+            buttonMessage: "Ok",
+            buttonOnClick: this.messenger
+          });
+        } else {
+          this.messenger({
+            title: "Market Sell",
+            message:
+              "You Don't Have Enough " +
+              resourceType.toUpperCase() +
+              " for sale... Tried to sell: " +
+              amount,
+            badge: "warning",
+            buttonMessage: "ok...",
+            buttonOnClick: this.messenger
+          });
+        }
+        break;
+      case "silver":
+        this.silverAmount -= amount;
+        break;
+      case "copper":
+        this.copperAmount -= amount;
+        break;
+      case "dollar":
+        this.dollarAmount -= amount;
+        break;
+    }
+  }
+
   constructor(messenger) {
-    this.copperAmount = 0;
-    this.copperProduction = 0;
-    this.silverAmount = 0;
-    this.silverProduction = 0;
-    this.goldAmount = 0;
-    this.goldProduction = 0;
+    this.copperAmount = 1000;
+    this.copperProduction = 1000;
+    this.silverAmount = 1000;
+    this.silverProduction = 1000;
+    this.goldAmount = 1000;
+    this.goldProduction = 1000;
     this.dollarAmount = 100;
     this.dollarProduction = 0;
     this.messenger = messenger;

@@ -6,6 +6,7 @@ import MyWorkers from "./models/workers";
 import MyResources from "./models/myResources.js";
 import Store from "./components/locations/store";
 import Mining from "./components/locations/mining";
+import Market from "./components/locations/market";
 import Navigation from "./components/navigation";
 import Resources from "./components/resources";
 import Equipment from "./components/equipment";
@@ -78,10 +79,15 @@ class App extends Component {
     this.state.resources.addResource(dugAmount, mineType);
   };
   displayMessage = message => {
-    console.log("Messasge s", message);
-    const showMessage = this.state.showMessage;
-
     this.setState({ message, displayMessage: true });
+  };
+
+  handleSellResource = (resourceType, amount, todayMarketPrice) => {
+    console.log("Handle Resource", resourceType);
+    console.log("AMOUNT: ", amount);
+    console.log("Today market Price: ", todayMarketPrice);
+
+    this.state.resources.sellResource(resourceType, amount, todayMarketPrice);
   };
 
   handlePurchase = item => {
@@ -91,7 +97,8 @@ class App extends Component {
         message: "You can't even afford your most basic tools.",
         badge: "danger",
         buttonMessage: "ok..",
-        buttonOnClick: this.handleButtonMessage.bind(this)
+        buttonOnClick: this.handleButtonMessage.bind(this),
+        isHidden: true
       });
       return;
     }
@@ -172,7 +179,14 @@ class App extends Component {
             )}
           />
 
-          <Route path="/workers" render={props => <Workers />} />
+          <Route path="/workers" render={props => <Workers {...props} />} />
+
+          <Route
+            path="/market"
+            render={props => (
+              <Market sellResource={this.handleSellResource} {...props} />
+            )}
+          />
         </main>
 
         <div id="tools">
