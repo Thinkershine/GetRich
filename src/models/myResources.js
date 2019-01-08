@@ -1,3 +1,5 @@
+import { formatCurrency } from "../utils/stringFormats.js";
+
 export default class MyResources {
   copperAmount;
   copperProduction;
@@ -75,43 +77,76 @@ export default class MyResources {
         if (this.goldAmount >= amount) {
           this.goldAmount -= amount;
           this.addResource(amount * todayMarketPrice, "dollar");
-          this.messenger({
-            title: "Market Sell",
-            message:
-              amount +
-              " " +
-              resourceType.toUpperCase() +
-              "sold for " +
-              "Current Gold Price of $45",
-            badge: "success",
-            buttonMessage: "Ok",
-            buttonOnClick: this.messenger
-          });
+          this.messenger(
+            this.sellSuccessMessage(amount, resourceType, todayMarketPrice)
+          );
         } else {
-          this.messenger({
-            title: "Market Sell",
-            message:
-              "You Don't Have Enough " +
-              resourceType.toUpperCase() +
-              " for sale... Tried to sell: " +
-              amount,
-            badge: "warning",
-            buttonMessage: "ok...",
-            buttonOnClick: this.messenger
-          });
+          this.messenger(this.sellFailureMessage(amount, resourceType));
         }
         break;
       case "silver":
-        this.silverAmount -= amount;
+        if (this.silverAmount >= amount) {
+          this.silverAmount -= amount;
+          this.addResource(amount * todayMarketPrice, "dollar");
+          this.messenger(
+            this.sellSuccessMessage(amount, resourceType, todayMarketPrice)
+          );
+        } else {
+          this.messenger(this.sellFailureMessage(amount, resourceType));
+        }
         break;
       case "copper":
-        this.copperAmount -= amount;
+        if (this.copperAmount >= amount) {
+          this.copperAmount -= amount;
+          this.addResource(amount * todayMarketPrice, "dollar");
+          this.messenger(
+            this.sellSuccessMessage(amount, resourceType, todayMarketPrice)
+          );
+        } else {
+          this.messenger(this.sellFailureMessage(amount, resourceType));
+        }
         break;
       case "dollar":
+        // Hmm ? Selling Dollars ?
+        // Dollars Should be for Spending Only ...
         this.dollarAmount -= amount;
         break;
     }
   }
+
+  sellSuccessMessage = (amount, resourceType, todayMarketPrice) => {
+    return {
+      title: "Market Sell",
+      message:
+        amount +
+        " " +
+        resourceType.toUpperCase() +
+        " sold for " +
+        "Current Gold Price of $" +
+        todayMarketPrice +
+        " Total: $" +
+        formatCurrency(amount * todayMarketPrice),
+      badge: "success",
+      buttonMessage: "Ok",
+      buttonOnClick: this.messenger
+    };
+  };
+
+  sellFailureMessage = (amount, resourceType) => {
+    return {
+      title: "Market Sell",
+      message:
+        "You Don't Have Enough " +
+        resourceType.toUpperCase() +
+        " for sale... Tried to sell: " +
+        amount +
+        " of " +
+        resourceType.toUpperCase(),
+      badge: "warning",
+      buttonMessage: "ok...",
+      buttonOnClick: this.messenger
+    };
+  };
 
   constructor(messenger) {
     this.copperAmount = 1000;
