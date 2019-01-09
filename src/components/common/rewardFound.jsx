@@ -3,8 +3,8 @@ import React, { Component } from "react";
 class RewardFound extends Component {
   state = {
     rewardPosition: {
-      top: 500 + Math.random() * 100,
-      left: 250 + Math.random() * 200
+      top: 500 + Math.random() * 250,
+      left: 10 + Math.random() * 75 + "%"
     }
   };
 
