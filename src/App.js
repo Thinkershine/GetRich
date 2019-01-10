@@ -2,6 +2,11 @@ import React, { Component } from "react";
 import { Route } from "react-router-dom";
 import "./App.css";
 import { getItems } from "./services/fakeItemService.js";
+import {
+  getLevels,
+  getExperienceForLevel,
+  getExperienceDifferenceForLvl
+} from "./services/fakeExperienceService.js";
 import MyWorkers from "./models/workers";
 import MyResources from "./models/myResources.js";
 import Store from "./components/locations/store";
@@ -22,6 +27,15 @@ class App extends Component {
     resources: new MyResources(this.handleButtonMessage.bind(this)),
     workers: new MyWorkers(),
 
+    experienceForLevels: getLevels(),
+    miningSkill: 0,
+    miningSkillExperience: 0,
+
+    lvlExperienceDifference: 15,
+    miningSkillCurrentPercentage: 0,
+    currentMiningSkillExperience: 0,
+    nextMiningLevelExperience: 0,
+
     message: {
       title: "Welcome!",
       message: "Hello :)",
@@ -31,6 +45,82 @@ class App extends Component {
     },
     displayMessage: false
   };
+
+  handleExperienceGain = expAmount => {
+    let miningSkillExp = this.state.miningSkillExperience;
+    miningSkillExp += expAmount;
+
+    let currentMiningSkillExp = this.state.currentMiningSkillExperience;
+    currentMiningSkillExp += expAmount;
+
+    this.setState(
+      {
+        miningSkillExperience: miningSkillExp,
+        currentMiningSkillExperience: currentMiningSkillExp
+      },
+      this.handleGainedExperience
+    );
+  };
+
+  handleGainedExperience() {
+    this.calculateLevelUp();
+    this.calculateCurrentLevelExperiencePercentage();
+  }
+
+  calculateCurrentLevelExperiencePercentage() {
+    let currentPercentage =
+      (this.state.currentMiningSkillExperience /
+        this.state.lvlExperienceDifference) *
+      100;
+    console.log("CURRENT PERCENTAGE", currentPercentage);
+
+    if (currentPercentage >= 100) {
+      currentPercentage = 0;
+    }
+
+    this.setState({ miningSkillCurrentPercentage: currentPercentage });
+  }
+
+  calculateLevelUp() {
+    if (
+      this.state.miningSkillExperience >= this.state.nextMiningLevelExperience
+    ) {
+      this.setState(
+        {
+          miningSkill: this.state.miningSkill + 1,
+          currentMiningSkillExperience: 0
+        },
+        this.calculateNextLevelExperience
+      );
+      console.log("LEVEL UP");
+
+      // BOOM GRATS YOU'VE LEVELED UP !!
+    }
+  }
+
+  calculateNextLevelExperience() {
+    let nextlevelExperience = getExperienceForLevel(this.state.miningSkill + 1);
+
+    this.setState(
+      {
+        nextMiningLevelExperience: nextlevelExperience
+      },
+      this.calculateExperienceDifference
+    );
+  }
+
+  calculateExperienceDifference() {
+    let lvlExperienceDifference = getExperienceDifferenceForLvl(
+      this.state.miningSkill
+    );
+    console.log("LV EXP DIF", lvlExperienceDifference);
+
+    this.setState({ lvlExperienceDifference }, this.gratulations);
+  }
+
+  gratulations() {
+    console.log("GRATULATIONS");
+  }
 
   handleButtonMessage(messageForButton) {
     this.setState({
@@ -44,7 +134,10 @@ class App extends Component {
 
     this.setState({
       goldWorkers: workers.getGoldWorkersCount(),
-      goldProduction: workers.getGoldWorkersTotalStrength()
+      goldProduction: workers.getGoldWorkersTotalStrength(),
+      nextMiningLevelExperience: getExperienceForLevel(
+        this.state.miningSkill + 1
+      )
     });
   }
 
@@ -142,6 +235,25 @@ class App extends Component {
         <main className="container">
           <Resources resources={this.state.resources} />
 
+          <div id="stats">
+            <p>Mining Skill: {this.state.miningSkill}</p>
+            <div className="progress w-100" style={{ height: 20 }}>
+              <div
+                className="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                role="progressbar"
+                style={{ width: this.state.miningSkillCurrentPercentage + "%" }}
+                aria-valuenow={this.state.miningSkillExperience}
+                aria-valuemin="0"
+                aria-valuemax={this.state.nextMiningLevelExperience}
+              >
+                <span style={{ textAlign: "center" }}>
+                  {this.state.miningSkillExperience} /
+                  {this.state.nextMiningLevelExperience}
+                </span>
+              </div>
+            </div>
+          </div>
+
           <Route
             path="/store"
             render={props => (
@@ -162,6 +274,7 @@ class App extends Component {
                 miningPower={miningPower}
                 resources={this.state.resources}
                 handleMining={this.handleMining}
+                gainExperience={this.handleExperienceGain}
                 {...props}
               />
             )}

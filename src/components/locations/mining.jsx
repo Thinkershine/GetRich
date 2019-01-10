@@ -78,6 +78,7 @@ class Mining extends Component {
               goldMined={this.props.resources.getResourceAmount("silver")}
               //    onInterval={this.handleWorkers}
               onClick={this.props.handleMining}
+              gainExperience={this.props.gainExperience}
             />
           )}
 
@@ -88,6 +89,7 @@ class Mining extends Component {
               goldMined={this.props.resources.getResourceAmount("gold")}
               // onInterval={this.handleWorkers}
               onClick={this.props.handleMining}
+              gainExperience={this.props.gainExperience}
             />
           )}
 
@@ -98,6 +100,7 @@ class Mining extends Component {
               goldMined={this.props.resources.getResourceAmount("copper")}
               //   onInterval={this.handleWorkers}
               onClick={this.props.handleMining}
+              gainExperience={this.props.gainExperience}
             />
           )}
         </div>
