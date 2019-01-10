@@ -17,6 +17,7 @@ import Resources from "./components/resources";
 import Equipment from "./components/equipment";
 import Workers from "./components/workers";
 import Message from "./components/common/message";
+import ProgressBar from "./components/common/progressBar";
 
 class App extends Component {
   state = {
@@ -72,7 +73,7 @@ class App extends Component {
       (this.state.currentMiningSkillExperience /
         this.state.lvlExperienceDifference) *
       100;
-    console.log("CURRENT PERCENTAGE", currentPercentage);
+    //console.log("CURRENT PERCENTAGE", currentPercentage);
 
     if (currentPercentage >= 100) {
       currentPercentage = 0;
@@ -92,7 +93,7 @@ class App extends Component {
         },
         this.calculateNextLevelExperience
       );
-      console.log("LEVEL UP");
+      //console.log("LEVEL UP");
 
       // BOOM GRATS YOU'VE LEVELED UP !!
     }
@@ -113,7 +114,7 @@ class App extends Component {
     let lvlExperienceDifference = getExperienceDifferenceForLvl(
       this.state.miningSkill
     );
-    console.log("LV EXP DIF", lvlExperienceDifference);
+    //console.log("LV EXP DIF", lvlExperienceDifference);
 
     this.setState({ lvlExperienceDifference }, this.gratulations);
   }
@@ -176,9 +177,9 @@ class App extends Component {
   };
 
   handleSellResource = (resourceType, amount, todayMarketPrice) => {
-    console.log("Handle Resource", resourceType);
-    console.log("AMOUNT: ", amount);
-    console.log("Today market Price: ", todayMarketPrice);
+    //console.log("Handle Resource", resourceType);
+    //console.log("AMOUNT: ", amount);
+    //console.log("Today market Price: ", todayMarketPrice);
 
     this.state.resources.sellResource(resourceType, amount, todayMarketPrice);
   };
@@ -200,22 +201,22 @@ class App extends Component {
     const itemsOwned = this.state.miningEquipment;
     itemsOwned.push(item);
     const indexOfNewItem = itemsOwned.indexOf(item);
-    console.log("Index of NEW ITEM", indexOfNewItem);
+    //console.log("Index of NEW ITEM", indexOfNewItem);
 
     this.setState({
       miningEquipment: itemsOwned,
       isEquipped: true,
       currentEquipment: indexOfNewItem
     });
-    console.log(
-      "EQ POW",
-      this.state.miningEquipment[indexOfNewItem].miningPower
-    );
-    console.log("Items Owned", itemsOwned);
+    // console.log(
+    //   "EQ POW",
+    //   this.state.miningEquipment[indexOfNewItem].miningPower
+    // );
+    // console.log("Items Owned", itemsOwned);
   };
 
   buyNewWorker = () => {
-    console.log("NEW WORKER");
+    // console.log("NEW WORKER");
     this.state.workers.addGoldWorker("Majka");
   };
 
@@ -236,22 +237,12 @@ class App extends Component {
           <Resources resources={this.state.resources} />
 
           <div id="stats">
-            <p>Mining Skill: {this.state.miningSkill}</p>
-            <div className="progress w-100" style={{ height: 20 }}>
-              <div
-                className="progress-bar bg-success progress-bar-striped progress-bar-animated"
-                role="progressbar"
-                style={{ width: this.state.miningSkillCurrentPercentage + "%" }}
-                aria-valuenow={this.state.miningSkillExperience}
-                aria-valuemin="0"
-                aria-valuemax={this.state.nextMiningLevelExperience}
-              >
-                <span style={{ textAlign: "center" }}>
-                  {this.state.miningSkillExperience} /
-                  {this.state.nextMiningLevelExperience}
-                </span>
-              </div>
-            </div>
+            <ProgressBar
+              levelToDisplay={this.state.miningSkill}
+              percentageOfCompletion={this.state.miningSkillCurrentPercentage}
+              currentValue={this.state.miningSkillExperience}
+              maxValue={this.state.nextMiningLevelExperience}
+            />
           </div>
 
           <Route
