@@ -10,7 +10,7 @@ class ProgressBar extends Component {
   badgeClassNames(badge) {
     let classNames =
       "progress-bar progress-bar-striped progress-bar-animated bg-" + badge;
-    console.log("CLASS NAMES", classNames);
+
     return classNames;
   }
 

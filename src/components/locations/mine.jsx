@@ -38,6 +38,7 @@ class Mine extends Component {
 
     // Calculate Experience ??
     this.props.gainExperience(1);
+    this.props.spendEnergy();
   };
 
   componentWillReceiveProps(nextProps) {
@@ -77,9 +78,9 @@ class Mine extends Component {
         </button>
 
         <div>
-          {this.state.renderReward ? (
-            this.displayRewards(this.state.basicMining)
-          ) : null}
+          {this.state.renderReward
+            ? this.displayRewards(this.state.basicMining)
+            : null}
         </div>
       </div>
     );

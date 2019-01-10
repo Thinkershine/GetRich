@@ -38,9 +38,11 @@ class App extends Component {
     nextMiningLevelExperience: 0,
 
     energyLevel: 1,
-    energyPoints: 20,
-    currentEnergyPoints: 20,
+    energyPoints: 100,
+    currentEnergyPoints: 100,
     maximumEnergyPoints: 100,
+
+    energyDrain: 20,
 
     message: {
       title: "Welcome!",
@@ -225,6 +227,36 @@ class App extends Component {
     this.state.workers.addGoldWorker("Majka");
   };
 
+  spendEnergy = () => {
+    const {
+      isEquipped,
+      currentEquipment,
+      miningEquipment,
+      energyDrain,
+      energyPoints,
+      currentEnergyPoints
+    } = this.state;
+
+    console.log("Energy", energyDrain);
+    let energyToSubstract = isEquipped
+      ? miningEquipment[currentEquipment].energyConsumption + energyDrain
+      : energyDrain;
+
+    let newEnergyPoints = energyPoints;
+    if (energyPoints - energyToSubstract <= 0) {
+      newEnergyPoints = 0;
+    } else {
+      newEnergyPoints -= energyToSubstract;
+    }
+
+    console.log("New Energy Points", newEnergyPoints);
+
+    this.setState({
+      energyPoints: newEnergyPoints,
+      currentEnergyPoints: newEnergyPoints
+    });
+  };
+
   render() {
     const { currentEquipment } = this.state;
     const miningPower = this.state.isEquipped
@@ -248,7 +280,7 @@ class App extends Component {
               percentageOfCompletion={this.state.miningSkillCurrentPercentage}
               currentValue={this.state.miningSkillExperience}
               maxValue={this.state.nextMiningLevelExperience}
-              badge={"primary"}
+              badge={"success"}
               bgColor={"dark"}
             />
 
@@ -258,8 +290,8 @@ class App extends Component {
               percentageOfCompletion={this.state.energyPoints}
               currentValue={this.state.currentEnergyPoints}
               maxValue={this.state.maximumEnergyPoints}
-              badge={"warning"}
-              bgColor={"danger"}
+              badge={"primary"}
+              bgColor={"dark"}
             />
           </div>
 
@@ -283,6 +315,7 @@ class App extends Component {
                 miningPower={miningPower}
                 resources={this.state.resources}
                 handleMining={this.handleMining}
+                spendEnergy={this.spendEnergy}
                 gainExperience={this.handleExperienceGain}
                 {...props}
               />
