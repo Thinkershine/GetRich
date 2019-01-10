@@ -7,19 +7,32 @@ class ProgressBar extends Component {
     super(props);
   }
 
+  badgeClassNames(badge) {
+    let classNames =
+      "progress-bar progress-bar-striped progress-bar-animated bg-" + badge;
+    console.log("CLASS NAMES", classNames);
+    return classNames;
+  }
+
   render() {
     const {
+      title,
       levelToDisplay,
       percentageOfCompletion,
       currentValue,
-      maxValue
+      maxValue,
+      badge,
+      bgColor
     } = this.props;
+
     return (
       <React.Fragment>
-        <p>Mining Skill: {levelToDisplay}</p>
-        <div className="progress w-100" style={{ height: 20 }}>
+        <p>
+          {title}: {levelToDisplay}
+        </p>
+        <div className={"progress w-100 bg-" + bgColor} style={{ height: 20 }}>
           <div
-            className="progress-bar bg-success progress-bar-striped progress-bar-animated"
+            className={this.badgeClassNames(badge)}
             role="progressbar"
             style={{ width: percentageOfCompletion + "%" }}
             aria-valuenow={currentValue}

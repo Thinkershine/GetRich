@@ -11,24 +11,18 @@ class RewardFound extends Component {
   constructor(props) {
     super(props);
     //  this.addColorClass(this.props.rewardType + "-mine");
-    console.log("CONSTRUCTOR");
     this.state.classNames = ["rewardStyle"];
     const classes = this.state.classNames;
     classes.push(this.props.rewardType + "-mine");
 
     const classNamesWithColor = classes.join(" ");
-    console.log("CLASSES", classes);
 
     this.state.classNamesForRendering = classNamesWithColor;
-    console.log("CLASSES with name color", classNamesWithColor);
   }
 
-  componentWillMount() {
-    console.log("WILL MOUNT");
-  }
+  componentWillMount() {}
 
   componentDidMount() {
-    console.log("DID MOUNT");
     setTimeout(this.hideReward, 200);
   }
 
@@ -37,7 +31,6 @@ class RewardFound extends Component {
     classes.push("hideReward");
     const joinedClasses = classes.join(" ");
 
-    console.log("NEW CLASSES", joinedClasses);
     this.setState({
       classNames: joinedClasses
     });
@@ -50,7 +43,6 @@ class RewardFound extends Component {
   // Generate Random Position
 
   render() {
-    console.log("RENDER");
     return (
       <p
         style={this.state.rewardPosition}

@@ -37,6 +37,11 @@ class App extends Component {
     currentMiningSkillExperience: 0,
     nextMiningLevelExperience: 0,
 
+    energyLevel: 1,
+    energyPoints: 20,
+    currentEnergyPoints: 20,
+    maximumEnergyPoints: 100,
+
     message: {
       title: "Welcome!",
       message: "Hello :)",
@@ -238,10 +243,23 @@ class App extends Component {
 
           <div id="stats">
             <ProgressBar
+              title={"Mining Skill"}
               levelToDisplay={this.state.miningSkill}
               percentageOfCompletion={this.state.miningSkillCurrentPercentage}
               currentValue={this.state.miningSkillExperience}
               maxValue={this.state.nextMiningLevelExperience}
+              badge={"primary"}
+              bgColor={"dark"}
+            />
+
+            <ProgressBar
+              title={"Energy"}
+              levelToDisplay={this.state.energyLevel}
+              percentageOfCompletion={this.state.energyPoints}
+              currentValue={this.state.currentEnergyPoints}
+              maxValue={this.state.maximumEnergyPoints}
+              badge={"warning"}
+              bgColor={"danger"}
             />
           </div>
 
