@@ -11,9 +11,10 @@ class Store extends Component {
         <ul className="list-group">
           {this.props.itemsForSale.map(item => (
             <li
-              onClick={() => this.props.handlePurchase(item)}
-              className="list-group-item"
               key={item._id}
+              className="list-group-item"
+              style={{ cursor: "pointer" }}
+              onClick={() => this.props.handlePurchase(item)}
             >
               {item.name} : ${item.value}- mine : {item.mineType}; energy cost :
               {item.energyConsumption}; POW : {item.miningPower}

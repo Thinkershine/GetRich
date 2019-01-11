@@ -23,7 +23,7 @@ class App extends Component {
   state = {
     isEquipped: false,
     itemsForSale: getItems(),
-    currentEquipment: 0,
+    currentEquipment: {},
     miningEquipment: [],
     resources: new MyResources(this.handleButtonMessage.bind(this)),
     workers: new MyWorkers(),
@@ -44,7 +44,7 @@ class App extends Component {
     currentRequiredEnergy: 0,
     noEnergy: false,
 
-    energyDrain: 20,
+    energyDrain: 1,
 
     message: {
       title: "Welcome!",
@@ -55,6 +55,11 @@ class App extends Component {
     },
     displayMessage: false
   };
+
+  constructor(props) {
+    super(props);
+    //  let energyGaining = setInterval(() => this.gainEnergy(), 1000);
+  }
 
   handleExperienceGain = expAmount => {
     let miningSkillExp = this.state.miningSkillExperience;
@@ -142,15 +147,20 @@ class App extends Component {
   componentDidMount() {
     const { workers } = this.state;
 
-    let energyGaining = setInterval(() => this.gainEnergy(), 1000);
+    this.energyGainingIntervalID = setInterval(this.gainEnergy, 1000);
 
     this.setState({
+      energyGainingIntervalID: this.energyGainingIntervalID,
       goldWorkers: workers.getGoldWorkersCount(),
       goldProduction: workers.getGoldWorkersTotalStrength(),
       nextMiningLevelExperience: getExperienceForLevel(
         this.state.miningSkill + 1
       )
     });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.energyGainingIntervalID);
   }
 
   componentDidUpdate() {
@@ -211,7 +221,7 @@ class App extends Component {
     this.setState({
       miningEquipment: itemsOwned,
       isEquipped: true,
-      currentEquipment: indexOfNewItem
+      currentEquipment: item
     });
     // console.log(
     //   "EQ POW",
@@ -229,14 +239,13 @@ class App extends Component {
     const {
       isEquipped,
       currentEquipment,
-      miningEquipment,
       energyDrain,
       energyPoints
     } = this.state;
 
     if (energySpent) {
       let energyToSubstract = isEquipped
-        ? miningEquipment[currentEquipment].energyConsumption + energyDrain
+        ? currentEquipment.energyConsumption + energyDrain
         : energyDrain;
 
       let newEnergyPoints = energyPoints;
@@ -268,8 +277,7 @@ class App extends Component {
     // Disable Using Energy
     let requiredEnergy = 0;
     if (this.state.isEquipped) {
-      requiredEnergy = this.state.miningEquipment[this.state.currentEquipment]
-        .energyConsumption;
+      requiredEnergy = this.state.currentEquipment.energyConsumption;
     }
 
     requiredEnergy += this.state.energyDrain;
@@ -281,7 +289,7 @@ class App extends Component {
     this.setState({ currentRequiredEnergy: requiredEnergy });
   }
 
-  gainEnergy() {
+  gainEnergy = () => {
     let noEnergy = this.state.energyPoints < this.state.currentRequiredEnergy;
 
     let currentEnergy = this.state.energyPoints;
@@ -296,13 +304,13 @@ class App extends Component {
       energyPoints: currentEnergy,
       currentEnergyPoints: currentEnergy
     });
-  }
+  };
 
   render() {
     const { currentEquipment } = this.state;
     const miningPower = this.state.isEquipped
-      ? this.state.miningEquipment[currentEquipment].miningPower
-      : 1;
+      ? 1 + currentEquipment.miningPower + this.state.miningSkill
+      : 1 + this.state.miningSkill;
 
     return (
       <div className="App">

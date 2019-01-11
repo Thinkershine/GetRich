@@ -7,7 +7,7 @@ class Mining extends Component {
     isGoldMining: false,
     isSilverMining: false,
     isCopperMining: false,
-    copperMiningRequirements: { miningSkill: 1, miningPower: 1 },
+    copperMiningRequirements: { miningSkill: 0, miningPower: 1 },
     silverMiningRequirements: { miningSkill: 5, miningPower: 5 },
     goldMiningRequirements: { miningSkill: 10, miningPower: 10 },
 
@@ -26,6 +26,10 @@ class Mining extends Component {
 
     this.state.miningPower = this.props.miningPower;
     this.state.miningSkill = this.props.miningSkill;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ miningPower: nextProps.miningPower });
   }
 
   goMining = miningType => {
