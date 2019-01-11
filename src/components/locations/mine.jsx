@@ -29,6 +29,11 @@ class Mine extends Component {
   };
 
   handleDigClick = () => {
+    if (this.props.noEnergy) {
+      this.props.spendEnergy();
+      return;
+    }
+
     this.setState({
       renderReward: true,
       minedAmount: this.state.minedAmount + this.state.basicMining

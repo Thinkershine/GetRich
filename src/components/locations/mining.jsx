@@ -79,6 +79,7 @@ class Mining extends Component {
               //    onInterval={this.handleWorkers}
               onClick={this.props.handleMining}
               spendEnergy={this.props.spendEnergy}
+              noEnergy={this.props.noEnergy}
               gainExperience={this.props.gainExperience}
             />
           )}
@@ -91,6 +92,7 @@ class Mining extends Component {
               // onInterval={this.handleWorkers}
               onClick={this.props.handleMining}
               spendEnergy={this.props.spendEnergy}
+              noEnergy={this.props.noEnergy}
               gainExperience={this.props.gainExperience}
             />
           )}
@@ -103,6 +105,7 @@ class Mining extends Component {
               //   onInterval={this.handleWorkers}
               onClick={this.props.handleMining}
               spendEnergy={this.props.spendEnergy}
+              noEnergy={this.props.noEnergy}
               gainExperience={this.props.gainExperience}
             />
           )}

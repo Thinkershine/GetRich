@@ -41,6 +41,7 @@ class App extends Component {
     energyPoints: 100,
     currentEnergyPoints: 100,
     maximumEnergyPoints: 100,
+    noEnergy: false,
 
     energyDrain: 20,
 
@@ -174,20 +175,14 @@ class App extends Component {
   };
 
   handleMining = (dugAmount, mineType) => {
-    // const resource = this.state;
-    //  console.log("RESOURCES RECEIVED", resource);
-    //  console.log("GOLD", resource.goldAmount);
     this.state.resources.addResource(dugAmount, mineType);
   };
+
   displayMessage = message => {
     this.setState({ message, displayMessage: true });
   };
 
   handleSellResource = (resourceType, amount, todayMarketPrice) => {
-    //console.log("Handle Resource", resourceType);
-    //console.log("AMOUNT: ", amount);
-    //console.log("Today market Price: ", todayMarketPrice);
-
     this.state.resources.sellResource(resourceType, amount, todayMarketPrice);
   };
 
@@ -233,8 +228,7 @@ class App extends Component {
       currentEquipment,
       miningEquipment,
       energyDrain,
-      energyPoints,
-      currentEnergyPoints
+      energyPoints
     } = this.state;
 
     console.log("Energy", energyDrain);
@@ -249,13 +243,38 @@ class App extends Component {
       newEnergyPoints -= energyToSubstract;
     }
 
-    console.log("New Energy Points", newEnergyPoints);
-
-    this.setState({
-      energyPoints: newEnergyPoints,
-      currentEnergyPoints: newEnergyPoints
-    });
+    this.setState(
+      {
+        energyPoints: newEnergyPoints,
+        currentEnergyPoints: newEnergyPoints
+      },
+      this.controlEnergy
+    );
   };
+
+  controlEnergy() {
+    // Disable Using Energy
+    let requiredEnergy = 0;
+    if (this.state.isEquipped) {
+      requiredEnergy = this.state.miningEquipment[this.state.currentEquipment]
+        .energyConsumption;
+    }
+
+    requiredEnergy += this.state.energyDrain;
+
+    if (this.state.energyPoints < requiredEnergy) {
+      this.displayMessage({
+        title: "You are TIRED!",
+        message: "You don't Have Enough Energy.",
+        badge: "warning",
+        buttonMessage: "ok..",
+        buttonOnClick: this.handleButtonMessage.bind(this),
+        isHidden: true
+      });
+
+      this.setState({ noEnergy: true });
+    }
+  }
 
   render() {
     const { currentEquipment } = this.state;
@@ -316,6 +335,7 @@ class App extends Component {
                 resources={this.state.resources}
                 handleMining={this.handleMining}
                 spendEnergy={this.spendEnergy}
+                noEnergy={this.state.noEnergy}
                 gainExperience={this.handleExperienceGain}
                 {...props}
               />
