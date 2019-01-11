@@ -1,7 +1,6 @@
 import React from "react";
 
 const Resources = props => {
-  console.log("GOLD", props.resources.goldAmount);
   return (
     <div id="resources">
       <table>

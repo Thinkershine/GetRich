@@ -259,8 +259,7 @@ class App extends Component {
         message: "You don't Have Enough Energy.",
         badge: "warning",
         buttonMessage: "ok..",
-        buttonOnClick: this.handleButtonMessage.bind(this),
-        isHidden: true
+        buttonOnClick: this.handleButtonMessage.bind(this)
       });
     }
   };
@@ -355,6 +354,7 @@ class App extends Component {
                 goMining={this.goMining}
                 stopMining={this.stopMining}
                 miningPower={miningPower}
+                miningSkill={this.state.miningSkill}
                 resources={this.state.resources}
                 handleMining={this.handleMining}
                 spendEnergy={this.spendEnergy}
@@ -395,6 +395,7 @@ class App extends Component {
               badge={this.state.message.badge}
               buttonMessage={this.state.message.buttonMessage}
               buttonOnClick={this.state.message.buttonOnClick}
+              isHidden={this.state.message.isHidden}
             />
           )}
         </div>

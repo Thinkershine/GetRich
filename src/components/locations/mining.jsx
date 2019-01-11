@@ -1,27 +1,91 @@
 import React, { Component } from "react";
 import Mine from "./mine";
+import Message from "../common/message";
 
 class Mining extends Component {
-  state = { isGoldMining: false, isSilverMining: false, isCopperMining: false };
+  state = {
+    isGoldMining: false,
+    isSilverMining: false,
+    isCopperMining: false,
+    copperMiningRequirements: { miningSkill: 1, miningPower: 1 },
+    silverMiningRequirements: { miningSkill: 5, miningPower: 5 },
+    goldMiningRequirements: { miningSkill: 10, miningPower: 10 },
+
+    message: {
+      title: "You Aren't Skilled Enough!",
+      message: "You don't Have Enough Skills to Mine GOLD!",
+      badge: "danger",
+      buttonMessage: "ok..",
+      buttonOnClick: this.hideMessage
+    },
+    displayMessage: false
+  };
 
   constructor(props) {
     super(props);
-    this.state.isCopperMining = this.props.isCopperMining;
-    this.state.isSilverMining = this.props.isSilverMining;
-    this.state.isGoldMining = this.props.isGoldMining;
+
     this.state.miningPower = this.props.miningPower;
+    this.state.miningSkill = this.props.miningSkill;
   }
 
   goMining = miningType => {
+    const {
+      miningPower,
+      miningSkill,
+      copperMiningRequirements,
+      silverMiningRequirements,
+      goldMiningRequirements
+    } = this.state;
+
     switch (miningType) {
       case "gold":
-        this.setState({ isGoldMining: true });
+        if (
+          miningPower >= goldMiningRequirements.miningPower &&
+          miningSkill >= goldMiningRequirements.miningSkill
+        ) {
+          this.setState({ isGoldMining: true });
+        } else {
+          this.displayMessage({
+            title: "You Aren't Skilled Enough!",
+            message: "You don't Have Enough Skills to Mine GOLD!",
+            badge: "danger",
+            buttonMessage: "ok..",
+            buttonOnClick: this.hideMessage
+          });
+        }
         break;
       case "silver":
-        this.setState({ isSilverMining: true });
+        if (
+          miningPower >= silverMiningRequirements.miningPower &&
+          miningSkill >= silverMiningRequirements.miningSkill
+        ) {
+          this.setState({ isSilverMining: true });
+        } else {
+          this.displayMessage({
+            title: "You Aren't Skilled Enough!",
+            message: "You don't Have Enough Skills to Mine SILVER!",
+            badge: "danger",
+            buttonMessage: "ok..",
+            buttonOnClick: this.hideMessage
+          });
+        }
+
         break;
       case "copper":
-        this.setState({ isCopperMining: true });
+        if (
+          miningPower >= copperMiningRequirements.miningPower &&
+          miningSkill >= copperMiningRequirements.miningSkill
+        ) {
+          this.setState({ isCopperMining: true });
+        } else {
+          this.displayMessage({
+            title: "You Aren't Skilled Enough!",
+            message: "You don't Have Enough Skills to Mine COPPER!",
+            badge: "danger",
+            buttonMessage: "ok..",
+            buttonOnClick: this.hideMessage
+          });
+        }
         break;
     }
   };
@@ -37,6 +101,13 @@ class Mining extends Component {
         this.setState({ isCopperMining: false });
         break;
     }
+  };
+
+  displayMessage = message => {
+    this.setState({ message, displayMessage: true });
+  };
+  hideMessage = () => {
+    this.setState({ displayMessage: false });
   };
 
   render() {
@@ -107,6 +178,19 @@ class Mining extends Component {
               spendEnergy={this.props.spendEnergy}
               noEnergy={this.props.noEnergy}
               gainExperience={this.props.gainExperience}
+            />
+          )}
+        </div>
+
+        <div className="messenger">
+          {this.state.displayMessage && (
+            <Message
+              messageTitle={this.state.message.title}
+              message={this.state.message.message}
+              badge={this.state.message.badge}
+              buttonMessage={this.state.message.buttonMessage}
+              buttonOnClick={this.state.message.buttonOnClick}
+              isHidden={this.state.message.isHidden}
             />
           )}
         </div>

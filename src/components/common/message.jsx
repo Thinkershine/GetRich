@@ -8,8 +8,7 @@ class Message extends Component {
   }
 
   getClassNamesFor = classNamesFor => {
-    console.log("IS HIDDEN", this.props.isHidden);
-    let classNames = this.props.isHidden === true ? "hideReward " : "";
+    let classNames = "";
 
     switch (classNamesFor) {
       case "title":
