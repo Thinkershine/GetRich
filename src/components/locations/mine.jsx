@@ -29,8 +29,9 @@ class Mine extends Component {
   };
 
   handleDigClick = () => {
+    console.log("NO ENERGY AT MINE", this.props.noEnergy);
     if (this.props.noEnergy) {
-      this.props.spendEnergy();
+      this.props.spendEnergy(false);
       return;
     }
 
@@ -40,10 +41,8 @@ class Mine extends Component {
     });
 
     this.props.onClick(this.state.basicMining, this.props.mineType);
-
-    // Calculate Experience ??
     this.props.gainExperience(1);
-    this.props.spendEnergy();
+    this.props.spendEnergy(true);
   };
 
   componentWillReceiveProps(nextProps) {

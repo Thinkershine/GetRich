@@ -41,6 +41,7 @@ class App extends Component {
     energyPoints: 100,
     currentEnergyPoints: 100,
     maximumEnergyPoints: 100,
+    currentRequiredEnergy: 0,
     noEnergy: false,
 
     energyDrain: 20,
@@ -141,6 +142,8 @@ class App extends Component {
   componentDidMount() {
     const { workers } = this.state;
 
+    let energyGaining = setInterval(() => this.gainEnergy(), 1000);
+
     this.setState({
       goldWorkers: workers.getGoldWorkersCount(),
       goldProduction: workers.getGoldWorkersTotalStrength(),
@@ -222,7 +225,7 @@ class App extends Component {
     this.state.workers.addGoldWorker("Majka");
   };
 
-  spendEnergy = () => {
+  spendEnergy = energySpent => {
     const {
       isEquipped,
       currentEquipment,
@@ -231,25 +234,35 @@ class App extends Component {
       energyPoints
     } = this.state;
 
-    console.log("Energy", energyDrain);
-    let energyToSubstract = isEquipped
-      ? miningEquipment[currentEquipment].energyConsumption + energyDrain
-      : energyDrain;
+    if (energySpent) {
+      let energyToSubstract = isEquipped
+        ? miningEquipment[currentEquipment].energyConsumption + energyDrain
+        : energyDrain;
 
-    let newEnergyPoints = energyPoints;
-    if (energyPoints - energyToSubstract <= 0) {
-      newEnergyPoints = 0;
+      let newEnergyPoints = energyPoints;
+      if (energyPoints - energyToSubstract <= 0) {
+        newEnergyPoints = 0;
+      } else {
+        newEnergyPoints -= energyToSubstract;
+      }
+
+      this.setState(
+        {
+          energyPoints: newEnergyPoints,
+          currentEnergyPoints: newEnergyPoints
+        },
+        this.controlEnergy
+      );
     } else {
-      newEnergyPoints -= energyToSubstract;
+      this.displayMessage({
+        title: "You are TIRED!",
+        message: "You don't Have Enough Energy.",
+        badge: "warning",
+        buttonMessage: "ok..",
+        buttonOnClick: this.handleButtonMessage.bind(this),
+        isHidden: true
+      });
     }
-
-    this.setState(
-      {
-        energyPoints: newEnergyPoints,
-        currentEnergyPoints: newEnergyPoints
-      },
-      this.controlEnergy
-    );
   };
 
   controlEnergy() {
@@ -263,17 +276,27 @@ class App extends Component {
     requiredEnergy += this.state.energyDrain;
 
     if (this.state.energyPoints < requiredEnergy) {
-      this.displayMessage({
-        title: "You are TIRED!",
-        message: "You don't Have Enough Energy.",
-        badge: "warning",
-        buttonMessage: "ok..",
-        buttonOnClick: this.handleButtonMessage.bind(this),
-        isHidden: true
-      });
-
       this.setState({ noEnergy: true });
     }
+
+    this.setState({ currentRequiredEnergy: requiredEnergy });
+  }
+
+  gainEnergy() {
+    let noEnergy = this.state.energyPoints < this.state.currentRequiredEnergy;
+
+    let currentEnergy = this.state.energyPoints;
+    if (currentEnergy + 1 > this.state.maximumEnergyPoints) {
+      currentEnergy = this.state.maximumEnergyPoints;
+    } else {
+      currentEnergy += 1;
+    }
+
+    this.setState({
+      noEnergy: noEnergy,
+      energyPoints: currentEnergy,
+      currentEnergyPoints: currentEnergy
+    });
   }
 
   render() {
