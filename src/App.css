@@ -51,15 +51,15 @@
   visibility: visible;
 }
 
-.rewardStyle.silver-mine {
+.silver-mine {
   color: silver;
 }
 
-.rewardStyle.gold-mine {
+.gold-mine {
   color: goldenrod;
 }
 
-.rewardStyle.copper-mine {
+.copper-mine {
   color: #b7410e;
 }
 
@@ -73,6 +73,15 @@
 
 .enormousReward {
   font-size: 250%;
+}
+
+.resources-badge {
+  margin: 5px;
+}
+
+.resources-production {
+  color: rgb(7, 207, 7);
+  font-weight: 600;
 }
 
 .message {

@@ -1,4 +1,5 @@
 import React from "react";
+import ResourceIcon from "./common/resourceIcon";
 
 const Resources = props => {
   return (
@@ -7,25 +8,40 @@ const Resources = props => {
       <table className="table">
         <tbody>
           <tr>
-            <th scope="col">Resource</th>
-            <td scope="col">Copper</td>
-            <td scope="col">Silver</td>
-            <td scope="col">Gold</td>
-            <td scope="col">$</td>
-          </tr>
-          <tr>
-            <th scope="row">Amount</th>
-            <td>{props.resources.getResourceAmount("copper")}</td>
-            <td>{props.resources.getResourceAmount("silver")}</td>
-            <td>{props.resources.getResourceAmount("gold")}</td>
-            <td>{props.resources.getResourceAmount("dollar")}</td>
-          </tr>
-          <tr>
-            <th scope="row">Production</th>
-            <td>{props.resources.copperProduction}</td>
-            <td>{props.resources.silverProduction}</td>
-            <td>{props.resources.goldProduction}</td>
-            <td>{props.resources.dollarProduction}</td>
+            <td scope="col">
+              Copper
+              <ResourceIcon iconType="copper" />
+              {props.resources.getResourceAmount("copper")}
+              <span className="resources-production">
+                {" "}
+                + {props.resources.copperProduction}
+              </span>
+            </td>
+            <td scope="col">
+              Silver
+              <ResourceIcon iconType="silver" />
+              {props.resources.getResourceAmount("silver")}
+              <span className="resources-production">
+                {" "}
+                + {props.resources.silverProduction}
+              </span>
+            </td>
+            <td scope="col">
+              Gold
+              <ResourceIcon iconType="gold" />
+              {props.resources.getResourceAmount("gold")}
+              <span className="resources-production">
+                {" "}
+                + {props.resources.goldProduction}
+              </span>
+            </td>
+            <td scope="col">
+              ${props.resources.getResourceAmount("dollar")}
+              <span className="resources-production">
+                {" "}
+                + {props.resources.dollarProduction}
+              </span>
+            </td>
           </tr>
         </tbody>
       </table>
