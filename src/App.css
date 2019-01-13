@@ -63,6 +63,18 @@
   color: #b7410e;
 }
 
+.bigReward {
+  font-size: 150%;
+}
+
+.hugeReward {
+  font-size: 200%;
+}
+
+.enormousReward {
+  font-size: 250%;
+}
+
 .message {
   width: 500px;
   position: absolute;

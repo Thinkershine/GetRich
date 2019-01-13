@@ -3,17 +3,29 @@ import React, { Component } from "react";
 class RewardFound extends Component {
   state = {
     rewardPosition: {
-      top: 500 + Math.random() * 250,
+      top: 600 + Math.random() * 250,
       left: 10 + Math.random() * 75 + "%"
     }
   };
 
   constructor(props) {
     super(props);
-    //  this.addColorClass(this.props.rewardType + "-mine");
+
     this.state.classNames = ["rewardStyle"];
     const classes = this.state.classNames;
     classes.push(this.props.rewardType + "-mine");
+
+    const bigReward = 10;
+    const hugeReward = 20;
+    const enormousReward = 50;
+
+    if (this.props.rewardAmount > enormousReward) {
+      classes.push("enormousReward");
+    } else if (this.props.rewardAmount > hugeReward) {
+      classes.push("hugeReward");
+    } else if (this.props.rewardAmount > bigReward) {
+      classes.push("bigReward");
+    }
 
     const classNamesWithColor = classes.join(" ");
 
