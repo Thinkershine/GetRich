@@ -29,7 +29,6 @@ class Mine extends Component {
   };
 
   handleDigClick = () => {
-    console.log("NO ENERGY AT MINE", this.props.noEnergy);
     if (this.props.noEnergy) {
       this.props.spendEnergy(false);
       return;
@@ -108,6 +107,7 @@ class Mine extends Component {
   render() {
     return (
       <div id={this.state.mineType ? this.state.mineType + "-mine" : "mine"}>
+        <h3> {this.state.mineType.toUpperCase()} MINES </h3>
         <h3>
           You Mined : {this.state.minedAmount}{" "}
           {this.state.mineType.toUpperCase()}

@@ -11,14 +11,7 @@ class Mining extends Component {
     silverMiningRequirements: { miningSkill: 5, miningPower: 5 },
     goldMiningRequirements: { miningSkill: 10, miningPower: 10 },
 
-    message: {
-      title: "You Aren't Skilled Enough!",
-      message: "You don't Have Enough Skills to Mine GOLD!",
-      badge: "danger",
-      buttonMessage: "ok..",
-      buttonOnClick: this.hideMessage
-    },
-    displayMessage: false
+    message: {}
   };
 
   constructor(props) {
@@ -49,12 +42,12 @@ class Mining extends Component {
         ) {
           this.setState({ isGoldMining: true });
         } else {
-          this.displayMessage({
+          this.props.messenger({
             title: "You Aren't Skilled Enough!",
             message: "You don't Have Enough Skills to Mine GOLD!",
             badge: "danger",
             buttonMessage: "ok..",
-            buttonOnClick: this.hideMessage
+            buttonOnClick: this.props.messenger
           });
         }
         break;
@@ -65,12 +58,12 @@ class Mining extends Component {
         ) {
           this.setState({ isSilverMining: true });
         } else {
-          this.displayMessage({
+          this.props.messenger({
             title: "You Aren't Skilled Enough!",
             message: "You don't Have Enough Skills to Mine SILVER!",
             badge: "danger",
             buttonMessage: "ok..",
-            buttonOnClick: this.hideMessage
+            buttonOnClick: this.props.messenger
           });
         }
 
@@ -82,12 +75,12 @@ class Mining extends Component {
         ) {
           this.setState({ isCopperMining: true });
         } else {
-          this.displayMessage({
+          this.props.messenger({
             title: "You Aren't Skilled Enough!",
             message: "You don't Have Enough Skills to Mine COPPER!",
             badge: "danger",
             buttonMessage: "ok..",
-            buttonOnClick: this.hideMessage
+            buttonOnClick: this.props.messenger
           });
         }
         break;
@@ -105,13 +98,6 @@ class Mining extends Component {
         this.setState({ isCopperMining: false });
         break;
     }
-  };
-
-  displayMessage = message => {
-    this.setState({ message, displayMessage: true });
-  };
-  hideMessage = () => {
-    this.setState({ displayMessage: false });
   };
 
   render() {
@@ -132,20 +118,25 @@ class Mining extends Component {
             Go COPPER Mining
           </button>
           <hr />
-          <button onClick={() => this.stopMining("gold")} className="btn">
-            STOP GOLD Mining
-          </button>
           <span>.</span>
-          <button onClick={() => this.stopMining("silver")} className="btn">
-            STOP SILVER Mining
-          </button>
+          {this.state.isGoldMining && (
+            <button onClick={() => this.stopMining("gold")} className="btn">
+              STOP GOLD Mining
+            </button>
+          )}
+          {this.state.isSilverMining && (
+            <button onClick={() => this.stopMining("silver")} className="btn">
+              STOP SILVER Mining
+            </button>
+          )}
+          {this.state.isCopperMining && (
+            <button onClick={() => this.stopMining("copper")} className="btn">
+              STOP COPPER Mining
+            </button>
+          )}
           <span>.</span>
-          <button onClick={() => this.stopMining("copper")} className="btn">
-            STOP COPPER Mining
-          </button>
         </div>
         <div>
-          <h3>Mine</h3>
           {this.state.isSilverMining && (
             <Mine
               miningPower={this.state.miningPower}

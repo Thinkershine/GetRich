@@ -53,7 +53,8 @@ class App extends Component {
       buttonMessage: "Hi!",
       buttonOnClick: this.handleButtonMessage.bind(this)
     },
-    displayMessage: false
+    displayMessage: false,
+    handleMessenger: this.handleButtonMessage.bind(this)
   };
 
   constructor(props) {
@@ -367,6 +368,7 @@ class App extends Component {
                 spendEnergy={this.spendEnergy}
                 noEnergy={this.state.noEnergy}
                 gainExperience={this.handleExperienceGain}
+                messenger={this.state.handleMessenger}
                 {...props}
               />
             )}
