@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route } from "react-router-dom";
+import { Route, Redirect, Switch } from "react-router-dom";
 import "./App.css";
 import { getItems } from "./services/fakeItemService.js";
 import {
@@ -9,15 +9,18 @@ import {
 } from "./services/fakeExperienceService.js";
 import MyWorkers from "./models/workers";
 import MyResources from "./models/myResources.js";
+import Home from "./components/locations/home";
 import Store from "./components/locations/store";
 import Mining from "./components/locations/mining";
 import Market from "./components/locations/market";
+import Bank from "./components/locations/bank";
 import Navigation from "./components/navigation";
 import Resources from "./components/resources";
 import Equipment from "./components/equipment";
 import Workers from "./components/workers";
 import Message from "./components/common/message";
 import ProgressBar from "./components/common/progressBar";
+import NotFound from "./components/common/notFound";
 
 class App extends Component {
   state = {
@@ -321,8 +324,8 @@ class App extends Component {
             <Navigation />
           </header>
           <Resources resources={this.state.resources} />
-
           <div id="stats">
+            <h2>Stats</h2>
             <ProgressBar
               title={"Mining Skill"}
               levelToDisplay={this.state.miningSkill}
@@ -343,57 +346,59 @@ class App extends Component {
               bgColor={"dark"}
             />
           </div>
+          <Switch>
+            <Route
+              path="/store"
+              render={props => (
+                <Store
+                  itemsForSale={this.state.itemsForSale}
+                  handlePurchase={this.handlePurchase}
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/mining"
+              render={props => (
+                <Mining
+                  goMining={this.goMining}
+                  stopMining={this.stopMining}
+                  miningPower={miningPower}
+                  miningSkill={this.state.miningSkill}
+                  resources={this.state.resources}
+                  handleMining={this.handleMining}
+                  spendEnergy={this.spendEnergy}
+                  noEnergy={this.state.noEnergy}
+                  gainExperience={this.handleExperienceGain}
+                  messenger={this.state.handleMessenger}
+                  {...props}
+                />
+              )}
+            />
+            <Route
+              path="/equipment"
+              render={props => (
+                <Equipment
+                  isEquipped={this.state.isEquipped}
+                  currentEquipment={this.state.currentEquipment}
+                  miningEquipment={this.state.miningEquipment}
+                  {...props}
+                />
+              )}
+            />
+            <Route path="/workers" render={props => <Workers {...props} />} />
+            <Route
+              path="/market"
+              render={props => (
+                <Market sellResource={this.handleSellResource} {...props} />
+              )}
+            />
+            <Route path="/bank" component={Bank} />
 
-          <Route
-            path="/store"
-            render={props => (
-              <Store
-                itemsForSale={this.state.itemsForSale}
-                handlePurchase={this.handlePurchase}
-                {...props}
-              />
-            )}
-          />
-
-          <Route
-            path="/mining"
-            render={props => (
-              <Mining
-                goMining={this.goMining}
-                stopMining={this.stopMining}
-                miningPower={miningPower}
-                miningSkill={this.state.miningSkill}
-                resources={this.state.resources}
-                handleMining={this.handleMining}
-                spendEnergy={this.spendEnergy}
-                noEnergy={this.state.noEnergy}
-                gainExperience={this.handleExperienceGain}
-                messenger={this.state.handleMessenger}
-                {...props}
-              />
-            )}
-          />
-
-          <Route
-            path="/equipment"
-            render={props => (
-              <Equipment
-                isEquipped={this.state.isEquipped}
-                currentEquipment={this.state.currentEquipment}
-                miningEquipment={this.state.miningEquipment}
-                {...props}
-              />
-            )}
-          />
-
-          <Route path="/workers" render={props => <Workers {...props} />} />
-
-          <Route
-            path="/market"
-            render={props => (
-              <Market sellResource={this.handleSellResource} {...props} />
-            )}
-          />
+            <Route path="/" exact component={Home} />
+            <Route path="/not-found" component={NotFound} />
+            <Redirect to="/not-found" />
+          </Switch>
         </main>
 
         <div id="tools">
