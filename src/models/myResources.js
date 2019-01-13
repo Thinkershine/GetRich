@@ -149,13 +149,13 @@ export default class MyResources {
   };
 
   constructor(messenger) {
-    this.copperAmount = 1000;
-    this.copperProduction = 1000;
-    this.silverAmount = 1000;
-    this.silverProduction = 1000;
-    this.goldAmount = 1000;
-    this.goldProduction = 1000;
-    this.dollarAmount = 100;
+    this.copperAmount = 0;
+    this.copperProduction = 0;
+    this.silverAmount = 0;
+    this.silverProduction = 0;
+    this.goldAmount = 0;
+    this.goldProduction = 0;
+    this.dollarAmount = 0;
     this.dollarProduction = 0;
     this.messenger = messenger;
   }

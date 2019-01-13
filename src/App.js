@@ -320,31 +320,38 @@ class App extends Component {
       <div className="App">
         <main className="container">
           <header>
-            <h1>Time to Get RICH ! $.$</h1>
+            <h1>Time to Get RICH</h1>
             <Navigation />
           </header>
           <Resources resources={this.state.resources} />
           <div id="stats">
-            <h2>Stats</h2>
-            <ProgressBar
-              title={"Mining Skill"}
-              levelToDisplay={this.state.miningSkill}
-              percentageOfCompletion={this.state.miningSkillCurrentPercentage}
-              currentValue={this.state.miningSkillExperience}
-              maxValue={this.state.nextMiningLevelExperience}
-              badge={"success"}
-              bgColor={"dark"}
-            />
-
-            <ProgressBar
-              title={"Energy"}
-              levelToDisplay={this.state.energyLevel}
-              percentageOfCompletion={this.state.energyPoints}
-              currentValue={this.state.currentEnergyPoints}
-              maxValue={this.state.maximumEnergyPoints}
-              badge={"primary"}
-              bgColor={"dark"}
-            />
+            <h3>Stats</h3>
+            <div className="row">
+              <div className="col">
+                <ProgressBar
+                  title={"Mining Skill"}
+                  levelToDisplay={this.state.miningSkill}
+                  percentageOfCompletion={
+                    this.state.miningSkillCurrentPercentage
+                  }
+                  currentValue={this.state.miningSkillExperience}
+                  maxValue={this.state.nextMiningLevelExperience}
+                  badge={"success"}
+                  bgColor={"dark"}
+                />
+              </div>
+              <div className="col">
+                <ProgressBar
+                  title={"Energy"}
+                  levelToDisplay={this.state.energyLevel}
+                  percentageOfCompletion={this.state.energyPoints}
+                  currentValue={this.state.currentEnergyPoints}
+                  maxValue={this.state.maximumEnergyPoints}
+                  badge={"primary"}
+                  bgColor={"dark"}
+                />
+              </div>
+            </div>
           </div>
           <Switch>
             <Route
