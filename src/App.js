@@ -314,12 +314,11 @@ class App extends Component {
 
     return (
       <div className="App">
-        <header>
-          <h1>Time to Get RICH ! $.$</h1>
-          <Navigation />
-        </header>
-
         <main className="container">
+          <header>
+            <h1>Time to Get RICH ! $.$</h1>
+            <Navigation />
+          </header>
           <Resources resources={this.state.resources} />
 
           <div id="stats">

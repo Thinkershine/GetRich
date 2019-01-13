@@ -76,11 +76,11 @@
 }
 
 .message {
-  width: 500px;
-  position: absolute;
-  clear: both;
-  top: 250px;
-  left: 250px;
+  width: 100%;
+  position: fixed;
+  /* left: 20px; */
+  top: 35px;
+  margin: 0 auto;
   z-index: 1070;
   background-color: rgba(77, 77, 77, 1);
   color: white;

@@ -2,51 +2,52 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Navigation = props => {
+  const classNamesForLinks = "nav-item btn btn-primary";
   return (
-    <div>
-      <ul className="nav">
+    <nav className="card-header">
+      <ul className="nav nav-pills card-header-pills">
         <li className="nav-item">
-          <Link className="nav-link" to="/">
+          <Link className={classNamesForLinks} to="/">
             Home
           </Link>
         </li>
-        <li>
-          <Link className="nav-link" to="/equipment">
+        <li className="nav-item">
+          <Link className={classNamesForLinks} to="/equipment">
             Equipment
           </Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/workers">
+          <Link className={classNamesForLinks} to="/workers">
             Workers
           </Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/achievements">
+          <Link className={classNamesForLinks} to="/achievements">
             Achievements
           </Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/store">
+          <Link className={classNamesForLinks} to="/store">
             Store
           </Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/mining">
+          <Link className={classNamesForLinks} to="/mining">
             Mining
           </Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/market">
+          <Link className={classNamesForLinks} to="/market">
             Market
           </Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/bank">
+          <Link className={classNamesForLinks} to="/bank">
             Bank
           </Link>
         </li>
       </ul>
-    </div>
+    </nav>
   );
 };
 

@@ -47,8 +47,9 @@ class Store extends Component {
               style={{ cursor: "pointer" }}
               onClick={() => this.props.handlePurchase(item)}
             >
-              {item.name.toUpperCase()} : ${item.value}- mine : {item.mineType};
-              energy cost :{item.energyConsumption}; POW : {item.miningPower}
+              {item.name.toUpperCase()} ${item.value} MINE :{" "}
+              <em>{item.mineType}</em>; ENERGY COST:{item.energyConsumption};
+              POW : {item.miningPower}
             </li>
           ))}
         </ul>
