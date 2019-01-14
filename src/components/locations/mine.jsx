@@ -106,22 +106,35 @@ class Mine extends Component {
 
   render() {
     return (
-      <div id={this.state.mineType ? this.state.mineType + "-mine" : "mine"}>
-        <h3> {this.state.mineType.toUpperCase()} MINES </h3>
-        <h3>
-          You Mined : {this.state.minedAmount}{" "}
-          {this.state.mineType.toUpperCase()}
-        </h3>
-        <button onClick={() => this.handleDigClick()}>
-          Dig {this.state.mineType}!
-        </button>
-
+      <React.Fragment>
         <div>
-          {this.state.renderReward
-            ? this.displayRewards(this.state.basicMining)
-            : null}
+          {this.props.isMining == true ? (
+            <div
+              id={this.state.mineType ? this.state.mineType + "-mine" : "mine"}
+            >
+              <h3> {this.state.mineType.toUpperCase()} MINES </h3>
+              <h3>
+                You Mined : {this.state.minedAmount}{" "}
+                {this.state.mineType.toUpperCase()}
+              </h3>
+              <button onClick={() => this.handleDigClick()}>
+                Dig {this.state.mineType}!
+              </button>
+
+              <div>
+                {this.state.renderReward
+                  ? this.displayRewards(this.state.basicMining)
+                  : null}
+              </div>
+            </div>
+          ) : (
+            <h3>
+              You Don't Have Required Skill Level to Mine{" "}
+              {this.props.mineType.toUpperCase()}
+            </h3>
+          )}
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }

@@ -53,7 +53,7 @@ class Message extends Component {
 
   render() {
     return (
-      <div id="message" className="message">
+      <div id="message" className="message container">
         <h5 className={this.getClassNamesFor("title")}>
           {this.props.messageTitle}
         </h5>

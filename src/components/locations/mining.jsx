@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Mine from "./mine";
 import Message from "../common/message";
+import { Switch, Route, Link } from "react-router-dom";
 
 class Mining extends Component {
   state = {
@@ -11,6 +12,7 @@ class Mining extends Component {
     silverMiningRequirements: { miningSkill: 5, miningPower: 5 },
     goldMiningRequirements: { miningSkill: 10, miningPower: 10 },
 
+    isMining: false,
     message: {}
   };
 
@@ -40,7 +42,7 @@ class Mining extends Component {
           miningPower >= goldMiningRequirements.miningPower &&
           miningSkill >= goldMiningRequirements.miningSkill
         ) {
-          this.setState({ isGoldMining: true });
+          this.setState({ isGoldMining: true, isMining: true });
         } else {
           this.props.messenger({
             title: "You Aren't Skilled Enough!",
@@ -56,7 +58,7 @@ class Mining extends Component {
           miningPower >= silverMiningRequirements.miningPower &&
           miningSkill >= silverMiningRequirements.miningSkill
         ) {
-          this.setState({ isSilverMining: true });
+          this.setState({ isSilverMining: true, isMining: true });
         } else {
           this.props.messenger({
             title: "You Aren't Skilled Enough!",
@@ -73,7 +75,7 @@ class Mining extends Component {
           miningPower >= copperMiningRequirements.miningPower &&
           miningSkill >= copperMiningRequirements.miningSkill
         ) {
-          this.setState({ isCopperMining: true });
+          this.setState({ isCopperMining: true, isMining: true });
         } else {
           this.props.messenger({
             title: "You Aren't Skilled Enough!",
@@ -106,75 +108,107 @@ class Mining extends Component {
         <h2>Go Mining</h2>
         <div>
           <h3>Mining Navigation</h3>
-          <button onClick={() => this.goMining("gold")} className="btn">
-            Go GOLD Mining
-          </button>
+          <Link
+            className="btn btn-secondary"
+            to="/mining/gold"
+            onClick={() => {
+              this.goMining("gold");
+            }}
+          >
+            Mine Gold
+          </Link>
           <span>.</span>
-          <button onClick={() => this.goMining("silver")} className="btn">
-            Go SILVER Mining
-          </button>
+          <Link
+            className="btn btn-secondary"
+            to="/mining/silver"
+            onClick={() => {
+              this.goMining("silver");
+            }}
+          >
+            Mine Silver
+          </Link>
           <span>.</span>
-          <button onClick={() => this.goMining("copper")} className="btn">
-            Go COPPER Mining
-          </button>
+          <Link
+            className="btn btn-secondary"
+            to="/mining/copper"
+            onClick={() => {
+              this.goMining("copper");
+            }}
+          >
+            Mine Copper
+          </Link>
           <hr />
           <span>.</span>
-          {this.state.isGoldMining && (
-            <button onClick={() => this.stopMining("gold")} className="btn">
-              STOP GOLD Mining
+
+          {this.state.isMining && (
+            <button
+              onClick={() => {
+                this.setState({ isMining: false });
+                this.props.history.push("/mining");
+              }}
+              className="btn btn-secondary"
+            >
+              STOP Mining
             </button>
           )}
-          {this.state.isSilverMining && (
-            <button onClick={() => this.stopMining("silver")} className="btn">
-              STOP SILVER Mining
-            </button>
-          )}
-          {this.state.isCopperMining && (
-            <button onClick={() => this.stopMining("copper")} className="btn">
-              STOP COPPER Mining
-            </button>
-          )}
+
           <span>.</span>
         </div>
         <div>
-          {this.state.isSilverMining && (
-            <Mine
-              miningPower={this.state.miningPower}
-              mineType="silver"
-              goldMined={this.props.resources.getResourceAmount("silver")}
-              //    onInterval={this.handleWorkers}
-              onClick={this.props.handleMining}
-              spendEnergy={this.props.spendEnergy}
-              noEnergy={this.props.noEnergy}
-              gainExperience={this.props.gainExperience}
+          <Switch>
+            <Route
+              path="/mining/silver"
+              exact
+              render={props => (
+                <Mine
+                  miningPower={this.state.miningPower}
+                  mineType="silver"
+                  goldMined={this.props.resources.getResourceAmount("silver")}
+                  //    onInterval={this.handleWorkers}
+                  onClick={this.props.handleMining}
+                  spendEnergy={this.props.spendEnergy}
+                  noEnergy={this.props.noEnergy}
+                  gainExperience={this.props.gainExperience}
+                  {...props}
+                />
+              )}
             />
-          )}
-
-          {this.state.isGoldMining && (
-            <Mine
-              miningPower={this.state.miningPower}
-              mineType="gold"
-              goldMined={this.props.resources.getResourceAmount("gold")}
-              // onInterval={this.handleWorkers}
-              onClick={this.props.handleMining}
-              spendEnergy={this.props.spendEnergy}
-              noEnergy={this.props.noEnergy}
-              gainExperience={this.props.gainExperience}
+            <Route
+              path="/mining/gold"
+              exact
+              render={props => (
+                <Mine
+                  miningPower={this.state.miningPower}
+                  mineType="gold"
+                  goldMined={this.props.resources.getResourceAmount("gold")}
+                  // onInterval={this.handleWorkers}
+                  onClick={this.props.handleMining}
+                  spendEnergy={this.props.spendEnergy}
+                  noEnergy={this.props.noEnergy}
+                  gainExperience={this.props.gainExperience}
+                  {...props}
+                />
+              )}
             />
-          )}
-
-          {this.state.isCopperMining && (
-            <Mine
-              miningPower={this.state.miningPower}
-              mineType="copper"
-              goldMined={this.props.resources.getResourceAmount("copper")}
-              //   onInterval={this.handleWorkers}
-              onClick={this.props.handleMining}
-              spendEnergy={this.props.spendEnergy}
-              noEnergy={this.props.noEnergy}
-              gainExperience={this.props.gainExperience}
+            <Route
+              path="/mining/copper"
+              exact
+              render={props => (
+                <Mine
+                  isMining={this.state.isCopperMining}
+                  miningPower={this.state.miningPower}
+                  mineType="copper"
+                  goldMined={this.props.resources.getResourceAmount("copper")}
+                  //   onInterval={this.handleWorkers}
+                  onClick={this.props.handleMining}
+                  spendEnergy={this.props.spendEnergy}
+                  noEnergy={this.props.noEnergy}
+                  gainExperience={this.props.gainExperience}
+                  {...props}
+                />
+              )}
             />
-          )}
+          </Switch>
         </div>
 
         <div className="messenger">
