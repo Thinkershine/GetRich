@@ -169,6 +169,7 @@ class Mining extends Component {
                   spendEnergy={this.props.spendEnergy}
                   noEnergy={this.props.noEnergy}
                   gainExperience={this.props.gainExperience}
+                  experience={2}
                   {...props}
                 />
               )}
@@ -186,6 +187,7 @@ class Mining extends Component {
                   spendEnergy={this.props.spendEnergy}
                   noEnergy={this.props.noEnergy}
                   gainExperience={this.props.gainExperience}
+                  experience={3}
                   {...props}
                 />
               )}
@@ -204,6 +206,7 @@ class Mining extends Component {
                   spendEnergy={this.props.spendEnergy}
                   noEnergy={this.props.noEnergy}
                   gainExperience={this.props.gainExperience}
+                  experience={1}
                   {...props}
                 />
               )}

@@ -48,6 +48,7 @@ class App extends Component {
     noEnergy: false,
 
     energyDrain: 1,
+    energyGain: 1,
 
     message: {
       title: "Welcome!",
@@ -151,7 +152,7 @@ class App extends Component {
   componentDidMount() {
     const { workers } = this.state;
 
-    this.energyGainingIntervalID = setInterval(this.gainEnergy, 1000);
+    this.energyGainingIntervalID = setInterval(this.gainEnergy, 5000);
 
     this.setState({
       energyGainingIntervalID: this.energyGainingIntervalID,
@@ -300,7 +301,7 @@ class App extends Component {
     if (currentEnergy + 1 > this.state.maximumEnergyPoints) {
       currentEnergy = this.state.maximumEnergyPoints;
     } else {
-      currentEnergy += 1;
+      currentEnergy += this.state.energyGain;
     }
 
     this.setState({

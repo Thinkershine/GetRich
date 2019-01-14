@@ -11,6 +11,7 @@ class Mine extends Component {
     this.state.minedAmount = 0;
     this.state.basicMining = this.props.miningPower;
     this.state.minerTimerID = 0;
+    this.state.experience = this.props.experience;
 
     this.state.renderReward = false;
   }
@@ -40,7 +41,7 @@ class Mine extends Component {
     });
 
     this.props.onClick(this.state.basicMining, this.props.mineType);
-    this.props.gainExperience(100);
+    this.props.gainExperience(this.state.experience);
     this.props.spendEnergy(true);
   };
 

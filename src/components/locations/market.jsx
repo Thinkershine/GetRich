@@ -6,10 +6,11 @@ class Market extends Component {
   constructor(props) {
     super(props);
 
-    this.state.todayGoldPrice = 10000;
-    this.state.todaySilverPrice = 500;
-    this.state.todayCopperPrice = 200;
+    this.state.todayGoldPrice = 10;
+    this.state.todaySilverPrice = 5;
+    this.state.todayCopperPrice = 2;
   }
+
   render() {
     console.log("SELL RESOURCE PASSED FNC", this.props.sellResource);
     return (
@@ -18,29 +19,34 @@ class Market extends Component {
         <button
           className="btn btn-primary"
           onClick={() =>
-            this.props.sellResource("gold", 500, this.state.todayGoldPrice)}
+            this.props.sellResource("gold", 500, this.state.todayGoldPrice)
+          }
         >
-          Sell 500 GOLD
+          Sell 500 GOLD <i>for</i> ${this.state.todayGoldPrice} / Gold Nugget
         </button>
 
         <button
           className="btn btn-primary"
           onClick={() =>
-            this.props.sellResource("silver", 500, this.state.todaySilverPrice)}
+            this.props.sellResource("silver", 500, this.state.todaySilverPrice)
+          }
         >
-          Sell 500 SILVER
+          Sell 500 SILVER <i>for</i> ${this.state.todaySilverPrice} / Silver
+          Nugget
         </button>
         <button
           className="btn btn-primary"
           onClick={() =>
-            this.props.sellResource("copper", 500, this.state.todayCopperPrice)}
+            this.props.sellResource("copper", 500, this.state.todayCopperPrice)
+          }
         >
-          Sell 500 COPPER
+          Sell 500 COPPER <i>for</i> ${this.state.todayCopperPrice} / Copper
+          Nugget
         </button>
         <hr />
-        <button className="btn btn-secondary">Buy GOLD</button>
+        {/* <button className="btn btn-secondary">Buy GOLD</button>
         <button className="btn btn-secondary">Buy SILVER</button>
-        <button className="btn btn-secondary">Buy COPPER</button>
+        <button className="btn btn-secondary">Buy COPPER</button> */}
       </div>
     );
   }
