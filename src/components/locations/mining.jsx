@@ -86,6 +86,8 @@ class Mining extends Component {
           });
         }
         break;
+      default:
+        break;
     }
   };
   stopMining = miningType => {
@@ -98,6 +100,8 @@ class Mining extends Component {
         break;
       case "copper":
         this.setState({ isCopperMining: false });
+        break;
+      default:
         break;
     }
   };

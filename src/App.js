@@ -61,11 +61,6 @@ class App extends Component {
     handleMessenger: this.handleButtonMessage.bind(this)
   };
 
-  constructor(props) {
-    super(props);
-    //  let energyGaining = setInterval(() => this.gainEnergy(), 1000);
-  }
-
   handleExperienceGain = expAmount => {
     let miningSkillExp = this.state.miningSkillExperience;
     miningSkillExp += expAmount;
@@ -220,23 +215,15 @@ class App extends Component {
     this.state.resources.spendResourceAmount("dollar", item);
     const itemsOwned = this.state.miningEquipment;
     itemsOwned.push(item);
-    const indexOfNewItem = itemsOwned.indexOf(item);
-    //console.log("Index of NEW ITEM", indexOfNewItem);
 
     this.setState({
       miningEquipment: itemsOwned,
       isEquipped: true,
       currentEquipment: item
     });
-    // console.log(
-    //   "EQ POW",
-    //   this.state.miningEquipment[indexOfNewItem].miningPower
-    // );
-    // console.log("Items Owned", itemsOwned);
   };
 
   buyNewWorker = () => {
-    // console.log("NEW WORKER");
     this.state.workers.addGoldWorker("Majka");
   };
 

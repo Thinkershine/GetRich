@@ -8,7 +8,7 @@ class Workers extends Component {
         <h2>Workers Den</h2>
         <p>Do You Need More Workers?</p>
         <button onClick={this.buyNewWorker} className="btn btn-primary">
-          Buy 1 Worker
+          Hire 1 Worker
         </button>{" "}
       </div>
     );

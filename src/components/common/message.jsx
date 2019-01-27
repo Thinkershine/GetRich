@@ -3,10 +3,6 @@ import React, { Component } from "react";
 class Message extends Component {
   state = {};
 
-  constructor(props) {
-    super(props);
-  }
-
   getClassNamesFor = classNamesFor => {
     let classNames = "";
 
@@ -16,6 +12,8 @@ class Message extends Component {
         break;
       case "button":
         classNames += "btn btn";
+        break;
+      default:
         break;
     }
 
@@ -43,6 +41,8 @@ class Message extends Component {
         break;
       case "dark":
         classNames += "-dark";
+        break;
+      default:
         break;
     }
 

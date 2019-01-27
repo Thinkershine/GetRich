@@ -21,7 +21,7 @@ class Store extends Component {
           </thead>
           <tbody>
             {this.props.itemsForSale.map(item => (
-              <tr scope="row" key={item._id}>
+              <tr key={item._id}>
                 <td>{item.name.toUpperCase()} </td>
                 <td>{item.mineType}</td>
                 <td>{item.miningPower}</td>

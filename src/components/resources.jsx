@@ -9,44 +9,44 @@ const Resources = props => {
       <table className="table">
         <tbody>
           <tr>
-            <td scope="col">
+            <th scope="col">
               Copper
               <ResourceIcon iconType="copper" />
               {props.resources.getResourceAmount("copper")}
               <span className="resources-production">
                 {" "}
-                {props.resources.copperProduction != 0 &&
+                {props.resources.copperProduction !== 0 &&
                   "+ " + props.resources.copperProduction}
               </span>
-            </td>
-            <td scope="col">
+            </th>
+            <th scope="col">
               Silver
               <ResourceIcon iconType="silver" />
               {props.resources.getResourceAmount("silver")}
               <span className="resources-production">
                 {" "}
-                {props.resources.silverProduction != 0 &&
+                {props.resources.silverProduction !== 0 &&
                   "+ " + props.resources.silverProduction}
               </span>
-            </td>
-            <td scope="col">
+            </th>
+            <th scope="col">
               Gold
               <ResourceIcon iconType="gold" />
               {props.resources.getResourceAmount("gold")}
               <span className="resources-production">
                 {" "}
-                {props.resources.goldProduction != 0 &&
+                {props.resources.goldProduction !== 0 &&
                   "+ " + props.resources.goldProduction}
               </span>
-            </td>
-            <td scope="col">
+            </th>
+            <th scope="col">
               ${formatCurrency(props.resources.getResourceAmount("dollar"))}
               <span className="resources-production">
                 {" "}
-                {props.resources.dollarProduction != 0 &&
+                {props.resources.dollarProduction !== 0 &&
                   "+ " + props.resources.dollarProduction}
               </span>
-            </td>
+            </th>
           </tr>
         </tbody>
       </table>

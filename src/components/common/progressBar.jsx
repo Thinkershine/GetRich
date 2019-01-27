@@ -3,10 +3,6 @@ import React, { Component } from "react";
 class ProgressBar extends Component {
   state = {};
 
-  constructor(props) {
-    super(props);
-  }
-
   badgeClassNames(badge) {
     let classNames =
       "progress-bar progress-bar-striped progress-bar-animated bg-" + badge;

@@ -57,7 +57,7 @@ class Equipment extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr scope="row">
+                  <tr>
                     <td>{currentEquipment.name.toUpperCase()}</td>
                     <td>{currentEquipment.miningPower}</td>
                     <td>${currentEquipment.value}</td>

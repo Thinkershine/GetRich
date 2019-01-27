@@ -13,6 +13,8 @@ const ResourceIcon = props => {
     case "gold":
       classNames += "gold";
       break;
+    default:
+      break;
   }
 
   classNames += "-mine resources-badge";

@@ -24,6 +24,8 @@ export default class MyResources {
       case "dollar":
         this.dollarAmount += amount;
         break;
+      default:
+        break;
     }
   };
 
@@ -37,6 +39,8 @@ export default class MyResources {
         return this.copperAmount;
       case "dollar":
         return this.dollarAmount;
+      default:
+        break;
     }
   };
 
@@ -53,6 +57,8 @@ export default class MyResources {
         break;
       case "dollar":
         this.dollarAmount -= itemPurchased.value;
+        break;
+      default:
         break;
     }
 
@@ -110,6 +116,8 @@ export default class MyResources {
         // Hmm ? Selling Dollars ?
         // Dollars Should be for Spending Only ...
         this.dollarAmount -= amount;
+        break;
+      default:
         break;
     }
   }

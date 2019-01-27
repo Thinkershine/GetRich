@@ -1,5 +1,3 @@
-import React, { Component } from "react";
-
 class Worker {
   name = "";
   strength = 0;
@@ -9,16 +7,12 @@ class Worker {
     this.strength = strength;
   }
 }
+
 export default class MyWorkers {
   copperWorkers = [];
   silverWorkers = [];
   goldWorkers = [];
   workersAmountChanged = false;
-
-  constructor() {
-    // this.addGoldWorker("Pat");
-    // this.addGoldWorker("Sebastian");
-  }
 
   getCopperWorkers() {
     return this.copperWorkers;

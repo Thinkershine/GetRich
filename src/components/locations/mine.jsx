@@ -11,7 +11,6 @@ class Mine extends Component {
     this.state.minedAmount = 0;
     this.state.basicMining = this.props.miningPower;
     this.state.minerTimerID = 0;
-    this.state.experience = this.props.experience;
 
     this.state.renderReward = false;
   }
@@ -41,7 +40,7 @@ class Mine extends Component {
     });
 
     this.props.onClick(this.state.basicMining, this.props.mineType);
-    this.props.gainExperience(this.state.experience);
+    this.props.gainExperience(this.props.experience);
     this.props.spendEnergy(true);
   };
 
@@ -77,7 +76,7 @@ class Mine extends Component {
       const lastRewardIndex = spreadInto - 1;
 
       for (let i = 0; i < spreadInto; i += 1) {
-        if (i == lastRewardIndex) {
+        if (i === lastRewardIndex) {
           rewards[i] = rewardsToSpread;
         } else {
           calculatedReward =
@@ -109,7 +108,7 @@ class Mine extends Component {
     return (
       <React.Fragment>
         <div>
-          {this.props.isMining == true ? (
+          {this.props.isMining === true ? (
             <div
               id={this.state.mineType ? this.state.mineType + "-mine" : "mine"}
             >
@@ -124,7 +123,7 @@ class Mine extends Component {
 
               <div>
                 {this.state.renderReward
-                  ? this.displayRewards(this.state.basicMining)
+                  ? this.displayRewards(this.props.miningPower)
                   : null}
               </div>
             </div>
