@@ -106,35 +106,37 @@ class Mine extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <div>
-          {this.props.isMining === true ? (
-            <div
-              id={this.state.mineType ? this.state.mineType + "-mine" : "mine"}
-            >
-              <h3> {this.state.mineType.toUpperCase()} MINES </h3>
-              <h3>
-                You Mined : {this.state.minedAmount}{" "}
-                {this.state.mineType.toUpperCase()}
-              </h3>
-              <button onClick={() => this.handleDigClick()}>
-                Dig {this.state.mineType}!
-              </button>
-
-              <div>
-                {this.state.renderReward
-                  ? this.displayRewards(this.props.miningPower)
-                  : null}
-              </div>
-            </div>
-          ) : (
+      <div className="container" style={{ height: 450 }}>
+        {this.props.isMining === true ? (
+          <div
+            id={this.state.mineType ? this.state.mineType + "-mine" : "mine"}
+          >
+            <h3> {this.state.mineType.toUpperCase()} MINES </h3>
             <h3>
-              You Don't Have Required Skill Level to Mine{" "}
-              {this.props.mineType.toUpperCase()}
+              You Mined : {this.state.minedAmount}{" "}
+              {this.state.mineType.toUpperCase()}
             </h3>
-          )}
-        </div>
-      </React.Fragment>
+            <button
+              className="btn btn-warning btn-lg"
+              style={{ color: "white" }}
+              onClick={() => this.handleDigClick()}
+            >
+              DIG
+            </button>
+
+            <div>
+              {this.state.renderReward
+                ? this.displayRewards(this.props.miningPower)
+                : null}
+            </div>
+          </div>
+        ) : (
+          <h3>
+            You Don't Have Required Skill Level to Mine{" "}
+            {this.props.mineType.toUpperCase()}
+          </h3>
+        )}
+      </div>
     );
   }
 }
