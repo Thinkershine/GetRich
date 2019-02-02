@@ -39,20 +39,6 @@ class Store extends Component {
             ))}
           </tbody>
         </table>
-        <ul className="list-group">
-          {this.props.itemsForSale.map(item => (
-            <li
-              key={item._id}
-              className="list-group-item"
-              style={{ cursor: "pointer" }}
-              onClick={() => this.props.handlePurchase(item)}
-            >
-              {item.name.toUpperCase()} ${item.value} MINE :{" "}
-              <em>{item.mineType}</em>; ENERGY COST:{item.energyConsumption};
-              POW : {item.miningPower}
-            </li>
-          ))}
-        </ul>
       </div>
     );
   }
