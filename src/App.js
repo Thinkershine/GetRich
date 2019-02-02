@@ -9,6 +9,7 @@ import {
 } from "./services/fakeExperienceService.js";
 import MyWorkers from "./models/workers";
 import MyResources from "./models/myResources.js";
+import Stats from "./components/stats";
 import Home from "./components/locations/home";
 import Store from "./components/locations/store";
 import Mining from "./components/locations/mining";
@@ -19,7 +20,7 @@ import Resources from "./components/resources";
 import Equipment from "./components/equipment";
 import Workers from "./components/workers";
 import Message from "./components/common/message";
-import ProgressBar from "./components/common/progressBar";
+
 import NotFound from "./components/common/notFound";
 
 class App extends Component {
@@ -306,6 +307,20 @@ class App extends Component {
       ? 1 + currentEquipment.miningPower + this.state.miningSkill
       : 1 + this.state.miningSkill;
 
+    const stats = {
+      miningPower: miningPower,
+      miningPowerLevel: this.state.miningPowerLevel,
+      maximumMiningPowerLevel: 100,
+      miningSkill: this.state.miningSkill,
+      miningSkillCurrentPercentage: this.state.miningSkillCurrentPercentage,
+      miningSkillExperience: this.state.miningSkillExperience,
+      nextMiningLevelExperience: this.state.nextMiningLevelExperience,
+      energyLevel: this.state.energyLevel,
+      energyPoints: this.state.energyPoints,
+      currentEnergyPoints: this.state.currentEnergyPoints,
+      maximumEnergyPoints: this.state.maximumEnergyPoints
+    };
+
     return (
       <div className="App">
         <main className="container">
@@ -314,46 +329,7 @@ class App extends Component {
             <Navigation />
           </header>
           <Resources resources={this.state.resources} />
-          <div id="stats">
-            <h3>Stats</h3>
-            <div className="row">
-              <div className="col">
-                <ProgressBar
-                  title="Mining Power"
-                  levelToDisplay={miningPower}
-                  percentageOfCompletion={this.state.miningPowerLevel}
-                  currentValue={miningPower}
-                  maxValue={100}
-                  badge={"warning"}
-                  bgColor={"dark"}
-                />
-              </div>
-              <div className="col">
-                <ProgressBar
-                  title={"Mining Skill"}
-                  levelToDisplay={this.state.miningSkill}
-                  percentageOfCompletion={
-                    this.state.miningSkillCurrentPercentage
-                  }
-                  currentValue={this.state.miningSkillExperience}
-                  maxValue={this.state.nextMiningLevelExperience}
-                  badge={"success"}
-                  bgColor={"dark"}
-                />
-              </div>
-              <div className="col">
-                <ProgressBar
-                  title={"Energy"}
-                  levelToDisplay={this.state.energyLevel}
-                  percentageOfCompletion={this.state.energyPoints}
-                  currentValue={this.state.currentEnergyPoints}
-                  maxValue={this.state.maximumEnergyPoints}
-                  badge={"primary"}
-                  bgColor={"dark"}
-                />
-              </div>
-            </div>
-          </div>
+          <Stats {...stats} />
           <Switch>
             <Route
               path="/store"
