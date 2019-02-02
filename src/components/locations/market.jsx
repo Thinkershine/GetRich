@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ResourcesForm from "../resourcesForm";
 
 class Market extends Component {
   state = {};
@@ -13,7 +14,12 @@ class Market extends Component {
     this.state = {
       sellGoldAmount: 0,
       sellCopperAmount: 0,
-      sellSilverAmount: 0
+      sellSilverAmount: 0,
+      todayPrices: {
+        goldPrice: 10,
+        silverPrice: 5,
+        copperPrice: 2
+      }
     };
 
     this.handleGoldChange = this.handleGoldChange.bind(this);
@@ -34,86 +40,44 @@ class Market extends Component {
     event.preventDefault();
   }
 
-  sellMore(ofResource, event) {
-    switch (ofResource) {
+  sellResource = (resource, amount) => {
+    console.log("SELL RESOURCE", resource);
+    console.log("Amount", amount);
+    switch (resource) {
       case "gold":
-        let sellGoldAmount = this.state.sellGoldAmount;
-        sellGoldAmount += 1;
-        this.setState({ sellGoldAmount: sellGoldAmount });
+        this.props.sellResource(
+          "gold",
+          amount,
+          this.state.todayPrices.goldPrice
+        );
         break;
-      default:
+      case "silver":
+        this.props.sellResource(
+          "silver",
+          amount,
+          this.state.todayPrices.silverPrice
+        );
+        break;
+      case "copper":
+        this.props.sellResource(
+          "copper",
+          amount,
+          this.state.todayPrices.copperPrice
+        );
         break;
     }
-    event.preventDefault();
-  }
-
-  sellLess(ofResource, event) {
-    switch (ofResource) {
-      case "gold":
-        let sellGoldAmount = this.state.sellGoldAmount;
-        sellGoldAmount -= 1;
-        this.setState({ sellGoldAmount: sellGoldAmount });
-        break;
-      default:
-        break;
-    }
-    event.preventDefault();
-  }
+  };
 
   render() {
-    console.log("SELL RESOURCE PASSED FNC", this.props.sellResource);
+    // console.log("SELL RESOURCE PASSED FNC", this.props.sellResource);
     return (
       <div id="market">
-        <h3>Here You Can Buy and Sell Goods and Offer Jobs to Workers.</h3>
-        <button
-          className="btn btn-primary"
-          onClick={() =>
-            this.props.sellResource("gold", 500, this.state.todayGoldPrice)
-          }
-        >
-          Sell 500 GOLD <i>for</i> ${this.state.todayGoldPrice} / Gold Nugget
-        </button>
+        <h3>Here You Can Buy and Sell Goods.</h3>
 
-        <button
-          className="btn btn-primary"
-          onClick={() =>
-            this.props.sellResource("silver", 500, this.state.todaySilverPrice)
-          }
-        >
-          Sell 500 SILVER <i>for</i> ${this.state.todaySilverPrice} / Silver
-          Nugget
-        </button>
-        <button
-          className="btn btn-primary"
-          onClick={() =>
-            this.props.sellResource("copper", 500, this.state.todayCopperPrice)
-          }
-        >
-          Sell 500 COPPER <i>for</i> ${this.state.todayCopperPrice} / Copper
-          Nugget
-        </button>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Gold
-            <input type="text" value={this.state.sellGoldAmount} disabled />
-          </label>
-
-          <button
-            className="btn btn-primary"
-            onClick={() => this.sellLess("gold")}
-          >
-            -
-          </button>
-          <button
-            className="btn btn-primary"
-            onClick={() => this.sellMore("gold")}
-          >
-            +
-          </button>
-          <button className="btn btn-primary" type="submit" value="Sell">
-            SELL
-          </button>
-        </form>
+        <ResourcesForm
+          sellResource={this.sellResource}
+          todayPrices={this.state.todayPrices}
+        />
         <hr />
       </div>
     );
