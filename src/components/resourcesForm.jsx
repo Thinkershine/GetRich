@@ -59,13 +59,13 @@ class ResourcesForm extends Form {
 
     switch (resource) {
       case "gold":
-        data.goldAmount = data.goldAmount + amount;
+        data.goldAmount = parseInt(data.goldAmount) + amount;
         break;
       case "silver":
-        data.silverAmount = data.silverAmount + amount;
+        data.silverAmount = parseInt(data.silverAmount) + amount;
         break;
       case "copper":
-        data.copperAmount = data.copperAmount + amount;
+        data.copperAmount = parseInt(data.copperAmount) + amount;
         break;
       default:
         break;
