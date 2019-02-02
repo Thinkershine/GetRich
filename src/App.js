@@ -34,6 +34,7 @@ class App extends Component {
     experienceForLevels: getLevels(),
     miningSkill: 0,
     miningSkillExperience: 0,
+    miningPowerLevel: 1,
 
     lvlExperienceDifference: 15,
     miningSkillCurrentPercentage: 0,
@@ -103,6 +104,7 @@ class App extends Component {
       this.setState(
         {
           miningSkill: this.state.miningSkill + 1,
+          miningPowerLevel: this.state.miningPowerLevel + 1,
           currentMiningSkillExperience: 0
         },
         this.calculateNextLevelExperience
@@ -315,6 +317,17 @@ class App extends Component {
           <div id="stats">
             <h3>Stats</h3>
             <div className="row">
+              <div className="col">
+                <ProgressBar
+                  title="Mining Power"
+                  levelToDisplay={miningPower}
+                  percentageOfCompletion={this.state.miningPowerLevel}
+                  currentValue={miningPower}
+                  maxValue={100}
+                  badge={"warning"}
+                  bgColor={"dark"}
+                />
+              </div>
               <div className="col">
                 <ProgressBar
                   title={"Mining Skill"}

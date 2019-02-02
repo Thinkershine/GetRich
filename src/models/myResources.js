@@ -10,6 +10,18 @@ export default class MyResources {
   dollarAmount;
   dollarProduction;
 
+  constructor(messenger) {
+    this.copperAmount = 0;
+    this.copperProduction = 0;
+    this.silverAmount = 0;
+    this.silverProduction = 0;
+    this.goldAmount = 0;
+    this.goldProduction = 0;
+    this.dollarAmount = 100;
+    this.dollarProduction = 0;
+    this.messenger = messenger;
+  }
+
   addResource = (amount, mineType) => {
     switch (mineType) {
       case "gold":
@@ -155,16 +167,4 @@ export default class MyResources {
       buttonOnClick: this.messenger
     };
   };
-
-  constructor(messenger) {
-    this.copperAmount = 0;
-    this.copperProduction = 0;
-    this.silverAmount = 0;
-    this.silverProduction = 0;
-    this.goldAmount = 0;
-    this.goldProduction = 0;
-    this.dollarAmount = 0;
-    this.dollarProduction = 0;
-    this.messenger = messenger;
-  }
 }
