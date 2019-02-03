@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
+import ResourceIcon from "./common/resourceIcon";
 
 class ResourcesForm extends Form {
   state = {
     data: { goldAmount: 0, silverAmount: 0, copperAmount: 0 },
     errors: "",
-    yourGoldAmount: 1000,
-    yourSilverAmount: 1000,
-    yourCopperAmount: 1000
+    yourGoldAmount: this.props.availableResources.currentGoldAmount,
+    yourSilverAmount: this.props.availableResources.currentSilverAmount,
+    yourCopperAmount: this.props.availableResources.currentCopperAmount
   };
 
   schema = {
@@ -16,17 +17,17 @@ class ResourcesForm extends Form {
       .integer()
       .min(0)
       .max(this.state.yourGoldAmount)
-      .label("Sell min : 1 max : " + this.state.yourGoldAmount),
+      .label("You Only Have : " + this.state.yourGoldAmount + " Gold"),
     silverAmount: Joi.number()
       .integer()
       .min(0)
       .max(this.state.yourSilverAmount)
-      .label("Sell min : 1 max : " + this.state.yourSilverAmount),
+      .label("You Only Have : " + this.state.yourSilverAmount + " Silver"),
     copperAmount: Joi.number()
       .integer()
       .min(0)
       .max(this.state.yourCopperAmount)
-      .label("Sell min : 1 max : " + this.state.yourCopperAmount)
+      .label("You Only Have : " + this.state.yourCopperAmount + " Copper")
   };
 
   doSubmit = () => {
@@ -53,19 +54,32 @@ class ResourcesForm extends Form {
   };
 
   addResource(resource, amount) {
-    console.log("RES", resource);
-    console.log("Amo", amount);
     const { data } = this.state;
 
     switch (resource) {
       case "gold":
-        data.goldAmount = parseInt(data.goldAmount) + amount;
+        let newGoldAmount = parseInt(data.goldAmount) + amount;
+        if (newGoldAmount > this.state.yourGoldAmount) {
+          newGoldAmount = this.state.yourGoldAmount;
+        }
+
+        data.goldAmount = newGoldAmount;
         break;
       case "silver":
-        data.silverAmount = parseInt(data.silverAmount) + amount;
+        let newSilverAmount = parseInt(data.silverAmount) + amount;
+        if (newSilverAmount > this.state.yourSilverAmount) {
+          newSilverAmount = this.state.yourSilverAmount;
+        }
+
+        data.silverAmount = newSilverAmount;
         break;
       case "copper":
-        data.copperAmount = parseInt(data.copperAmount) + amount;
+        let newCopperAmount = parseInt(data.copperAmount) + amount;
+        if (newCopperAmount > this.state.yourCopperAmount) {
+          newCopperAmount = this.state.yourCopperAmount;
+        }
+
+        data.copperAmount = newCopperAmount;
         break;
       default:
         break;
@@ -74,8 +88,54 @@ class ResourcesForm extends Form {
     this.setState({ data });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.availableResources.currentGoldAmount !==
+        this.props.availableResources.currentGoldAmount ||
+      nextProps.availableResources.currentSilverAmount !==
+        this.props.availableResources.currentSilverAmount ||
+      nextProps.availableResources.currentCopperAmount !==
+        this.props.availableResources.currentCopperAmount
+    ) {
+      this.setState({
+        yourGoldAmount: nextProps.availableResources.currentGoldAmount,
+        yourSilverAmount: nextProps.availableResources.currentSilverAmount,
+        yourCopperAmount: nextProps.availableResources.currentCopperAmount
+      });
+
+      this.schema = {
+        goldAmount: Joi.number()
+          .integer()
+          .min(0)
+          .max(nextProps.availableResources.currentGoldAmount)
+          .label(
+            "You Only Have : " +
+              nextProps.availableResources.currentGoldAmount +
+              " Gold"
+          ),
+        silverAmount: Joi.number()
+          .integer()
+          .min(0)
+          .max(nextProps.availableResources.currentSilverAmount)
+          .label(
+            "You Only Have : " +
+              nextProps.availableResources.currentSilverAmount +
+              " Silver"
+          ),
+        copperAmount: Joi.number()
+          .integer()
+          .min(0)
+          .max(nextProps.availableResources.currentCopperAmount)
+          .label(
+            "You Only Have : " +
+              nextProps.availableResources.currentCopperAmount +
+              " Copper"
+          )
+      };
+    }
+  }
+
   render() {
-    console.log("PROPS", this.props);
     return (
       <div id="resources-form" className="container">
         <form onSubmit={this.handleSubmit}>
@@ -90,7 +150,9 @@ class ResourcesForm extends Form {
             <tbody>
               <tr>
                 <th>${this.props.todayPrices.goldPrice}</th>
-                <td>Gold</td>
+                <td>
+                  <b>Gold</b> <ResourceIcon iconType="gold" />
+                </td>
                 <td>{this.renderInput("goldAmount", "", "number")}</td>
                 <td>
                   <i
@@ -103,7 +165,9 @@ class ResourcesForm extends Form {
               </tr>
               <tr>
                 <th scope="row">${this.props.todayPrices.silverPrice}</th>
-                <td>Silver</td>
+                <td>
+                  <b>Silver</b> <ResourceIcon iconType="silver" />
+                </td>
                 <td>{this.renderInput("silverAmount", "", "number")}</td>
                 <td>
                   <i
@@ -116,8 +180,12 @@ class ResourcesForm extends Form {
               </tr>
               <tr>
                 <th scope="row">${this.props.todayPrices.copperPrice}</th>
-                <td>Copper</td>
-                <td>{this.renderInput("copperAmount", "", "number")}</td>
+                <td>
+                  <b>Copper</b> <ResourceIcon iconType="copper" />
+                </td>
+                <td style={{ width: 150 }}>
+                  {this.renderInput("copperAmount", "", "number")}
+                </td>
                 <td>
                   <i
                     className="btn btn-primary"

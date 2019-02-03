@@ -51,6 +51,7 @@ class App extends Component {
 
     energyDrain: 1,
     energyGain: 1,
+    energyGainTimer: 1000,
 
     message: {
       title: "Welcome!",
@@ -150,7 +151,10 @@ class App extends Component {
   componentDidMount() {
     const { workers } = this.state;
 
-    this.energyGainingIntervalID = setInterval(this.gainEnergy, 5000);
+    this.energyGainingIntervalID = setInterval(
+      this.gainEnergy,
+      this.state.energyGainTimer
+    );
 
     this.setState({
       energyGainingIntervalID: this.energyGainingIntervalID,
@@ -321,6 +325,12 @@ class App extends Component {
       maximumEnergyPoints: this.state.maximumEnergyPoints
     };
 
+    const currentResources = {
+      currentGoldAmount: this.state.resources.getResourceAmount("gold"),
+      currentSilverAmount: this.state.resources.getResourceAmount("silver"),
+      currentCopperAmount: this.state.resources.getResourceAmount("copper")
+    };
+
     return (
       <div className="App">
         <main className="container">
@@ -374,7 +384,11 @@ class App extends Component {
             <Route
               path="/market"
               render={props => (
-                <Market sellResource={this.handleSellResource} {...props} />
+                <Market
+                  sellResource={this.handleSellResource}
+                  availableResources={currentResources}
+                  {...props}
+                />
               )}
             />
             <Route path="/bank" component={Bank} />

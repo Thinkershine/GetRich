@@ -77,6 +77,7 @@ class Market extends Component {
         <ResourcesForm
           sellResource={this.sellResource}
           todayPrices={this.state.todayPrices}
+          availableResources={this.props.availableResources}
         />
         <hr />
       </div>
