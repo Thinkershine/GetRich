@@ -42,7 +42,12 @@ class Mining extends Component {
           miningPower >= goldMiningRequirements.miningPower &&
           miningSkill >= goldMiningRequirements.miningSkill
         ) {
-          this.setState({ isGoldMining: true, isMining: true });
+          this.setState({
+            isGoldMining: true,
+            isSilverMining: false,
+            isCopperMining: false,
+            isMining: true
+          });
         } else {
           this.props.messenger({
             title: "You Aren't Skilled Enough!",
@@ -58,7 +63,12 @@ class Mining extends Component {
           miningPower >= silverMiningRequirements.miningPower &&
           miningSkill >= silverMiningRequirements.miningSkill
         ) {
-          this.setState({ isSilverMining: true, isMining: true });
+          this.setState({
+            isSilverMining: true,
+            isGoldMining: false,
+            isCopperMining: false,
+            isMining: true
+          });
         } else {
           this.props.messenger({
             title: "You Aren't Skilled Enough!",
@@ -75,7 +85,12 @@ class Mining extends Component {
           miningPower >= copperMiningRequirements.miningPower &&
           miningSkill >= copperMiningRequirements.miningSkill
         ) {
-          this.setState({ isCopperMining: true, isMining: true });
+          this.setState({
+            isCopperMining: true,
+            isSilverMining: false,
+            isGoldMining: false,
+            isMining: true
+          });
         } else {
           this.props.messenger({
             title: "You Aren't Skilled Enough!",
@@ -117,6 +132,7 @@ class Mining extends Component {
             to="/mining/gold"
             onClick={() => {
               this.goMining("gold");
+              this.props.history.push("/mining/gold");
             }}
           >
             Mine Gold
@@ -127,6 +143,7 @@ class Mining extends Component {
             to="/mining/silver"
             onClick={() => {
               this.goMining("silver");
+              this.props.history.push("/mining/silver");
             }}
           >
             Mine Silver
@@ -137,6 +154,7 @@ class Mining extends Component {
             to="/mining/copper"
             onClick={() => {
               this.goMining("copper");
+              this.props.history.push("/mining/copper");
             }}
           >
             Mine Copper
@@ -165,6 +183,8 @@ class Mining extends Component {
               exact
               render={props => (
                 <Mine
+                  location={props.location}
+                  isMining={this.state.isSilverMining}
                   miningPower={this.state.miningPower}
                   mineType="silver"
                   goldMined={this.props.resources.getResourceAmount("silver")}
@@ -183,6 +203,8 @@ class Mining extends Component {
               exact
               render={props => (
                 <Mine
+                  location={props.location}
+                  isMining={this.state.isGoldMining}
                   miningPower={this.state.miningPower}
                   mineType="gold"
                   goldMined={this.props.resources.getResourceAmount("gold")}
@@ -201,6 +223,7 @@ class Mining extends Component {
               exact
               render={props => (
                 <Mine
+                  location={props.location}
                   isMining={this.state.isCopperMining}
                   miningPower={this.state.miningPower}
                   mineType="copper"
