@@ -232,14 +232,40 @@ class App extends Component {
 
   hireNewWorker = worker => {
     console.log("NEW WORKER HIRED", worker);
+    if (!this.canAffordWorker(worker)) return;
+
     // todo
-    // validate you can afford
     // if you run out of money the worker will be fired
     // if you already hired this worker you can't hire him again
     // if you hire more than MAX_WORKERS then you can't hire new worker
     // WHAT ABOUT TELLING WORKERS "YOU ARE FIRED!"
     this.state.workers.hireWorker(worker);
   };
+
+  canAffordWorker(worker) {
+    if (this.state.resources.getResourceAmount("dollar") < worker.hourlyCost) {
+      this.displayMessage({
+        title: "You are POOR!",
+        message: "You can't even hire " + worker.name + "!",
+        badge: "danger",
+        buttonMessage: "ok..",
+        buttonOnClick: this.handleButtonMessage.bind(this),
+        isHidden: true
+      });
+
+      return false;
+    } else {
+      this.displayMessage({
+        title: "GREAT! ",
+        message: "You hired " + worker.name + "!",
+        badge: "success",
+        buttonMessage: "YES!",
+        buttonOnClick: this.handleButtonMessage.bind(this),
+        isHidden: true
+      });
+      return true;
+    }
+  }
 
   spendEnergy = energySpent => {
     const {
