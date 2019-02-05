@@ -112,3 +112,29 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   padding: 5px 0;
 }
+
+/**** Worker ****/
+
+.worker {
+  width: 300px;
+}
+
+.worker-data {
+  background-color: rgba(155, 155, 155, 0.2);
+  border-radius: 5px;
+  margin: 10px;
+  padding: 5px;
+  width: 272px;
+  box-sizing: border-box;
+  display: inline-block;
+}
+
+.worker-stat {
+  width: 175px;
+  float: left;
+  text-align: left;
+}
+
+.worker-stat-value {
+  float: left;
+}

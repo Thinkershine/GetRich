@@ -1,14 +1,21 @@
 class Worker {
   name = "";
-  strength = 0;
+  miningSkill = 0;
+  miningPower = 1;
+  energyLevel = 1;
+  energyPoints = 100;
+  energyConsumption = 1;
+  energyRegeneration = 1;
+  hourlyCost = 5;
+  currentEquipment = null;
 
-  constructor(name, strength = 5) {
+  constructor(name) {
     this.name = name;
-    this.strength = strength;
   }
 }
 
 export default class MyWorkers {
+  workers = [];
   copperWorkers = [];
   silverWorkers = [];
   goldWorkers = [];
@@ -37,5 +44,13 @@ export default class MyWorkers {
     this.goldWorkers.forEach(worker => (totalStrength += worker.strength));
 
     return totalStrength;
+  };
+
+  hireWorker = worker => {
+    this.workers.push(worker);
+  };
+
+  getPlayerWorkers = () => {
+    return this.workers;
   };
 }

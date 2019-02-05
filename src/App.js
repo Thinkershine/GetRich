@@ -230,8 +230,15 @@ class App extends Component {
     });
   };
 
-  buyNewWorker = () => {
-    this.state.workers.addGoldWorker("Majka");
+  hireNewWorker = worker => {
+    console.log("NEW WORKER HIRED", worker);
+    // todo
+    // validate you can afford
+    // if you run out of money the worker will be fired
+    // if you already hired this worker you can't hire him again
+    // if you hire more than MAX_WORKERS then you can't hire new worker
+    // WHAT ABOUT TELLING WORKERS "YOU ARE FIRED!"
+    this.state.workers.hireWorker(worker);
   };
 
   spendEnergy = energySpent => {
@@ -380,7 +387,16 @@ class App extends Component {
                 />
               )}
             />
-            <Route path="/workers" render={props => <Workers {...props} />} />
+            <Route
+              path="/workers"
+              render={props => (
+                <Workers
+                  playerWorkers={this.state.workers.getPlayerWorkers()}
+                  hireWorker={this.hireNewWorker}
+                  {...props}
+                />
+              )}
+            />
             <Route
               path="/market"
               render={props => (
