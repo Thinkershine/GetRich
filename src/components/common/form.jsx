@@ -70,6 +70,16 @@ class Form extends Component {
       />
     );
   }
+
+  renderInputWithOwnErrorMessage(name, label, type = "text") {
+    const { data, errors } = this.state;
+    // edit error here .. And Rest as Always ...
+    // console.log("ERROR", error);
+    // let errorConcat = "";
+    // if (error) {
+    //   errorConcat = error.substring(0, 19);
+    // }
+  }
 }
 
 export default Form;
