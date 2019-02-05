@@ -5,7 +5,9 @@ class Workers extends Component {
   state = {};
 
   renderWorkers(forHire) {
+    const orderButtonStyle = { float: "left", clear: "both", margin: 5 };
     const workers = forHire ? getWorkers() : this.props.playerWorkers;
+
     const toRender = workers.map(worker => (
       <div key={worker._id} className="worker-data col-sm">
         <h4>{worker.name}</h4>
@@ -36,14 +38,38 @@ class Workers extends Component {
         </span>
         <br />
 
-        {forHire && (
+        {forHire == true ? (
           <button
             onClick={() => this.props.hireWorker(worker)}
             className="btn btn-success"
-            style={{ float: "left", clear: "both" }}
+            style={orderButtonStyle}
           >
             $ Hire {worker.name} $
           </button>
+        ) : (
+          <div>
+            <button
+              onClick={() => this.props.work(worker, "gold")}
+              className="btn btn-success col"
+              style={orderButtonStyle}
+            >
+              Mine Gold
+            </button>
+            <button
+              onClick={() => this.props.work(worker, "silver")}
+              className="btn btn-success col"
+              style={orderButtonStyle}
+            >
+              Mine Silver
+            </button>
+            <button
+              onClick={() => this.props.work(worker, "copper")}
+              className="btn btn-success col"
+              style={orderButtonStyle}
+            >
+              Mine Copper
+            </button>
+          </div>
         )}
       </div>
     ));

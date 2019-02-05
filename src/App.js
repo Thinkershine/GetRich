@@ -182,18 +182,6 @@ class App extends Component {
     }
   }
 
-  handleWorkers = () => {
-    // suboptimal to check everysecond how many workers are there ??
-    // isn't this better to hold the value somewhere and update it ?
-    // when necessary? Event Handling//
-    // >> You've Got New Worker!
-
-    this.setState({
-      goldAmount:
-        this.state.resource.goldAmount + this.state.resource.goldProduction
-    });
-  };
-
   handleMining = (dugAmount, mineType) => {
     this.state.resources.addResource(dugAmount, mineType);
   };
@@ -230,11 +218,31 @@ class App extends Component {
     });
   };
 
+  makeWorkerWork = (worker, mineType) => {
+    console.log("WORKER IS WORKING NOW", worker, mineType);
+    // todo Check if Miner is Able to Mine This ...
+    // block buttons if he's not able to mine ??
+    this.state.workers.makeWorkerWork(worker, mineType);
+  };
+
+  handleWorkers = () => {
+    // suboptimal to check everysecond how many workers are there ??
+    // isn't this better to hold the value somewhere and update it ?
+    // when necessary? Event Handling//
+    // >> You've Got New Worker!
+
+    this.setState({
+      goldAmount:
+        this.state.resource.goldAmount + this.state.resource.goldProduction
+    });
+  };
+
   hireNewWorker = worker => {
     console.log("NEW WORKER HIRED", worker);
     if (!this.canAffordWorker(worker)) return;
 
     // todo
+    // Make your worker work for you...
     // if you run out of money the worker will be fired
     // if you already hired this worker you can't hire him again
     // if you hire more than MAX_WORKERS then you can't hire new worker
@@ -419,6 +427,7 @@ class App extends Component {
                 <Workers
                   playerWorkers={this.state.workers.getPlayerWorkers()}
                   hireWorker={this.hireNewWorker}
+                  work={this.makeWorkerWork}
                   {...props}
                 />
               )}
