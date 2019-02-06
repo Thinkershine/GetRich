@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { getWorkers } from "../services/fakeWorkerService";
+import ProgressBar from "./common/progressBar";
 
 class Workers extends Component {
   state = {};
@@ -11,8 +12,23 @@ class Workers extends Component {
     const toRender = workers.map(worker => (
       <div key={worker._id} className="worker-data col-sm">
         <h4>{worker.name}</h4>
-        <span className="worker-stat">Mining Skill :</span>
-        <span className="worker-stat-value">{worker.miningSkill}</span>
+
+        {forHire == true ? (
+          <React.Fragment>
+            <span className="worker-stat">Mining Skill :</span>
+            <span className="worker-stat-value">{worker.miningSkill}</span>
+          </React.Fragment>
+        ) : (
+          <ProgressBar
+            title="Mining Skill"
+            levelToDisplay={worker.miningSkill}
+            percentageOfCompletion={25}
+            currentValue={25}
+            maxValue={100}
+            badge={"warning"}
+            bgColor={"dark"}
+          />
+        )}
         <br />
         <span className="worker-stat">Mining Power :</span>
         <span className="worker-stat-value">{worker.miningPower}</span>

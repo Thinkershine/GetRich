@@ -261,8 +261,8 @@ class App extends Component {
   };
 
   workersDoWork = () => {
-    console.log("WORK");
     // todo update resources
+    // OPTIMIZATION
     // if you have no particual workers at the mine -> Don't Update the Value
     this.state.resources.addResource(
       this.state.resources.goldProduction,
@@ -276,7 +276,14 @@ class App extends Component {
       this.state.resources.copperProduction,
       "copper"
     );
+
+    this.state.workers.giveExperienceToWorkingWorkers();
     // todo update workers
+    // forall working workers
+    // give them exp
+    // check if they leveled up
+    // update their state, progress bars, earnings, etc...
+
     // fire or hire workers if no resources
   };
 
