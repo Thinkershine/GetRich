@@ -21,6 +21,9 @@ class Mining extends Component {
 
     this.state.miningPower = this.props.miningPower;
     this.state.miningSkill = this.props.miningSkill;
+    this.state.copperMiningRequirements = this.props.miningRequirements.copperMining;
+    this.state.silverMiningRequirements = this.props.miningRequirements.silverMining;
+    this.state.goldMiningRequirements = this.props.miningRequirements.goldMining;
   }
 
   componentWillReceiveProps(nextProps) {

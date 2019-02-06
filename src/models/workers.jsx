@@ -8,6 +8,7 @@ class Worker {
   energyRegeneration = 1;
   hourlyCost = 5;
   currentEquipment = null;
+  isWorking = false;
 
   constructor(name) {
     this.name = name;
@@ -20,6 +21,15 @@ export default class MyWorkers {
   silverWorkers = [];
   goldWorkers = [];
   workersAmountChanged = false;
+  miningRequirements = {};
+
+  constructor(messenger) {
+    this.messenger = messenger;
+  }
+
+  injectMiningRequirements(miningRequirements) {
+    this.miningRequirements = miningRequirements;
+  }
 
   getCopperWorkers() {
     return this.copperWorkers;
@@ -58,21 +68,65 @@ export default class MyWorkers {
   };
 
   makeWorkerWork = (worker, mineType) => {
-    this.workersAmountChanged = true;
+    if (worker.isWorking) {
+      this.messenger({
+        title: worker.name + " is Already Working!",
+        message: "He Can Work Only at One Mine at a TIME!",
+        badge: "danger",
+        buttonMessage: "OK",
+        buttonOnClick: this.messenger
+      });
+
+      return false;
+    }
+
+    let workerCanWork = false;
 
     switch (mineType) {
       case "gold":
-        this.mineGold(worker);
+        workerCanWork = this.mineGold(worker);
+        if (workerCanWork) {
+          worker.isWorking = true;
+        }
         break;
       case "silver":
-        this.mineSilver(worker);
+        workerCanWork = this.mineSilver(worker);
+        if (workerCanWork) {
+          worker.isWorking = true;
+        }
         break;
       case "copper":
-        this.mineCopper(worker);
+        workerCanWork = this.mineCopper(worker);
+        if (workerCanWork) {
+          worker.isWorking = true;
+        }
         break;
       default:
         break;
     }
+
+    if (workerCanWork) {
+      this.workersAmountChanged = true;
+      this.messenger({
+        title: worker.name + " Started Mining " + mineType.toUpperCase(),
+        message: "Make Sure You Pay Him On TIME!",
+        badge: "success",
+        buttonMessage: "OK",
+        buttonOnClick: this.messenger
+      });
+    } else {
+      this.messenger({
+        title:
+          worker.name +
+          " Isn't Skilled Enough to Mine " +
+          mineType.toUpperCase(),
+        message: "First Train Him",
+        badge: "danger",
+        buttonMessage: "OK",
+        buttonOnClick: this.messenger
+      });
+    }
+    return workerCanWork;
 
     // todo can't mine two mines simultaneous
     // change mine if already mining
@@ -81,18 +135,43 @@ export default class MyWorkers {
   };
 
   mineCopper = worker => {
-    this.copperWorkers.push(worker);
-    console.log("NOW MINING COPPER", this.copperWorkers.length);
+    let workerCanWork = false;
+    if (
+      worker.miningPower >= this.miningRequirements.copperMining.miningPower &&
+      worker.miningSkill >= this.miningRequirements.copperMining.miningSkill
+    ) {
+      this.copperWorkers.push(worker);
+      console.log("NOW MINING COPPER", this.copperWorkers.length);
+      workerCanWork = true;
+    }
+
+    return workerCanWork;
   };
 
   mineSilver = worker => {
-    this.silverWorkers.push(worker);
-    console.log("NOW MINING SILVER", this.silverWorkers.length);
+    let workerCanWork = false;
+    if (
+      worker.miningPower >= this.miningRequirements.silverMining.miningPower &&
+      worker.miningSkill >= this.miningRequirements.silverMining.miningSkill
+    ) {
+      this.silverWorkers.push(worker);
+      console.log("NOW MINING SILVER", this.silverWorkers.length);
+      workerCanWork = true;
+    }
+    return workerCanWork;
   };
 
   mineGold = worker => {
-    this.goldWorkers.push(worker);
-    console.log("NOW MINING GOLD", this.goldWorkers.length);
+    let workerCanWork = false;
+    if (
+      worker.miningPower >= this.miningRequirements.goldMining.miningPower &&
+      worker.miningSkill >= this.miningRequirements.goldMining.miningSkill
+    ) {
+      this.goldWorkers.push(worker);
+      console.log("NOW MINING GOLD", this.goldWorkers.length);
+      workerCanWork = true;
+    }
+    return workerCanWork;
   };
 
   hireWorker = worker => {

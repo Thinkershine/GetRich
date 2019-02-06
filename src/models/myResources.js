@@ -167,4 +167,21 @@ export default class MyResources {
       buttonOnClick: this.messenger
     };
   };
+
+  updateResourceProduction = (worker, mineType) => {
+    console.log("UPDATING", worker.miningPower, mineType);
+    switch (mineType) {
+      case "gold":
+        this.goldProduction = this.goldProduction + worker.miningPower;
+        break;
+      case "silver":
+        this.silverProduction = this.silverProduction + worker.miningPower;
+        break;
+      case "copper":
+        this.copperProduction = this.copperProduction + worker.miningPower;
+        break;
+      default:
+        break;
+    }
+  };
 }

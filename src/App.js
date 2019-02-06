@@ -29,8 +29,13 @@ class App extends Component {
     itemsForSale: getItems(),
     currentEquipment: {},
     miningEquipment: [],
+    miningRequirements: {
+      copperMining: { miningSkill: 0, miningPower: 1 },
+      silverMining: { miningSkill: 5, miningPower: 5 },
+      goldMining: { miningSkill: 10, miningPower: 10 }
+    },
     resources: new MyResources(this.handleButtonMessage.bind(this)),
-    workers: new MyWorkers(),
+    workers: new MyWorkers(this.handleButtonMessage.bind(this)),
 
     experienceForLevels: getLevels(),
     miningSkill: 0,
@@ -61,8 +66,54 @@ class App extends Component {
       buttonOnClick: this.handleButtonMessage.bind(this)
     },
     displayMessage: false,
-    handleMessenger: this.handleButtonMessage.bind(this)
+    handleMessenger: this.handleButtonMessage.bind(this),
+    energyGainingIntervalID: null,
+    minersWorkingIntervalID: null,
+    workersWorkTimer: 1000
   };
+
+  componentDidMount() {
+    this.state.workers.injectMiningRequirements(this.state.miningRequirements);
+
+    const { workers } = this.state;
+
+    this.energyGainingIntervalID = setInterval(
+      this.gainEnergy,
+      this.state.energyGainTimer
+    );
+
+    this.minersWorkingIntervalID = setInterval(
+      this.workersDoWork,
+      this.state.workersWorkTimer
+    );
+
+    this.setState({
+      energyGainingIntervalID: this.energyGainingIntervalID,
+      minersWorkingIntervalID: this.minersWorkingIntervalID,
+      goldWorkers: workers.getGoldWorkersCount(),
+      goldProduction: workers.getGoldWorkersTotalStrength(),
+      nextMiningLevelExperience: getExperienceForLevel(
+        this.state.miningSkill + 1
+      )
+    });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.energyGainingIntervalID);
+    clearInterval(this.state.minersWorkingIntervalID);
+  }
+
+  componentDidUpdate() {
+    const { workers } = this.state;
+    if (workers.workersAmountChanged) {
+      workers.workersAmountChanged = false;
+
+      this.setState({
+        goldWorkers: workers.getGoldWorkersCount(),
+        goldProduction: workers.getGoldWorkersTotalStrength()
+      });
+    }
+  }
 
   handleExperienceGain = expAmount => {
     let miningSkillExp = this.state.miningSkillExperience;
@@ -148,40 +199,6 @@ class App extends Component {
     });
   }
 
-  componentDidMount() {
-    const { workers } = this.state;
-
-    this.energyGainingIntervalID = setInterval(
-      this.gainEnergy,
-      this.state.energyGainTimer
-    );
-
-    this.setState({
-      energyGainingIntervalID: this.energyGainingIntervalID,
-      goldWorkers: workers.getGoldWorkersCount(),
-      goldProduction: workers.getGoldWorkersTotalStrength(),
-      nextMiningLevelExperience: getExperienceForLevel(
-        this.state.miningSkill + 1
-      )
-    });
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.state.energyGainingIntervalID);
-  }
-
-  componentDidUpdate() {
-    const { workers } = this.state;
-    if (workers.workersAmountChanged) {
-      workers.workersAmountChanged = false;
-
-      this.setState({
-        goldWorkers: workers.getGoldWorkersCount(),
-        goldProduction: workers.getGoldWorkersTotalStrength()
-      });
-    }
-  }
-
   handleMining = (dugAmount, mineType) => {
     this.state.resources.addResource(dugAmount, mineType);
   };
@@ -219,10 +236,16 @@ class App extends Component {
   };
 
   makeWorkerWork = (worker, mineType) => {
-    console.log("WORKER IS WORKING NOW", worker, mineType);
+    console.log("WORKER IS WORKING NOW", worker, "MINE TYPE", mineType);
     // todo Check if Miner is Able to Mine This ...
     // block buttons if he's not able to mine ??
-    this.state.workers.makeWorkerWork(worker, mineType);
+
+    let startedWorking = this.state.workers.makeWorkerWork(worker, mineType);
+
+    if (startedWorking) {
+      // UPDATE resource production
+      this.state.resources.updateResourceProduction(worker, mineType);
+    }
   };
 
   handleWorkers = () => {
@@ -235,6 +258,26 @@ class App extends Component {
       goldAmount:
         this.state.resource.goldAmount + this.state.resource.goldProduction
     });
+  };
+
+  workersDoWork = () => {
+    console.log("WORK");
+    // todo update resources
+    // if you have no particual workers at the mine -> Don't Update the Value
+    this.state.resources.addResource(
+      this.state.resources.goldProduction,
+      "gold"
+    );
+    this.state.resources.addResource(
+      this.state.resources.silverProduction,
+      "silver"
+    );
+    this.state.resources.addResource(
+      this.state.resources.copperProduction,
+      "copper"
+    );
+    // todo update workers
+    // fire or hire workers if no resources
   };
 
   hireNewWorker = worker => {
@@ -406,6 +449,7 @@ class App extends Component {
                   noEnergy={this.state.noEnergy}
                   gainExperience={this.handleExperienceGain}
                   messenger={this.state.handleMessenger}
+                  miningRequirements={this.state.miningRequirements}
                   {...props}
                 />
               )}
