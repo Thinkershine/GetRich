@@ -10,6 +10,22 @@ class ProgressBar extends Component {
     return classNames;
   }
 
+  setSize(size) {
+    switch (size) {
+      case "small":
+        return 10;
+      case "medium":
+        return 20;
+      case "large":
+        return 30;
+      case "extra-large":
+        return 50;
+      default:
+        return 20;
+        break;
+    }
+  }
+
   render() {
     const {
       title,
@@ -18,15 +34,21 @@ class ProgressBar extends Component {
       currentValue,
       maxValue,
       badge,
-      bgColor
+      bgColor,
+      size
     } = this.props;
+
+    const trueSize = this.setSize(size);
 
     return (
       <React.Fragment>
         <p>
           {title}: {levelToDisplay}
         </p>
-        <div className={"progress w-100 bg-" + bgColor} style={{ height: 20 }}>
+        <div
+          className={"progress w-100 bg-" + bgColor}
+          style={{ height: trueSize }}
+        >
           <div
             className={this.badgeClassNames(badge)}
             role="progressbar"

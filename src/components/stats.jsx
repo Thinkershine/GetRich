@@ -15,6 +15,7 @@ const Stats = props => {
             maxValue={100}
             badge={"warning"}
             bgColor={"dark"}
+            size={"medium"}
           />
         </div>
         <div className="col">
@@ -26,6 +27,7 @@ const Stats = props => {
             maxValue={props.nextMiningLevelExperience}
             badge={"success"}
             bgColor={"dark"}
+            size={"medium"}
           />
         </div>
         <div className="col">
@@ -37,6 +39,7 @@ const Stats = props => {
             maxValue={props.maximumEnergyPoints}
             badge={"primary"}
             bgColor={"dark"}
+            size={"medium"}
           />
         </div>
       </div>

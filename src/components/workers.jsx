@@ -27,6 +27,7 @@ class Workers extends Component {
             maxValue={100}
             badge={"warning"}
             bgColor={"dark"}
+            size={"small"}
           />
         )}
         <br />
