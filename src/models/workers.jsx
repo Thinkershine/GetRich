@@ -193,7 +193,7 @@ export default class MyWorkers {
 
   hireWorker = worker => {
     this.workersAmountChanged = true;
-    this.workers.push(worker);
+    this.workers.push(new Worker(worker));
   };
 
   getPlayerWorkers = () => {
