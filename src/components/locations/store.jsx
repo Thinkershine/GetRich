@@ -5,7 +5,7 @@ class Store extends Component {
 
   render() {
     return (
-      <div>
+      <div id="store">
         <h2>Welcome to Our Store!</h2>
         <p>Here You can get any item you may ever need as gold miner...</p>
         <table className="table table-hover">

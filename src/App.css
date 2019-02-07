@@ -127,6 +127,9 @@
   width: 272px;
   box-sizing: border-box;
   display: inline-block;
+  border-radius: 3px;
+  box-shadow: 5px 6px 0px gray;
+  border: 1px solid gray;
 }
 
 .worker-stat {
@@ -137,4 +140,44 @@
 
 .worker-stat-value {
   float: left;
+}
+
+/**** App Components ****/
+
+#resources,
+#stats,
+#workers,
+#store,
+#market,
+#bank,
+#workers,
+#mining,
+#equipment,
+#home {
+  border-radius: 3px;
+  box-shadow: 5px 6px 0px #1e1e1e;
+  border: 1px solid #1e1e1e;
+  margin-top: 15px;
+}
+
+#stats {
+  padding: 5px;
+}
+
+#top-bar {
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: 1000;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.13);
+  text-align: center;
+}
+
+#navigation {
+  display: inline-block;
+  padding: 0 25px 0 25px;
+}
+
+#navigation ul li {
+  margin: 10px 2px;
 }

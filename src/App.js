@@ -424,11 +424,11 @@ class App extends Component {
 
     return (
       <div className="App">
-        <main className="container">
-          <header>
-            <h1>Time to Get RICH</h1>
-            <Navigation />
-          </header>
+        <header id="top-bar">
+          <Navigation />
+          <h1>Time to Get RICH</h1>
+        </header>
+        <main id="main" className="container">
           <Resources resources={this.state.resources} />
           <Stats {...stats} />
           <Switch>

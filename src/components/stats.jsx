@@ -8,7 +8,7 @@ const Stats = props => {
       <div className="row">
         <div className="col">
           <ProgressBar
-            title="Mining Power"
+            title="Power"
             levelToDisplay={props.miningPower}
             percentageOfCompletion={props.miningPowerLevel}
             currentValue={props.miningPower}
@@ -19,7 +19,7 @@ const Stats = props => {
         </div>
         <div className="col">
           <ProgressBar
-            title={"Mining Skill"}
+            title={"Skill"}
             levelToDisplay={props.miningSkill}
             percentageOfCompletion={props.miningSkillCurrentPercentage}
             currentValue={props.miningSkillExperience}

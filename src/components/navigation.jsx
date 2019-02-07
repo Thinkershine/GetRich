@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Navigation = props => {
   const classNamesForLinks = "nav-item btn btn-primary";
   return (
-    <nav className="card-header">
+    <nav id="navigation">
       <ul className="nav nav-pills card-header-pills">
         <li className="nav-item">
           <Link className={classNamesForLinks} to="/">
