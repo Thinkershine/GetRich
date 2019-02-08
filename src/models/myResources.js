@@ -168,7 +168,7 @@ export default class MyResources {
     };
   };
 
-  updateResourceProduction = (worker, mineType) => {
+  workerStartWorking = (worker, mineType) => {
     console.log("UPDATING", worker.miningPower, mineType);
     switch (mineType) {
       case "gold":
@@ -184,4 +184,23 @@ export default class MyResources {
         break;
     }
   };
+
+  updateResourceProduction(worker, mineType) {
+    console.log("WORKER", worker, "LEVELED UP", "@MINE TYPE", mineType);
+    switch (mineType) {
+      case "gold":
+        this.goldProduction = this.goldProduction + worker.miningPower;
+        break;
+      case "silver":
+        this.silverProduction = this.silverProduction + worker.miningPower;
+        break;
+      case "copper":
+        let baseCopperProduction =
+          this.copperProduction - (worker.miningPower - 1);
+        this.copperProduction = baseCopperProduction + worker.miningPower;
+        break;
+      default:
+        break;
+    }
+  }
 }

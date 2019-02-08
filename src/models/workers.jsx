@@ -16,7 +16,9 @@ class Worker {
   currentEquipment = null;
   isWorking = false;
 
-  constructor(worker) {
+  leveledUpHandler;
+
+  constructor(worker, leveledUpHandler) {
     this._id = worker._id;
     this.name = worker.name;
     this.miningSkill = worker.miningSkill;
@@ -31,11 +33,13 @@ class Worker {
     this.hourlyCost = worker.hourlyCost;
     this.currentEquipment = worker.currentEquipment;
     this.isWorking = worker.isWorking;
+    this.leveledUpHandler = leveledUpHandler;
 
     this.gainExperience = this.gainExperience.bind(this);
+    this.workerLeveledUp = this.workerLeveledUp.bind(this);
   }
 
-  gainExperience(experienceAmount, experienceHandler) {
+  gainExperience(experienceAmount, experienceHandler, mineType) {
     let experience = {
       miningSkill: this.miningSkill,
       miningSkillExperience: this.miningSkillExperience,
@@ -49,10 +53,19 @@ class Worker {
     // if Value didn't change -> Don't Update It
     this.miningSkillExperience = experience.miningSkillExperience;
     this.currentMiningSkillExperience = experience.currentMiningSkillExperience;
+
+    if (this.miningSkill !== experience.miningSkill) {
+      this.workerLeveledUp(this, mineType);
+    }
     this.miningSkill = experience.miningSkill;
+    // if mining power changed - > update Production...
     this.miningPower = experience.miningPower;
 
     console.log("WORKER", this.name, "GAINED EXP", experience);
+  }
+
+  workerLeveledUp(worker, mineType) {
+    this.leveledUpHandler(worker, mineType);
   }
 }
 
@@ -64,10 +77,12 @@ export default class MyWorkers {
   workersAmountChanged = false;
   miningRequirements = {};
   experienceHandler = {};
+  leveledUpHandler;
 
-  constructor(messenger) {
+  constructor(messenger, leveledUpHandler) {
     this.messenger = messenger;
     this.experienceHandler = new ExperienceHandler();
+    this.leveledUpHandler = leveledUpHandler;
   }
 
   injectMiningRequirements(miningRequirements) {
@@ -213,7 +228,7 @@ export default class MyWorkers {
 
   hireWorker = worker => {
     this.workersAmountChanged = true;
-    this.workers.push(new Worker(worker));
+    this.workers.push(new Worker(worker, this.leveledUpHandler));
   };
 
   getPlayerWorkers = () => {
@@ -223,19 +238,27 @@ export default class MyWorkers {
   giveExperienceToWorkingWorkers() {
     if (this.copperWorkers.length != 0) {
       for (let i = 0; i <= this.copperWorkers.length - 1; i += 1) {
-        this.copperWorkers[i].gainExperience(1, this.experienceHandler);
+        this.copperWorkers[i].gainExperience(
+          1,
+          this.experienceHandler,
+          "copper"
+        );
       }
     }
 
     if (this.silverWorkers.length != 0) {
       for (let i = 0; i <= this.silverWorkers.length - 1; i += 1) {
-        this.silverWorkers[i].gainExperience(2, this.experienceHandler);
+        this.silverWorkers[i].gainExperience(
+          2,
+          this.experienceHandler,
+          "silver"
+        );
       }
     }
 
     if (this.goldWorkers.length != 0) {
       for (let i = 0; i <= this.goldWorkers.length - 1; i += 1) {
-        this.goldWorkers[i].gainExperience(3, this.experienceHandler);
+        this.goldWorkers[i].gainExperience(3, this.experienceHandler, "gold");
       }
     }
   }

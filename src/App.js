@@ -35,7 +35,10 @@ class App extends Component {
       goldMining: { miningSkill: 10, miningPower: 10 }
     },
     resources: new MyResources(this.handleButtonMessage.bind(this)),
-    workers: new MyWorkers(this.handleButtonMessage.bind(this)),
+    workers: new MyWorkers(
+      this.handleButtonMessage.bind(this),
+      this.workerLeveledUp.bind(this)
+    ),
 
     experienceForLevels: getLevels(),
     miningSkill: 0,
@@ -244,9 +247,15 @@ class App extends Component {
 
     if (startedWorking) {
       // UPDATE resource production
-      this.state.resources.updateResourceProduction(worker, mineType);
+      this.state.resources.workerStartWorking(worker, mineType);
     }
   };
+
+  workerLeveledUp(worker, mineType) {
+    // pass workers
+    console.log("LEVELED UP");
+    this.state.resources.updateResourceProduction(worker, mineType);
+  }
 
   handleWorkers = () => {
     // suboptimal to check everysecond how many workers are there ??
@@ -278,6 +287,7 @@ class App extends Component {
     );
 
     this.state.workers.giveExperienceToWorkingWorkers();
+
     // todo update workers
     // forall working workers
     // give them exp
