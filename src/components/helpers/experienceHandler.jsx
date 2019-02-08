@@ -12,11 +12,6 @@ export default class ExperienceHandler {
     console.log("CONSTRUCTED", this.experienceTable);
   }
 
-  // expAmount
-  // miningSkillExperience
-  // currentMiningSkillExperience
-  // currentLevel
-
   handleExperienceGain(expAmount, experience) {
     console.log("INPUT EXP", experience);
     experience.miningSkillExperience =
@@ -42,7 +37,7 @@ export default class ExperienceHandler {
       experience = this.calculateNextLevelExperience(experience);
     }
 
-    // experience = this.calculateCurrentLevelExperiencePercentage(experience);
+    experience = this.calculateCurrentLevelExperiencePercentage(experience);
 
     return experience;
   }
@@ -55,17 +50,17 @@ export default class ExperienceHandler {
     return experience;
   }
 
-  // calculateCurrentLevelExperiencePercentage(experience) {
-  //   let currentPercentage =
-  //     (experience.currentMiningSkillExperience /
-  //       this.getExperienceDifferenceForLvl(experience.currentLevel)) *
-  //     100;
+  calculateCurrentLevelExperiencePercentage(experience) {
+    let currentPercentage =
+      (experience.currentMiningSkillExperience /
+        getExperienceDifferenceForLvl(experience.miningSkill)) *
+      100;
 
-  //   if (currentPercentage >= 100) {
-  //     currentPercentage = 0;
-  //   }
+    if (currentPercentage >= 100) {
+      currentPercentage = 0;
+    }
 
-  //   experience.currentPercentage = currentPercentage;
-  //   return experience;
-  // }
+    experience.miningSkillCurrentPercentage = currentPercentage;
+    return experience;
+  }
 }

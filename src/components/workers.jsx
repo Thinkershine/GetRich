@@ -22,7 +22,7 @@ class Workers extends Component {
           <ProgressBar
             title="Mining Skill"
             levelToDisplay={worker.miningSkill}
-            percentageOfCompletion={25}
+            percentageOfCompletion={worker.miningSkillCurrentPercentage}
             currentValue={worker.miningSkillExperience}
             maxValue={worker.nextMiningSkillExperience}
             badge={"warning"}

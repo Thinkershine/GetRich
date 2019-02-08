@@ -48,6 +48,7 @@ class Worker {
     let experience = {
       miningSkill: this.miningSkill,
       miningSkillExperience: this.miningSkillExperience,
+      miningSkillCurrentPercentage: this.miningSkillCurrentPercentage,
       currentMiningSkillExperience: this.currentMiningSkillExperience,
       nextMiningSkillExperience: this.nextMiningSkillExperience,
       miningPower: this.miningPower
@@ -67,6 +68,7 @@ class Worker {
     // if mining power changed - > update Production...
     this.miningPower = experience.miningPower;
     this.nextMiningSkillExperience = experience.nextMiningSkillExperience;
+    this.miningSkillCurrentPercentage = experience.miningSkillCurrentPercentage;
 
     console.log("WORKER", this.name, "GAINED EXP", experience);
   }
