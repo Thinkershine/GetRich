@@ -7,6 +7,7 @@ class Worker {
   miningSkillExperience = 0;
   miningSkillCurrentPercentage = 0;
   currentMiningSkillExperience = 0;
+  nextMiningSkillExperience = 0;
   miningPower = 0;
   energyLevel = 0;
   energyPoints = 0;
@@ -14,6 +15,7 @@ class Worker {
   energyRegeneration = 0;
   hourlyCost = 0;
   currentEquipment = null;
+  currentlyMining = "";
   isWorking = false;
 
   leveledUpHandler;
@@ -25,6 +27,7 @@ class Worker {
     this.miningSkillExperience = worker.miningSkillExperience;
     this.miningSkillCurrentPercentage = worker.miningSkillCurrentPercentage;
     this.currentMiningSkillExperience = worker.currentMiningSkillExperience;
+    this.nextMiningSkillExperience = worker.nextMiningSkillExperience;
     this.miningPower = worker.miningPower;
     this.energyLevel = worker.energyLevel;
     this.energyPoints = worker.energyPoints;
@@ -32,18 +35,21 @@ class Worker {
     this.energyRegeneration = worker.energyRegeneration;
     this.hourlyCost = worker.hourlyCost;
     this.currentEquipment = worker.currentEquipment;
+    this.currentlyMining = worker.currentlyMining;
     this.isWorking = worker.isWorking;
+
     this.leveledUpHandler = leveledUpHandler;
 
     this.gainExperience = this.gainExperience.bind(this);
     this.workerLeveledUp = this.workerLeveledUp.bind(this);
   }
 
-  gainExperience(experienceAmount, experienceHandler, mineType) {
+  gainExperience(experienceAmount, experienceHandler) {
     let experience = {
       miningSkill: this.miningSkill,
       miningSkillExperience: this.miningSkillExperience,
       currentMiningSkillExperience: this.currentMiningSkillExperience,
+      nextMiningSkillExperience: this.nextMiningSkillExperience,
       miningPower: this.miningPower
     };
     experience = experienceHandler.handleExperienceGain(
@@ -55,17 +61,18 @@ class Worker {
     this.currentMiningSkillExperience = experience.currentMiningSkillExperience;
 
     if (this.miningSkill !== experience.miningSkill) {
-      this.workerLeveledUp(this, mineType);
+      this.workerLeveledUp(this);
     }
     this.miningSkill = experience.miningSkill;
     // if mining power changed - > update Production...
     this.miningPower = experience.miningPower;
+    this.nextMiningSkillExperience = experience.nextMiningSkillExperience;
 
     console.log("WORKER", this.name, "GAINED EXP", experience);
   }
 
-  workerLeveledUp(worker, mineType) {
-    this.leveledUpHandler(worker, mineType);
+  workerLeveledUp(worker) {
+    this.leveledUpHandler(worker);
   }
 }
 
@@ -139,18 +146,21 @@ export default class MyWorkers {
         workerCanWork = this.mineGold(worker);
         if (workerCanWork) {
           worker.isWorking = true;
+          worker.currentlyMining = "gold";
         }
         break;
       case "silver":
         workerCanWork = this.mineSilver(worker);
         if (workerCanWork) {
           worker.isWorking = true;
+          worker.currentlyMining = "silver";
         }
         break;
       case "copper":
         workerCanWork = this.mineCopper(worker);
         if (workerCanWork) {
           worker.isWorking = true;
+          worker.currentlyMining = "copper";
         }
         break;
       default:
@@ -238,27 +248,19 @@ export default class MyWorkers {
   giveExperienceToWorkingWorkers() {
     if (this.copperWorkers.length != 0) {
       for (let i = 0; i <= this.copperWorkers.length - 1; i += 1) {
-        this.copperWorkers[i].gainExperience(
-          1,
-          this.experienceHandler,
-          "copper"
-        );
+        this.copperWorkers[i].gainExperience(1, this.experienceHandler);
       }
     }
 
     if (this.silverWorkers.length != 0) {
       for (let i = 0; i <= this.silverWorkers.length - 1; i += 1) {
-        this.silverWorkers[i].gainExperience(
-          2,
-          this.experienceHandler,
-          "silver"
-        );
+        this.silverWorkers[i].gainExperience(2, this.experienceHandler);
       }
     }
 
     if (this.goldWorkers.length != 0) {
       for (let i = 0; i <= this.goldWorkers.length - 1; i += 1) {
-        this.goldWorkers[i].gainExperience(3, this.experienceHandler, "gold");
+        this.goldWorkers[i].gainExperience(3, this.experienceHandler);
       }
     }
   }

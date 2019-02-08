@@ -39,7 +39,7 @@ export default class ExperienceHandler {
       experience.miningPower += 1;
       experience.currentMiningSkillExperience = 0;
 
-      // experience = this.calculateNextLevelExperience(experience);
+      experience = this.calculateNextLevelExperience(experience);
     }
 
     // experience = this.calculateCurrentLevelExperiencePercentage(experience);
@@ -47,16 +47,13 @@ export default class ExperienceHandler {
     return experience;
   }
 
-  // calculateNextLevelExperience() {
-  //   let nextlevelExperience = getExperienceForLevel(this.state.miningSkill + 1);
+  calculateNextLevelExperience(experience) {
+    experience.nextMiningSkillExperience = getExperienceForLevel(
+      experience.miningSkill + 1
+    );
 
-  //   this.setState(
-  //     {
-  //       nextMiningLevelExperience: nextlevelExperience
-  //     },
-  //     this.calculateExperienceDifference
-  //   );
-  // }
+    return experience;
+  }
 
   // calculateCurrentLevelExperiencePercentage(experience) {
   //   let currentPercentage =

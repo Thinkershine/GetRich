@@ -251,10 +251,10 @@ class App extends Component {
     }
   };
 
-  workerLeveledUp(worker, mineType) {
+  workerLeveledUp(worker) {
     // pass workers
     console.log("LEVELED UP");
-    this.state.resources.updateResourceProduction(worker, mineType);
+    this.state.resources.updateResourceProduction(worker);
   }
 
   handleWorkers = () => {

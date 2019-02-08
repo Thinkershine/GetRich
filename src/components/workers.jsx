@@ -23,8 +23,8 @@ class Workers extends Component {
             title="Mining Skill"
             levelToDisplay={worker.miningSkill}
             percentageOfCompletion={25}
-            currentValue={25}
-            maxValue={100}
+            currentValue={worker.miningSkillExperience}
+            maxValue={worker.nextMiningSkillExperience}
             badge={"warning"}
             bgColor={"dark"}
             size={"small"}

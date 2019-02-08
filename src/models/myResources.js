@@ -185,9 +185,15 @@ export default class MyResources {
     }
   };
 
-  updateResourceProduction(worker, mineType) {
-    console.log("WORKER", worker, "LEVELED UP", "@MINE TYPE", mineType);
-    switch (mineType) {
+  updateResourceProduction(worker) {
+    console.log(
+      "WORKER",
+      worker,
+      "LEVELED UP",
+      "@MINE TYPE",
+      worker.currentlyMining
+    );
+    switch (worker.currentlyMining) {
       case "gold":
         this.goldProduction = this.goldProduction + worker.miningPower;
         break;
