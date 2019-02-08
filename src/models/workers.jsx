@@ -1,3 +1,5 @@
+import ExperienceHandler from "./../components/helpers/experienceHandler";
+
 class Worker {
   _id = "";
   name = "";
@@ -20,6 +22,7 @@ class Worker {
     this.miningSkill = worker.miningSkill;
     this.miningSkillExperience = worker.miningSkillExperience;
     this.miningSkillCurrentPercentage = worker.miningSkillCurrentPercentage;
+    this.currentMiningSkillExperience = worker.currentMiningSkillExperience;
     this.miningPower = worker.miningPower;
     this.energyLevel = worker.energyLevel;
     this.energyPoints = worker.energyPoints;
@@ -32,9 +35,24 @@ class Worker {
     this.gainExperience = this.gainExperience.bind(this);
   }
 
-  gainExperience(experience) {
-    this.miningSkillExperience = this.miningSkillExperience += experience;
-    console.log("WORKER", this.name, "GAINED EXP", this.miningSkillExperience);
+  gainExperience(experienceAmount, experienceHandler) {
+    let experience = {
+      miningSkill: this.miningSkill,
+      miningSkillExperience: this.miningSkillExperience,
+      currentMiningSkillExperience: this.currentMiningSkillExperience,
+      miningPower: this.miningPower
+    };
+    experience = experienceHandler.handleExperienceGain(
+      experienceAmount,
+      experience
+    );
+    // if Value didn't change -> Don't Update It
+    this.miningSkillExperience = experience.miningSkillExperience;
+    this.currentMiningSkillExperience = experience.currentMiningSkillExperience;
+    this.miningSkill = experience.miningSkill;
+    this.miningPower = experience.miningPower;
+
+    console.log("WORKER", this.name, "GAINED EXP", experience);
   }
 }
 
@@ -45,9 +63,11 @@ export default class MyWorkers {
   goldWorkers = [];
   workersAmountChanged = false;
   miningRequirements = {};
+  experienceHandler = {};
 
   constructor(messenger) {
     this.messenger = messenger;
+    this.experienceHandler = new ExperienceHandler();
   }
 
   injectMiningRequirements(miningRequirements) {
@@ -201,22 +221,21 @@ export default class MyWorkers {
   };
 
   giveExperienceToWorkingWorkers() {
-    console.log("GIVING EXP");
     if (this.copperWorkers.length != 0) {
       for (let i = 0; i <= this.copperWorkers.length - 1; i += 1) {
-        this.copperWorkers[i].gainExperience(1);
+        this.copperWorkers[i].gainExperience(1, this.experienceHandler);
       }
     }
 
     if (this.silverWorkers.length != 0) {
       for (let i = 0; i <= this.silverWorkers.length - 1; i += 1) {
-        this.silverWorkers[i].gainExperience(2);
+        this.silverWorkers[i].gainExperience(2, this.experienceHandler);
       }
     }
 
     if (this.goldWorkers.length != 0) {
       for (let i = 0; i <= this.goldWorkers.length - 1; i += 1) {
-        this.goldWorkers[i].gainExperience(3);
+        this.goldWorkers[i].gainExperience(3, this.experienceHandler);
       }
     }
   }
