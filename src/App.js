@@ -25,6 +25,7 @@ import NotFound from "./components/common/notFound";
 
 class App extends Component {
   state = {
+    navigationHeight: 0,
     isEquipped: false,
     itemsForSale: getItems(),
     currentEquipment: {},
@@ -90,6 +91,8 @@ class App extends Component {
       this.state.workersWorkTimer
     );
 
+    this.setMainContentMarginTop();
+
     this.setState({
       energyGainingIntervalID: this.energyGainingIntervalID,
       minersWorkingIntervalID: this.minersWorkingIntervalID,
@@ -98,6 +101,13 @@ class App extends Component {
       nextMiningLevelExperience: getExperienceForLevel(
         this.state.miningSkill + 1
       )
+    });
+  }
+
+  setMainContentMarginTop() {
+    let navigationHeight = document.getElementById("top-bar").clientHeight;
+    this.setState({
+      navigationHeight: navigationHeight + 15
     });
   }
 
@@ -438,7 +448,11 @@ class App extends Component {
           <Navigation />
           <h1>Time to Get RICH</h1>
         </header>
-        <main id="main" className="container">
+        <main
+          id="main"
+          className="container"
+          style={{ marginTop: this.state.navigationHeight }}
+        >
           <Resources resources={this.state.resources} />
           <Stats {...stats} />
           <Switch>
