@@ -12,6 +12,10 @@ class Workers extends Component {
     const toRender = workers.map(worker => (
       <div key={worker._id} className="worker-data col-sm">
         <h4>{worker.name}</h4>
+        <span>
+          {worker.isWorking && "Mining " + worker.currentlyMining.toUpperCase()}
+          {worker.isResting && <i>Resting...</i>}
+        </span>
 
         {forHire == true ? (
           <React.Fragment>
@@ -25,10 +29,10 @@ class Workers extends Component {
             percentageOfCompletion={worker.miningSkillCurrentPercentage}
             currentValue={worker.miningSkillExperience}
             maxValue={worker.nextMiningSkillExperience}
-            badge={"warning"}
+            badge={"success"}
             bgColor={"dark"}
             size={"small"}
-            animated={true}
+            animated={worker.isWorking}
           />
         )}
         <br />

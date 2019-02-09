@@ -20,7 +20,7 @@ class Worker {
 
   leveledUpHandler;
 
-  constructor(worker, leveledUpHandler) {
+  constructor(worker, leveledUpHandler, restingHandler) {
     this._id = worker._id;
     this.name = worker.name;
     this.miningSkill = worker.miningSkill;
@@ -31,50 +31,85 @@ class Worker {
     this.miningPower = worker.miningPower;
     this.energyLevel = worker.energyLevel;
     this.energyPoints = worker.energyPoints;
+    this.maximumEnergyPoints = worker.maximumEnergyPoints;
     this.energyConsumption = worker.energyConsumption;
     this.energyRegeneration = worker.energyRegeneration;
     this.hourlyCost = worker.hourlyCost;
     this.currentEquipment = worker.currentEquipment;
     this.currentlyMining = worker.currentlyMining;
     this.isWorking = worker.isWorking;
+    this.isResting = worker.isResting;
 
     this.leveledUpHandler = leveledUpHandler;
+    this.restingHandler = restingHandler;
 
     this.gainExperience = this.gainExperience.bind(this);
     this.workerLeveledUp = this.workerLeveledUp.bind(this);
   }
 
   gainExperience(experienceAmount, experienceHandler) {
-    let experience = {
-      miningSkill: this.miningSkill,
-      miningSkillExperience: this.miningSkillExperience,
-      miningSkillCurrentPercentage: this.miningSkillCurrentPercentage,
-      currentMiningSkillExperience: this.currentMiningSkillExperience,
-      nextMiningSkillExperience: this.nextMiningSkillExperience,
-      miningPower: this.miningPower
-    };
-    experience = experienceHandler.handleExperienceGain(
-      experienceAmount,
-      experience
-    );
-    // if Value didn't change -> Don't Update It
-    this.miningSkillExperience = experience.miningSkillExperience;
-    this.currentMiningSkillExperience = experience.currentMiningSkillExperience;
+    if (this.isWorking) {
+      let experience = {
+        miningSkill: this.miningSkill,
+        miningSkillExperience: this.miningSkillExperience,
+        miningSkillCurrentPercentage: this.miningSkillCurrentPercentage,
+        currentMiningSkillExperience: this.currentMiningSkillExperience,
+        nextMiningSkillExperience: this.nextMiningSkillExperience,
+        miningPower: this.miningPower
+      };
+      experience = experienceHandler.handleExperienceGain(
+        experienceAmount,
+        experience
+      );
+      // if Value didn't change -> Don't Update It
+      this.miningSkillExperience = experience.miningSkillExperience;
+      this.currentMiningSkillExperience =
+        experience.currentMiningSkillExperience;
 
-    if (this.miningSkill !== experience.miningSkill) {
-      this.workerLeveledUp(this);
+      if (this.miningSkill !== experience.miningSkill) {
+        this.workerLeveledUp(this);
+      }
+      this.miningSkill = experience.miningSkill;
+      // if mining power changed - > update Production...
+      this.miningPower = experience.miningPower;
+      this.nextMiningSkillExperience = experience.nextMiningSkillExperience;
+      this.miningSkillCurrentPercentage =
+        experience.miningSkillCurrentPercentage;
+
+      console.log("WORKER", this.name, "GAINED EXP", experience);
     }
-    this.miningSkill = experience.miningSkill;
-    // if mining power changed - > update Production...
-    this.miningPower = experience.miningPower;
-    this.nextMiningSkillExperience = experience.nextMiningSkillExperience;
-    this.miningSkillCurrentPercentage = experience.miningSkillCurrentPercentage;
-
-    console.log("WORKER", this.name, "GAINED EXP", experience);
   }
 
   workerLeveledUp(worker) {
     this.leveledUpHandler(worker);
+  }
+
+  handleWorkerEnergy(energyAmount) {
+    console.log("DRAIN ENERGY");
+    if (this.isWorking) {
+      if (this.energyPoints <= 0) {
+        if (this.isWorking) {
+          this.energyPoints = 0;
+          this.isWorking = false;
+          this.isResting = true;
+          this.restingHandler(this);
+        }
+      } else {
+        this.energyPoints -= energyAmount;
+      }
+    }
+
+    if (this.isResting) {
+      if (this.energyPoints >= this.maximumEnergyPoints) {
+        this.energyPoints = this.maximumEnergyPoints;
+        this.isResting = false;
+        if (this.currentlyMining !== "") {
+          this.isWorking = true;
+        }
+      } else {
+        this.energyPoints += this.energyRegeneration;
+      }
+    }
   }
 }
 
@@ -87,11 +122,13 @@ export default class MyWorkers {
   miningRequirements = {};
   experienceHandler = {};
   leveledUpHandler;
+  restingHandler;
 
-  constructor(messenger, leveledUpHandler) {
+  constructor(messenger, leveledUpHandler, restingHandler) {
     this.messenger = messenger;
     this.experienceHandler = new ExperienceHandler();
     this.leveledUpHandler = leveledUpHandler;
+    this.restingHandler = restingHandler;
   }
 
   injectMiningRequirements(miningRequirements) {
@@ -105,17 +142,6 @@ export default class MyWorkers {
   getSilverWorkers() {
     return this.silverWorkers;
   }
-
-  getGoldWorkersCount = () => {
-    return this.goldWorkers.length;
-  };
-
-  getGoldWorkersTotalStrength = () => {
-    let totalStrength = 0;
-    this.goldWorkers.forEach(worker => (totalStrength += worker.miningPower));
-
-    return totalStrength;
-  };
 
   getGoldWorkersCount = () => {
     return this.goldWorkers.length;
@@ -148,6 +174,7 @@ export default class MyWorkers {
         workerCanWork = this.mineGold(worker);
         if (workerCanWork) {
           worker.isWorking = true;
+          worker.isResting = false;
           worker.currentlyMining = "gold";
         }
         break;
@@ -155,6 +182,7 @@ export default class MyWorkers {
         workerCanWork = this.mineSilver(worker);
         if (workerCanWork) {
           worker.isWorking = true;
+          worker.isResting = false;
           worker.currentlyMining = "silver";
         }
         break;
@@ -162,6 +190,7 @@ export default class MyWorkers {
         workerCanWork = this.mineCopper(worker);
         if (workerCanWork) {
           worker.isWorking = true;
+          worker.isResting = false;
           worker.currentlyMining = "copper";
         }
         break;
@@ -194,8 +223,6 @@ export default class MyWorkers {
 
     // todo can't mine two mines simultaneous
     // change mine if already mining
-    // WATCHOUT ERROR!
-    // Same worker can be multiplied 1000 times oO!
   };
 
   mineCopper = worker => {
@@ -240,7 +267,9 @@ export default class MyWorkers {
 
   hireWorker = worker => {
     this.workersAmountChanged = true;
-    this.workers.push(new Worker(worker, this.leveledUpHandler));
+    this.workers.push(
+      new Worker(worker, this.leveledUpHandler, this.restingHandler)
+    );
   };
 
   getPlayerWorkers = () => {
@@ -263,6 +292,27 @@ export default class MyWorkers {
     if (this.goldWorkers.length != 0) {
       for (let i = 0; i <= this.goldWorkers.length - 1; i += 1) {
         this.goldWorkers[i].gainExperience(3, this.experienceHandler);
+      }
+    }
+  }
+
+  handleWorkerEnergy() {
+    const energyDrain = 1;
+    if (this.copperWorkers.length != 0) {
+      for (let i = 0; i <= this.copperWorkers.length - 1; i += 1) {
+        this.copperWorkers[i].handleWorkerEnergy(energyDrain * 25);
+      }
+    }
+
+    if (this.silverWorkers.length != 0) {
+      for (let i = 0; i <= this.silverWorkers.length - 1; i += 1) {
+        this.silverWorkers[i].handleWorkerEnergy(energyDrain);
+      }
+    }
+
+    if (this.goldWorkers.length != 0) {
+      for (let i = 0; i <= this.goldWorkers.length - 1; i += 1) {
+        this.goldWorkers[i].handleWorkerEnergy(energyDrain);
       }
     }
   }

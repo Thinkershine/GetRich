@@ -38,7 +38,8 @@ class App extends Component {
     resources: new MyResources(this.handleButtonMessage.bind(this)),
     workers: new MyWorkers(
       this.handleButtonMessage.bind(this),
-      this.workerLeveledUp.bind(this)
+      this.workerLeveledUp.bind(this),
+      this.workerIsResting.bind(this)
     ),
 
     experienceForLevels: getLevels(),
@@ -267,37 +268,19 @@ class App extends Component {
     this.state.resources.updateResourceProduction(worker);
   }
 
-  handleWorkers = () => {
-    // suboptimal to check everysecond how many workers are there ??
-    // isn't this better to hold the value somewhere and update it ?
-    // when necessary? Event Handling//
-    // >> You've Got New Worker!
-
-    this.setState({
-      goldAmount:
-        this.state.resource.goldAmount + this.state.resource.goldProduction
-    });
-  };
+  workerIsResting(worker) {
+    console.log("WORKER IS RESTING");
+    this.state.resources.updateResourceProduction(worker);
+  }
 
   workersDoWork = () => {
     // todo update resources
     // OPTIMIZATION
     // if you have no particual workers at the mine -> Don't Update the Value
-    this.state.resources.addResource(
-      this.state.resources.goldProduction,
-      "gold"
-    );
-    this.state.resources.addResource(
-      this.state.resources.silverProduction,
-      "silver"
-    );
-    this.state.resources.addResource(
-      this.state.resources.copperProduction,
-      "copper"
-    );
+    this.state.resources.workersWork();
 
     this.state.workers.giveExperienceToWorkingWorkers();
-
+    this.state.workers.handleWorkerEnergy();
     // todo update workers
     // forall working workers
     // give them exp

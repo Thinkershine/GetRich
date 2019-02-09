@@ -185,6 +185,12 @@ export default class MyResources {
     }
   };
 
+  workersWork() {
+    this.addResource(this.goldProduction, "gold");
+    this.addResource(this.silverProduction, "silver");
+    this.addResource(this.copperProduction, "copper");
+  }
+
   updateResourceProduction(worker) {
     console.log(
       "WORKER",
@@ -193,20 +199,47 @@ export default class MyResources {
       "@MINE TYPE",
       worker.currentlyMining
     );
-    switch (worker.currentlyMining) {
-      case "gold":
-        this.goldProduction = this.goldProduction + worker.miningPower;
-        break;
-      case "silver":
-        this.silverProduction = this.silverProduction + worker.miningPower;
-        break;
-      case "copper":
-        let baseCopperProduction =
-          this.copperProduction - (worker.miningPower - 1);
-        this.copperProduction = baseCopperProduction + worker.miningPower;
-        break;
-      default:
-        break;
+    if (worker.isWorking) {
+      switch (worker.currentlyMining) {
+        case "gold":
+          let baseGoldProduction =
+            this.goldProduction - (worker.miningPower - 1);
+          this.goldProduction = baseGoldProduction + worker.miningPower;
+          break;
+        case "silver":
+          let baseSilverProduction =
+            this.silverProduction - (worker.miningPower - 1);
+
+          this.silverProduction = baseSilverProduction + worker.miningPower;
+          break;
+        case "copper":
+          let baseCopperProduction =
+            this.copperProduction - (worker.miningPower - 1);
+          this.copperProduction = baseCopperProduction + worker.miningPower;
+          break;
+        default:
+          break;
+      }
+    }
+
+    if (worker.isResting) {
+      switch (worker.currentlyMining) {
+        case "gold":
+          let baseGoldProduction = this.goldProduction - worker.miningPower;
+          this.goldProduction = baseGoldProduction;
+          break;
+        case "silver":
+          let baseSilverProduction = this.silverProduction - worker.miningPower;
+
+          this.silverProduction = baseSilverProduction;
+          break;
+        case "copper":
+          let baseCopperProduction = this.copperProduction - worker.miningPower;
+          this.copperProduction = baseCopperProduction;
+          break;
+        default:
+          break;
+      }
     }
   }
 }

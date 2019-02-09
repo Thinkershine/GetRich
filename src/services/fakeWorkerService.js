@@ -12,6 +12,7 @@ export const workers = [
     energyConsumption: 1,
     energyRegeneration: 1,
     energyPoints: 100,
+    maximumEnergyPoints: 100,
     hourlyCost: 5,
     currentEquipment: null,
     currentlyMining: ""
@@ -29,6 +30,7 @@ export const workers = [
     energyConsumption: 1,
     energyRegeneration: 1,
     energyPoints: 120,
+    maximumEnergyPoints: 120,
     hourlyCost: 6,
     currentEquipment: null,
     currentlyMining: ""
@@ -46,6 +48,7 @@ export const workers = [
     energyConsumption: 1,
     energyRegeneration: 2,
     energyPoints: 150,
+    maximumEnergyPoints: 150,
     hourlyCost: 10,
     currentEquipment: null,
     currentlyMining: ""
