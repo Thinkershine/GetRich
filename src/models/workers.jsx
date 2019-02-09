@@ -11,6 +11,8 @@ class Worker {
   miningPower = 0;
   energyLevel = 0;
   energyPoints = 0;
+  maximumEnergyPoints = 0;
+  energyPointsCurrentPercentage = 0;
   energyConsumption = 0;
   energyRegeneration = 0;
   hourlyCost = 0;
@@ -20,7 +22,7 @@ class Worker {
 
   leveledUpHandler;
 
-  constructor(worker, leveledUpHandler, restingHandler) {
+  constructor(worker, leveledUpHandler, restingHandler, workingHandler) {
     this._id = worker._id;
     this.name = worker.name;
     this.miningSkill = worker.miningSkill;
@@ -32,6 +34,7 @@ class Worker {
     this.energyLevel = worker.energyLevel;
     this.energyPoints = worker.energyPoints;
     this.maximumEnergyPoints = worker.maximumEnergyPoints;
+    this.energyPointsCurrentPercentage = this.calculateEnergyPointsCurrentPercentage();
     this.energyConsumption = worker.energyConsumption;
     this.energyRegeneration = worker.energyRegeneration;
     this.hourlyCost = worker.hourlyCost;
@@ -42,6 +45,7 @@ class Worker {
 
     this.leveledUpHandler = leveledUpHandler;
     this.restingHandler = restingHandler;
+    this.workingHandler = workingHandler;
 
     this.gainExperience = this.gainExperience.bind(this);
     this.workerLeveledUp = this.workerLeveledUp.bind(this);
@@ -75,8 +79,6 @@ class Worker {
       this.nextMiningSkillExperience = experience.nextMiningSkillExperience;
       this.miningSkillCurrentPercentage =
         experience.miningSkillCurrentPercentage;
-
-      console.log("WORKER", this.name, "GAINED EXP", experience);
     }
   }
 
@@ -85,32 +87,47 @@ class Worker {
   }
 
   handleWorkerEnergy(energyAmount) {
-    console.log("DRAIN ENERGY");
     if (this.isWorking) {
-      if (this.energyPoints <= 0) {
-        if (this.isWorking) {
-          this.energyPoints = 0;
-          this.isWorking = false;
-          this.isResting = true;
-          this.restingHandler(this);
-        }
-      } else {
-        this.energyPoints -= energyAmount;
-      }
+      this.handleWorking(energyAmount);
     }
 
     if (this.isResting) {
-      if (this.energyPoints >= this.maximumEnergyPoints) {
-        this.energyPoints = this.maximumEnergyPoints;
-        this.isResting = false;
-        if (this.currentlyMining !== "") {
-          this.isWorking = true;
-        }
-      } else {
-        this.energyPoints += this.energyRegeneration;
-      }
+      this.handleResting();
+    }
+
+    this.energyPointsCurrentPercentage = this.calculateEnergyPointsCurrentPercentage();
+  }
+
+  handleWorking(energyAmount) {
+    this.energyPoints -= energyAmount;
+    if (this.energyPoints <= 0) {
+      this.energyPoints = 0;
+      this.isWorking = false;
+      this.isResting = true;
+      this.restingHandler(this);
     }
   }
+
+  handleResting() {
+    this.energyPoints += this.energyRegeneration;
+    if (this.energyPoints >= this.maximumEnergyPoints) {
+      this.energyPoints = this.maximumEnergyPoints;
+      this.isResting = false;
+      this.isWorking = true;
+      this.workingHandler(this);
+    }
+  }
+
+  calculateEnergyPointsCurrentPercentage = () => {
+    let currentPercentage =
+      (this.energyPoints / this.maximumEnergyPoints) * 100;
+
+    if (currentPercentage >= 100) {
+      currentPercentage = 0;
+    }
+
+    return currentPercentage;
+  };
 }
 
 export default class MyWorkers {
@@ -123,12 +140,14 @@ export default class MyWorkers {
   experienceHandler = {};
   leveledUpHandler;
   restingHandler;
+  workingHandler;
 
-  constructor(messenger, leveledUpHandler, restingHandler) {
+  constructor(messenger, leveledUpHandler, restingHandler, workingHandler) {
     this.messenger = messenger;
     this.experienceHandler = new ExperienceHandler();
     this.leveledUpHandler = leveledUpHandler;
     this.restingHandler = restingHandler;
+    this.workingHandler = workingHandler;
   }
 
   injectMiningRequirements(miningRequirements) {
@@ -268,7 +287,12 @@ export default class MyWorkers {
   hireWorker = worker => {
     this.workersAmountChanged = true;
     this.workers.push(
-      new Worker(worker, this.leveledUpHandler, this.restingHandler)
+      new Worker(
+        worker,
+        this.leveledUpHandler,
+        this.restingHandler,
+        this.workingHandler
+      )
     );
   };
 
@@ -300,7 +324,7 @@ export default class MyWorkers {
     const energyDrain = 1;
     if (this.copperWorkers.length != 0) {
       for (let i = 0; i <= this.copperWorkers.length - 1; i += 1) {
-        this.copperWorkers[i].handleWorkerEnergy(energyDrain * 25);
+        this.copperWorkers[i].handleWorkerEnergy(energyDrain);
       }
     }
 

@@ -39,7 +39,8 @@ class App extends Component {
     workers: new MyWorkers(
       this.handleButtonMessage.bind(this),
       this.workerLeveledUp.bind(this),
-      this.workerIsResting.bind(this)
+      this.workerIsResting.bind(this),
+      this.workerIsWorking.bind(this)
     ),
 
     experienceForLevels: getLevels(),
@@ -263,14 +264,15 @@ class App extends Component {
   };
 
   workerLeveledUp(worker) {
-    // pass workers
-    console.log("LEVELED UP");
-    this.state.resources.updateResourceProduction(worker);
+    this.state.resources.updateResourceProductionOnLevelUp(worker, true);
   }
 
   workerIsResting(worker) {
-    console.log("WORKER IS RESTING");
-    this.state.resources.updateResourceProduction(worker);
+    this.state.resources.updateResourceProductionOnResting(worker);
+  }
+
+  workerIsWorking(worker) {
+    this.state.resources.updateResourceProductionOnGetBackToWork(worker);
   }
 
   workersDoWork = () => {

@@ -36,6 +36,25 @@ class Workers extends Component {
           />
         )}
         <br />
+        {forHire == true ? (
+          <React.Fragment>
+            <span className="worker-stat">Energy Points :</span>
+            <span className="worker-stat-value">{worker.energyPoints}</span>
+          </React.Fragment>
+        ) : (
+          <ProgressBar
+            title="Energy"
+            percentageOfCompletion={worker.energyPointsCurrentPercentage}
+            currentValue={worker.energyPoints}
+            maxValue={worker.maximumEnergyPoints}
+            badge={"primary"}
+            bgColor={"dark"}
+            size={"small"}
+            animated={worker.isResting}
+          />
+        )}
+
+        <br />
         <span className="worker-stat">Mining Power :</span>
         <span className="worker-stat-value">{worker.miningPower}</span>
         <br />
@@ -47,9 +66,6 @@ class Workers extends Component {
         <br />
         <span className="worker-stat">Energy Regeneration :</span>
         <span className="worker-stat-value">{worker.energyRegeneration}</span>
-        <br />
-        <span className="worker-stat">Energy Points :</span>
-        <span className="worker-stat-value">{worker.energyPoints}</span>
         <br />
         <span className="worker-stat">Hourly Cost :</span>
         <span className="worker-stat-value">${worker.hourlyCost}/h</span>

@@ -9,18 +9,15 @@ export default class ExperienceHandler {
 
   constructor() {
     this.experienceTable = getLevels();
-    console.log("CONSTRUCTED", this.experienceTable);
   }
 
   handleExperienceGain(expAmount, experience) {
-    console.log("INPUT EXP", experience);
     experience.miningSkillExperience =
       experience.miningSkillExperience + expAmount;
     experience.currentMiningSkillExperience =
       experience.currentMiningSkillExperience + expAmount;
 
     experience = this.calculateLevelUp(experience);
-    console.log("RETURN EXP", experience);
     return experience;
   }
 
@@ -28,7 +25,7 @@ export default class ExperienceHandler {
     let nextMiningLevelExperience = getExperienceForLevel(
       experience.miningSkill + 1
     );
-    console.log("NEXT LVL EXP", nextMiningLevelExperience);
+
     if (experience.miningSkillExperience >= nextMiningLevelExperience) {
       experience.miningSkill += 1;
       experience.miningPower += 1;
