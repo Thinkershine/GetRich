@@ -3,9 +3,12 @@ import React, { Component } from "react";
 class ProgressBar extends Component {
   state = {};
 
-  badgeClassNames(badge) {
-    let classNames =
-      "progress-bar progress-bar-striped progress-bar-animated bg-" + badge;
+  badgeClassNames(badge, animated) {
+    let classNames = "progress-bar bg-" + badge;
+
+    if (animated) {
+      classNames += " progress-bar-striped progress-bar-animated";
+    }
 
     return classNames;
   }
@@ -35,7 +38,8 @@ class ProgressBar extends Component {
       maxValue,
       badge,
       bgColor,
-      size
+      size,
+      animated
     } = this.props;
 
     const trueSize = this.setSize(size);
@@ -50,7 +54,7 @@ class ProgressBar extends Component {
           style={{ height: trueSize }}
         >
           <div
-            className={this.badgeClassNames(badge)}
+            className={this.badgeClassNames(badge, animated)}
             role="progressbar"
             style={{ width: percentageOfCompletion + "%" }}
             aria-valuenow={currentValue}

@@ -16,6 +16,7 @@ const Stats = props => {
             badge={"warning"}
             bgColor={"dark"}
             size={"medium"}
+            animated={true}
           />
         </div>
         <div className="col">

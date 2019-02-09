@@ -28,6 +28,7 @@ class Workers extends Component {
             badge={"warning"}
             bgColor={"dark"}
             size={"small"}
+            animated={true}
           />
         )}
         <br />
