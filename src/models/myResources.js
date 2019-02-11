@@ -88,8 +88,6 @@ export default class MyResources {
   };
 
   sellResource(resourceType, amount, todayMarketPrice) {
-    console.log("RESOURCE Type", resourceType);
-    console.log("Today Market Price", todayMarketPrice);
     switch (resourceType) {
       case "gold":
         if (this.goldAmount >= amount) {
@@ -169,7 +167,6 @@ export default class MyResources {
   };
 
   workerStartWorking = (worker, mineType) => {
-    console.log("UPDATING", worker.miningPower, mineType);
     switch (mineType) {
       case "gold":
         this.goldProduction = this.goldProduction + worker.miningPower;

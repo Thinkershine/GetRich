@@ -123,9 +123,10 @@ class Worker {
       (this.energyPoints / this.maximumEnergyPoints) * 100;
 
     if (currentPercentage >= 100) {
-      currentPercentage = 0;
+      currentPercentage = 100;
     }
 
+    console.log("CURRENT ENERGY PERCENTAGE", currentPercentage);
     return currentPercentage;
   };
 }

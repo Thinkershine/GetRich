@@ -156,7 +156,6 @@ class App extends Component {
       (this.state.currentMiningSkillExperience /
         this.state.lvlExperienceDifference) *
       100;
-    //console.log("CURRENT PERCENTAGE", currentPercentage);
 
     if (currentPercentage >= 100) {
       currentPercentage = 0;
@@ -177,9 +176,6 @@ class App extends Component {
         },
         this.calculateNextLevelExperience
       );
-      //console.log("LEVEL UP");
-
-      // BOOM GRATS YOU'VE LEVELED UP !!
     }
   }
 
@@ -198,7 +194,6 @@ class App extends Component {
     let lvlExperienceDifference = getExperienceDifferenceForLvl(
       this.state.miningSkill
     );
-    //console.log("LV EXP DIF", lvlExperienceDifference);
 
     this.setState({ lvlExperienceDifference }, this.gratulations);
   }
@@ -251,7 +246,6 @@ class App extends Component {
   };
 
   makeWorkerWork = (worker, mineType) => {
-    console.log("WORKER IS WORKING NOW", worker, "MINE TYPE", mineType);
     // todo Check if Miner is Able to Mine This ...
     // block buttons if he's not able to mine ??
 
@@ -276,32 +270,22 @@ class App extends Component {
   }
 
   workersDoWork = () => {
-    // todo update resources
-    // OPTIMIZATION
-    // if you have no particual workers at the mine -> Don't Update the Value
     this.state.resources.workersWork();
 
     this.state.workers.giveExperienceToWorkingWorkers();
     this.state.workers.handleWorkerEnergy();
-    // todo update workers
-    // forall working workers
-    // give them exp
-    // check if they leveled up
-    // update their state, progress bars, earnings, etc...
 
     // fire or hire workers if no resources
   };
 
   hireNewWorker = worker => {
-    console.log("NEW WORKER HIRED", worker);
     if (!this.canAffordWorker(worker)) return;
 
-    // todo
-    // Make your worker work for you...
     // if you run out of money the worker will be fired
     // if you already hired this worker you can't hire him again
     // if you hire more than MAX_WORKERS then you can't hire new worker
     // WHAT ABOUT TELLING WORKERS "YOU ARE FIRED!"
+
     this.state.workers.hireWorker(worker);
   };
 
