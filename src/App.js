@@ -22,6 +22,7 @@ import Workers from "./components/workers";
 import Message from "./components/common/message";
 
 import NotFound from "./components/common/notFound";
+import ExperienceHandler from "./components/helpers/experienceHandler";
 
 class App extends Component {
   state = {
@@ -43,6 +44,7 @@ class App extends Component {
       this.workerIsWorking.bind(this)
     ),
 
+    experienceHandler: new ExperienceHandler(),
     experienceForLevels: getLevels(),
     miningSkill: 0,
     miningSkillExperience: 0,
@@ -131,72 +133,33 @@ class App extends Component {
   }
 
   handleExperienceGain = expAmount => {
-    let miningSkillExp = this.state.miningSkillExperience;
-    miningSkillExp += expAmount;
+    let experience = {
+      miningSkill: this.state.miningSkill,
+      miningSkillExperience: this.state.miningSkillExperience,
+      miningSkillCurrentPercentage: this.state.miningSkillCurrentPercentage,
+      currentMiningSkillExperience: this.state.currentMiningSkillExperience,
+      nextMiningSkillExperience: this.state.nextMiningLevelExperience,
+      miningPower: this.state.miningPowerLevel
+    };
 
-    let currentMiningSkillExp = this.state.currentMiningSkillExperience;
-    currentMiningSkillExp += expAmount;
-
-    this.setState(
-      {
-        miningSkillExperience: miningSkillExp,
-        currentMiningSkillExperience: currentMiningSkillExp
-      },
-      this.handleGainedExperience
+    experience = this.state.experienceHandler.handleExperienceGain(
+      expAmount,
+      experience
     );
+
+    if (this.state.miningSkill !== experience.miningSkill) {
+      this.gratulations();
+    }
+
+    this.setState({
+      miningSkillExperience: experience.miningSkillExperience,
+      currentMiningSkillExperience: experience.currentMiningSkillExperience,
+      miningSkill: experience.miningSkill,
+      miningPowerLevel: experience.miningPower,
+      nextMiningLevelExperience: experience.nextMiningSkillExperience,
+      miningSkillCurrentPercentage: experience.miningSkillCurrentPercentage
+    });
   };
-
-  handleGainedExperience() {
-    this.calculateLevelUp();
-    this.calculateCurrentLevelExperiencePercentage();
-  }
-
-  calculateCurrentLevelExperiencePercentage() {
-    let currentPercentage =
-      (this.state.currentMiningSkillExperience /
-        this.state.lvlExperienceDifference) *
-      100;
-
-    if (currentPercentage >= 100) {
-      currentPercentage = 0;
-    }
-
-    this.setState({ miningSkillCurrentPercentage: currentPercentage });
-  }
-
-  calculateLevelUp() {
-    if (
-      this.state.miningSkillExperience >= this.state.nextMiningLevelExperience
-    ) {
-      this.setState(
-        {
-          miningSkill: this.state.miningSkill + 1,
-          miningPowerLevel: this.state.miningPowerLevel + 1,
-          currentMiningSkillExperience: 0
-        },
-        this.calculateNextLevelExperience
-      );
-    }
-  }
-
-  calculateNextLevelExperience() {
-    let nextlevelExperience = getExperienceForLevel(this.state.miningSkill + 1);
-
-    this.setState(
-      {
-        nextMiningLevelExperience: nextlevelExperience
-      },
-      this.calculateExperienceDifference
-    );
-  }
-
-  calculateExperienceDifference() {
-    let lvlExperienceDifference = getExperienceDifferenceForLvl(
-      this.state.miningSkill
-    );
-
-    this.setState({ lvlExperienceDifference }, this.gratulations);
-  }
 
   gratulations() {
     console.log("GRATULATIONS");
