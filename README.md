@@ -12,3 +12,5 @@ Open [http://localhost:3000](http://localhost:3000) to play in the browser.
 # Play the Game in Browser
 
 @ [GetRich on Heroku Cloud](https://riches.herokuapp.com) - _ENJOY Getting RICH in Your Browser!_
+
+You May Have to Wait a Little in Order for Server to Start.
