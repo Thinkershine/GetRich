@@ -130,7 +130,7 @@ class Mine extends Component {
             </h3>
             <button
               className="btn btn-warning btn-lg"
-              style={{ color: "white" }}
+              style={{ color: "white", width: 250, height: 100, fontSize: 30 }}
               onClick={() => this.handleDigClick()}
             >
               DIG

@@ -126,6 +126,12 @@
   border: 1px solid gray;
 }
 
+#current-item {
+  border-radius: 3px;
+  border: 1px solid gray;
+  background-color: rgba(155, 155, 155, 0.2);
+}
+
 .worker-stat {
   width: 175px;
   float: left;
@@ -140,7 +146,6 @@
 
 #resources,
 #stats,
-#workers,
 #store,
 #market,
 #bank,
