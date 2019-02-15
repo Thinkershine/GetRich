@@ -15,19 +15,6 @@ class Mine extends Component {
     this.state.renderReward = false;
   }
 
-  componentDidMount() {
-    //  const minerTimerID = setInterval(this.dig, 1000);
-    //  this.setState({ minerTimerID });
-  }
-
-  componentWillUnmount() {
-    //  clearInterval(this.state.minerTimerID);
-  }
-
-  dig = () => {
-    //  this.props.onInterval();
-  };
-
   handleDigClick = () => {
     if (this.props.noEnergy) {
       this.props.spendEnergy(false);

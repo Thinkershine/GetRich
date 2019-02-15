@@ -17,7 +17,7 @@ class Workers extends Component {
           {worker.isResting && <i>Resting...</i>}
         </span>
 
-        {forHire == true ? (
+        {forHire === true ? (
           <React.Fragment>
             <span className="worker-stat">Mining Skill :</span>
             <span className="worker-stat-value">{worker.miningSkill}</span>
@@ -36,7 +36,7 @@ class Workers extends Component {
           />
         )}
         <br />
-        {forHire == true ? (
+        {forHire === true ? (
           <React.Fragment>
             <span className="worker-stat">Energy Points :</span>
             <span className="worker-stat-value">{worker.energyPoints}</span>

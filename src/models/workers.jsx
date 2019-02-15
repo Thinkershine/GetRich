@@ -302,19 +302,19 @@ export default class MyWorkers {
   };
 
   giveExperienceToWorkingWorkers() {
-    if (this.copperWorkers.length != 0) {
+    if (this.copperWorkers.length !== 0) {
       for (let i = 0; i <= this.copperWorkers.length - 1; i += 1) {
         this.copperWorkers[i].gainExperience(1, this.experienceHandler);
       }
     }
 
-    if (this.silverWorkers.length != 0) {
+    if (this.silverWorkers.length !== 0) {
       for (let i = 0; i <= this.silverWorkers.length - 1; i += 1) {
         this.silverWorkers[i].gainExperience(2, this.experienceHandler);
       }
     }
 
-    if (this.goldWorkers.length != 0) {
+    if (this.goldWorkers.length !== 0) {
       for (let i = 0; i <= this.goldWorkers.length - 1; i += 1) {
         this.goldWorkers[i].gainExperience(3, this.experienceHandler);
       }
@@ -323,19 +323,19 @@ export default class MyWorkers {
 
   handleWorkerEnergy() {
     const energyDrain = 1;
-    if (this.copperWorkers.length != 0) {
+    if (this.copperWorkers.length !== 0) {
       for (let i = 0; i <= this.copperWorkers.length - 1; i += 1) {
         this.copperWorkers[i].handleWorkerEnergy(energyDrain);
       }
     }
 
-    if (this.silverWorkers.length != 0) {
+    if (this.silverWorkers.length !== 0) {
       for (let i = 0; i <= this.silverWorkers.length - 1; i += 1) {
         this.silverWorkers[i].handleWorkerEnergy(energyDrain);
       }
     }
 
-    if (this.goldWorkers.length != 0) {
+    if (this.goldWorkers.length !== 0) {
       for (let i = 0; i <= this.goldWorkers.length - 1; i += 1) {
         this.goldWorkers[i].handleWorkerEnergy(energyDrain);
       }

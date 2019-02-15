@@ -23,6 +23,7 @@ import Message from "./components/common/message";
 
 import NotFound from "./components/common/notFound";
 import ExperienceHandler from "./components/helpers/experienceHandler";
+import DropdownNavigation from "./components/dropdownNavigation";
 
 class App extends Component {
   state = {
@@ -110,6 +111,7 @@ class App extends Component {
 
   setMainContentMarginTop() {
     let navigationHeight = document.getElementById("top-bar").clientHeight;
+    console.log("NAV HEIGHT", navigationHeight);
     this.setState({
       navigationHeight: navigationHeight + 15
     });
@@ -377,8 +379,7 @@ class App extends Component {
     return (
       <div className="App">
         <header id="top-bar">
-          <Navigation />
-          <h1>Time to Get RICH</h1>
+          <DropdownNavigation />
         </header>
         <main
           id="main"

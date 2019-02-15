@@ -65,6 +65,8 @@ class Market extends Component {
           this.state.todayPrices.copperPrice
         );
         break;
+      default:
+        break;
     }
   };
 

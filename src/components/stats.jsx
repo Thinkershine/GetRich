@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import ProgressBar from "./common/progressBar";
 
 const Stats = props => {

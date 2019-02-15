@@ -25,7 +25,6 @@ class ProgressBar extends Component {
         return 50;
       default:
         return 20;
-        break;
     }
   }
 
