@@ -353,6 +353,11 @@ class App extends Component {
     this.setState({ goMining: mineType });
   };
 
+  changedMining = mineType => {
+    console.log("Changed Mining to", mineType);
+    this.setState({ goMining: mineType });
+  };
+
   render() {
     const { currentEquipment } = this.state;
     const miningPower = this.state.isEquipped
@@ -407,6 +412,7 @@ class App extends Component {
               render={props => (
                 <Mining
                   goMining={this.state.goMining}
+                  changedMining={this.changedMining}
                   stopMining={this.stopMining}
                   miningPower={miningPower}
                   miningSkill={this.state.miningSkill}

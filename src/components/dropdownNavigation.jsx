@@ -8,7 +8,7 @@ class DropdownNavigation extends Component {
   };
 
   toggleOpenMining = e => {
-    e.preventDefault();
+    // e.preventDefault();
     this.setState({ isMiningDropdownOpen: !this.state.isMiningDropdownOpen });
   };
   toggleNavbar = () => {

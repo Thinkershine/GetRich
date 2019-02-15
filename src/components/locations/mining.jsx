@@ -13,6 +13,7 @@ class Mining extends Component {
     goldMiningRequirements: { miningSkill: 10, miningPower: 10 },
 
     isMining: false,
+    currentlyMining: null,
     message: {}
   };
 
@@ -24,24 +25,21 @@ class Mining extends Component {
     this.state.copperMiningRequirements = this.props.miningRequirements.copperMining;
     this.state.silverMiningRequirements = this.props.miningRequirements.silverMining;
     this.state.goldMiningRequirements = this.props.miningRequirements.goldMining;
-    this.state.goMining = this.props.goMining;
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.state.goMining !== nextProps.goMining) {
-      console.log("WILL CHECK MINING");
-      this.stopMining();
-      this.checkMining(nextProps.goMining);
-      this.setState({ goMining: nextProps.goMining });
-    }
-
     this.setState({
       miningPower: nextProps.miningPower
     });
+
+    if (this.props.goMining === nextProps.goMining) {
+      return;
+    }
+
+    this.startMining(nextProps.goMining);
   }
 
-  checkMining = miningType => {
-    console.log("CHECK MINING", miningType);
+  startMining = miningType => {
     switch (miningType) {
       case "gold":
         this.goMining("gold");
@@ -79,8 +77,10 @@ class Mining extends Component {
             isGoldMining: true,
             isSilverMining: false,
             isCopperMining: false,
-            isMining: true
+            isMining: true,
+            currentlyMining: "gold"
           });
+          this.props.changedMining("gold");
         } else {
           this.props.messenger({
             title: "You Aren't Skilled Enough!",
@@ -101,8 +101,10 @@ class Mining extends Component {
             isSilverMining: true,
             isGoldMining: false,
             isCopperMining: false,
-            isMining: true
+            isMining: true,
+            currentlyMining: "silver"
           });
+          this.props.changedMining("silver");
         } else {
           this.props.messenger({
             title: "You Aren't Skilled Enough!",
@@ -124,8 +126,10 @@ class Mining extends Component {
             isCopperMining: true,
             isSilverMining: false,
             isGoldMining: false,
-            isMining: true
+            isMining: true,
+            currentlyMining: "copper"
           });
+          this.props.changedMining("copper");
         } else {
           this.props.messenger({
             title: "You Aren't Skilled Enough!",
@@ -141,6 +145,7 @@ class Mining extends Component {
         break;
     }
   };
+
   stopMining = () => {
     this.setState({
       isGoldMining: false,
@@ -194,7 +199,7 @@ class Mining extends Component {
           {this.state.isMining && (
             <button
               onClick={() => {
-                this.setState({ isMining: false });
+                this.stopMining();
                 this.props.history.push("/mining");
               }}
               className="btn btn-secondary"
