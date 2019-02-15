@@ -4,26 +4,23 @@ import "./App.css";
 import { getItems } from "./services/fakeItemService.js";
 import {
   getLevels,
-  getExperienceForLevel,
-  getExperienceDifferenceForLvl
+  getExperienceForLevel
 } from "./services/fakeExperienceService.js";
 import MyWorkers from "./models/workers";
 import MyResources from "./models/myResources.js";
+import DropdownNavigation from "./components/dropdownNavigation";
 import Stats from "./components/stats";
 import Home from "./components/locations/home";
 import Store from "./components/locations/store";
 import Mining from "./components/locations/mining";
 import Market from "./components/locations/market";
 import Bank from "./components/locations/bank";
-import Navigation from "./components/navigation";
 import Resources from "./components/resources";
 import Equipment from "./components/equipment";
 import Workers from "./components/workers";
 import Message from "./components/common/message";
-
 import NotFound from "./components/common/notFound";
 import ExperienceHandler from "./components/helpers/experienceHandler";
-import DropdownNavigation from "./components/dropdownNavigation";
 
 class App extends Component {
   state = {

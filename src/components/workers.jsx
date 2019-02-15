@@ -76,7 +76,7 @@ class Workers extends Component {
         </span>
         <br />
 
-        {forHire == true ? (
+        {forHire === true ? (
           <button
             onClick={() => this.props.hireWorker(worker)}
             className="btn btn-success"
@@ -124,7 +124,7 @@ class Workers extends Component {
         <p>Do You Need More Workerss?</p>
         <h3>Hire Workers</h3>
         <div className="row">{this.renderWorkers(forHire)}</div>
-        {this.props.playerWorkers.length != 0 ? (
+        {this.props.playerWorkers.length !== 0 ? (
           <h3>Your Workers</h3>
         ) : (
           <h3>You Don't Hire any Workers.</h3>

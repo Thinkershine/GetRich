@@ -7,7 +7,8 @@ class DropdownNavigation extends Component {
     isNavbarOpen: false
   };
 
-  toggleOpenMining = () => {
+  toggleOpenMining = e => {
+    e.preventDefault();
     this.setState({ isMiningDropdownOpen: !this.state.isMiningDropdownOpen });
   };
   toggleNavbar = () => {
@@ -94,10 +95,10 @@ class DropdownNavigation extends Component {
                 </Link>
               </li>
               <li className="nav-item dropdown">
-                <a
+                <Link
                   className="nav-link dropdown-toggle"
                   onClick={this.toggleOpenMining}
-                  href="#"
+                  to="/mining"
                   id="navbarDropdown"
                   role="button"
                   data-toggle="dropdown"
@@ -105,7 +106,7 @@ class DropdownNavigation extends Component {
                   aria-expanded="false"
                 >
                   Mining
-                </a>
+                </Link>
 
                 <div
                   className={miningMenuClass}
