@@ -48,7 +48,7 @@ class Store extends Component {
           <button className="btn btn-primary" onClick={this.nextItem}>
             NEXT
           </button>
-          <div id="current-item" style={{ width: 350, margin: "0 auto" }}>
+          <div id="current-item" style={{ width: 275, margin: "0 auto" }}>
             <h4>{items[currentItem].name.toUpperCase()}</h4>
             <p>Type: {items[currentItem].mineType.toUpperCase()}</p>
             <p>Power: {items[currentItem].miningPower}</p>
