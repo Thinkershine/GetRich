@@ -75,7 +75,8 @@ class App extends Component {
     handleMessenger: this.handleButtonMessage.bind(this),
     energyGainingIntervalID: null,
     minersWorkingIntervalID: null,
-    workersWorkTimer: 1000
+    workersWorkTimer: 1000,
+    goMining: null
   };
 
   componentDidMount() {
@@ -347,6 +348,11 @@ class App extends Component {
     });
   };
 
+  goMining = mineType => {
+    console.log("APP js Go Mining", mineType);
+    this.setState({ goMining: mineType });
+  };
+
   render() {
     const { currentEquipment } = this.state;
     const miningPower = this.state.isEquipped
@@ -376,7 +382,7 @@ class App extends Component {
     return (
       <div className="App">
         <header id="top-bar">
-          <DropdownNavigation />
+          <DropdownNavigation goMining={this.goMining} />
         </header>
         <main
           id="main"
@@ -400,7 +406,7 @@ class App extends Component {
               path="/mining"
               render={props => (
                 <Mining
-                  goMining={this.goMining}
+                  goMining={this.state.goMining}
                   stopMining={this.stopMining}
                   miningPower={miningPower}
                   miningSkill={this.state.miningSkill}

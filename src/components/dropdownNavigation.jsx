@@ -17,7 +17,8 @@ class DropdownNavigation extends Component {
   hideNavbar = () => {
     this.setState({ isNavbarOpen: false });
   };
-  hideNavbarAndMining = () => {
+  hideNavbarAndMining = mineType => {
+    this.props.goMining(mineType);
     this.setState({ isNavbarOpen: false, isMiningDropdownOpen: false });
   };
 
@@ -112,27 +113,24 @@ class DropdownNavigation extends Component {
                   className={miningMenuClass}
                   aria-labelledby="dropdownMenuButton"
                 >
-                  <Link
+                  <button
                     className="dropdown-item"
-                    to="/mining/gold"
-                    onClick={this.hideNavbarAndMining}
+                    onClick={() => this.hideNavbarAndMining("gold")}
                   >
                     Gold
-                  </Link>
-                  <Link
+                  </button>
+                  <button
                     className="dropdown-item"
-                    to="/mining/silver"
-                    onClick={this.hideNavbarAndMining}
+                    onClick={() => this.hideNavbarAndMining("silver")}
                   >
                     Silver
-                  </Link>
-                  <Link
+                  </button>
+                  <button
                     className="dropdown-item"
-                    to="/mining/copper"
-                    onClick={this.hideNavbarAndMining}
+                    onClick={() => this.hideNavbarAndMining("copper")}
                   >
                     Copper
-                  </Link>
+                  </button>
                 </div>
               </li>
               <li className="nav-item">

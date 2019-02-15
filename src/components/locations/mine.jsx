@@ -10,8 +10,6 @@ class Mine extends Component {
     this.state.mineType = this.props.mineType;
     this.state.minedAmount = 0;
     this.state.basicMining = this.props.miningPower;
-    this.state.minerTimerID = 0;
-
     this.state.renderReward = false;
   }
 
@@ -25,7 +23,6 @@ class Mine extends Component {
       renderReward: true,
       minedAmount: this.state.minedAmount + this.state.basicMining
     });
-    console.log("AFTER DIG MINED AMOUNT:", this.state.minedAmount);
 
     this.props.onClick(this.state.basicMining, this.props.mineType);
     this.props.gainExperience(this.props.experience);

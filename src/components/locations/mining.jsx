@@ -24,11 +24,41 @@ class Mining extends Component {
     this.state.copperMiningRequirements = this.props.miningRequirements.copperMining;
     this.state.silverMiningRequirements = this.props.miningRequirements.silverMining;
     this.state.goldMiningRequirements = this.props.miningRequirements.goldMining;
+    this.state.goMining = this.props.goMining;
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ miningPower: nextProps.miningPower });
+    if (this.state.goMining !== nextProps.goMining) {
+      console.log("WILL CHECK MINING");
+      this.stopMining();
+      this.checkMining(nextProps.goMining);
+      this.setState({ goMining: nextProps.goMining });
+    }
+
+    this.setState({
+      miningPower: nextProps.miningPower
+    });
   }
+
+  checkMining = miningType => {
+    console.log("CHECK MINING", miningType);
+    switch (miningType) {
+      case "gold":
+        this.goMining("gold");
+        this.props.history.push("/mining/gold");
+        break;
+      case "silver":
+        this.goMining("silver");
+        this.props.history.push("/mining/silver");
+        break;
+      case "copper":
+        this.goMining("copper");
+        this.props.history.push("/mining/copper");
+        break;
+      default:
+        break;
+    }
+  };
 
   goMining = miningType => {
     const {
@@ -59,6 +89,7 @@ class Mining extends Component {
             buttonMessage: "ok..",
             buttonOnClick: this.props.messenger
           });
+          this.stopMining();
         }
         break;
       case "silver":
@@ -80,6 +111,7 @@ class Mining extends Component {
             buttonMessage: "ok..",
             buttonOnClick: this.props.messenger
           });
+          this.stopMining();
         }
 
         break;
@@ -102,26 +134,20 @@ class Mining extends Component {
             buttonMessage: "ok..",
             buttonOnClick: this.props.messenger
           });
+          this.stopMining();
         }
         break;
       default:
         break;
     }
   };
-  stopMining = miningType => {
-    switch (miningType) {
-      case "gold":
-        this.setState({ isGoldMining: false });
-        break;
-      case "silver":
-        this.setState({ isSilverMining: false });
-        break;
-      case "copper":
-        this.setState({ isCopperMining: false });
-        break;
-      default:
-        break;
-    }
+  stopMining = () => {
+    this.setState({
+      isGoldMining: false,
+      isSilverMining: false,
+      isCopperMining: false,
+      isMining: false
+    });
   };
 
   render() {
@@ -191,12 +217,12 @@ class Mining extends Component {
                   miningPower={this.state.miningPower}
                   mineType="silver"
                   goldMined={this.props.resources.getResourceAmount("silver")}
-                  //    onInterval={this.handleWorkers}
                   onClick={this.props.handleMining}
                   spendEnergy={this.props.spendEnergy}
                   noEnergy={this.props.noEnergy}
                   gainExperience={this.props.gainExperience}
                   experience={2}
+                  goMining={this.checkMining}
                   {...props}
                 />
               )}
@@ -211,12 +237,12 @@ class Mining extends Component {
                   miningPower={this.state.miningPower}
                   mineType="gold"
                   goldMined={this.props.resources.getResourceAmount("gold")}
-                  // onInterval={this.handleWorkers}
                   onClick={this.props.handleMining}
                   spendEnergy={this.props.spendEnergy}
                   noEnergy={this.props.noEnergy}
                   gainExperience={this.props.gainExperience}
                   experience={3}
+                  goMining={this.checkMining}
                   {...props}
                 />
               )}
@@ -231,12 +257,12 @@ class Mining extends Component {
                   miningPower={this.state.miningPower}
                   mineType="copper"
                   goldMined={this.props.resources.getResourceAmount("copper")}
-                  //   onInterval={this.handleWorkers}
                   onClick={this.props.handleMining}
                   spendEnergy={this.props.spendEnergy}
                   noEnergy={this.props.noEnergy}
                   gainExperience={this.props.gainExperience}
                   experience={1}
+                  goMining={this.checkMining}
                   {...props}
                 />
               )}
