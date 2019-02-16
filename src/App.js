@@ -495,6 +495,8 @@ class App extends Component {
               <h2>You've Leveled UP!</h2>
               <h3>
                 <i>"Riches come to me Everyday"</i>
+                <br />
+                <i style={{ color: "green" }}>Mining Power + 1</i>
               </h3>
               <h3>$.$</h3>
             </div>
