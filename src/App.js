@@ -21,6 +21,7 @@ import Workers from "./components/workers";
 import Message from "./components/common/message";
 import NotFound from "./components/common/notFound";
 import ExperienceHandler from "./components/helpers/experienceHandler";
+import Confetti from "./components/common/confetti";
 
 class App extends Component {
   state = {
@@ -76,7 +77,9 @@ class App extends Component {
     energyGainingIntervalID: null,
     minersWorkingIntervalID: null,
     workersWorkTimer: 1000,
-    goMining: null
+    goMining: null,
+    showConfetti: false,
+    confettiTimeoutInSeconds: 10000
   };
 
   componentDidMount() {
@@ -162,8 +165,13 @@ class App extends Component {
   };
 
   gratulations() {
-    console.log("GRATULATIONS");
+    setTimeout(this.stopConfetti, this.state.confettiTimeoutInSeconds);
+    this.setState({ showConfetti: true });
   }
+
+  stopConfetti = () => {
+    this.setState({ showConfetti: false });
+  };
 
   handleButtonMessage(messageForButton) {
     this.setState({
@@ -479,6 +487,24 @@ class App extends Component {
             />
           )}
         </div>
+
+        {this.state.showConfetti && (
+          <div id="congratulations">
+            <div id="congratulations-header">
+              <h1>CONGRATULATIONS</h1>
+              <h2>You've Leveled UP!</h2>
+              <h3>
+                <i>"Riches come to me Everyday"</i>
+              </h3>
+              <h3>$.$</h3>
+            </div>
+            <Confetti
+              text={""}
+              particlesAmount={200}
+              particleTypes={["dollar"]}
+            />
+          </div>
+        )}
       </div>
     );
   }

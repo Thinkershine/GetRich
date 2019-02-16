@@ -189,3 +189,42 @@
 #navigation ul li {
   margin: 10px 2px;
 }
+
+/**** Reward & LevelUp ****/
+
+#congratulations {
+  z-index: 1000;
+  width: 500px;
+  height: 200px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -100px;
+  margin-left: -250px;
+  color: goldenrod;
+}
+
+#congratulations-header {
+  background-color: rgba(0, 0, 0, 0.85);
+  border-radius: 3px;
+  padding: 15px;
+  font-family: Georgia, "Times New Roman", Times, serif !important;
+}
+
+.confetti {
+  z-index: -1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+/**** Block Text Selection ****/
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
