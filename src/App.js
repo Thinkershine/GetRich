@@ -76,10 +76,12 @@ class App extends Component {
     handleMessenger: this.handleButtonMessage.bind(this),
     energyGainingIntervalID: null,
     minersWorkingIntervalID: null,
+    resourceUpdatingIntervalID: null,
     workersWorkTimer: 1000,
     goMining: null,
     showConfetti: false,
-    confettiTimeoutInSeconds: 10000
+    confettiTimeoutInSeconds: 10000,
+    gameLoopClockTickTimeMiliseconds: 1000
   };
 
   componentDidMount() {
@@ -97,11 +99,17 @@ class App extends Component {
       this.state.workersWorkTimer
     );
 
+    this.resourceUpdatingIntervalID = setInterval(
+      this.handleResources,
+      this.state.gameLoopClockTickTimeMiliseconds
+    );
+
     this.setMainContentMarginTop();
 
     this.setState({
       energyGainingIntervalID: this.energyGainingIntervalID,
       minersWorkingIntervalID: this.minersWorkingIntervalID,
+      resourceUpdatingIntervalID: this.resourceUpdatingIntervalID,
       goldWorkers: workers.getGoldWorkersCount(),
       goldProduction: workers.getGoldWorkersTotalStrength(),
       nextMiningLevelExperience: getExperienceForLevel(
@@ -109,6 +117,10 @@ class App extends Component {
       )
     });
   }
+
+  handleResources = () => {
+    this.state.resources.gameLoopUpdate();
+  };
 
   setMainContentMarginTop() {
     let navigationHeight = document.getElementById("top-bar").clientHeight;
@@ -121,6 +133,7 @@ class App extends Component {
   componentWillUnmount() {
     clearInterval(this.state.energyGainingIntervalID);
     clearInterval(this.state.minersWorkingIntervalID);
+    clearInterval(this.state.resourceUpdatingIntervalID);
   }
 
   componentDidUpdate() {
@@ -166,6 +179,7 @@ class App extends Component {
 
   gratulations() {
     setTimeout(this.stopConfetti, this.state.confettiTimeoutInSeconds);
+    this.state.resources.addLevelUpReward(this.state.miningSkill + 1);
     this.setState({ showConfetti: true });
   }
 
@@ -502,7 +516,7 @@ class App extends Component {
             </div>
             <Confetti
               text={""}
-              particlesAmount={200}
+              particlesAmount={this.state.miningSkill}
               particleTypes={["dollar"]}
             />
           </div>

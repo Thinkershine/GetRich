@@ -22,6 +22,19 @@ export default class MyResources {
     this.messenger = messenger;
   }
 
+  gameLoopUpdate() {
+    this.dollarAmount += this.dollarProduction;
+  }
+
+  addLevelUpReward = miningPower => {
+    setTimeout(() => this.stopReward(miningPower), 10000);
+    this.dollarProduction += miningPower;
+  };
+
+  stopReward(rewardAmount) {
+    this.dollarProduction -= rewardAmount;
+  }
+
   addResource = (amount, mineType) => {
     switch (mineType) {
       case "gold":
