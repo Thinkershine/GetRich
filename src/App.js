@@ -206,7 +206,7 @@ class App extends Component {
     this.state.resources.sellResource(resourceType, amount, todayMarketPrice);
   };
 
-  handlePurchase = item => {
+  handleItemPurchase = item => {
     if (item.value > this.state.resources.dollarAmount) {
       this.displayMessage({
         title: "You are POOR!",
@@ -228,6 +228,23 @@ class App extends Component {
       isEquipped: true,
       currentEquipment: item
     });
+  };
+
+  handlePotionPurchase = potion => {
+    console.log("POTION PURCHASED", potion);
+    if (potion.value > this.state.resources.dollarAmount) {
+      this.displayMessage({
+        title: "You Don't Have Enough Money",
+        message: "You can't afford " + potion.name,
+        badge: "danger",
+        buttonMessage: "ok..",
+        buttonOnClick: this.handleButtonMessage.bind(this),
+        isHidden: true
+      });
+      return;
+    }
+
+    this.state.resources.spendResourceAmount("dollar", potion);
   };
 
   makeWorkerWork = (worker, mineType) => {
@@ -424,7 +441,8 @@ class App extends Component {
               render={props => (
                 <Store
                   itemsForSale={this.state.itemsForSale}
-                  handlePurchase={this.handlePurchase}
+                  handleItemPurchase={this.handleItemPurchase}
+                  handlePotionPurchase={this.handlePotionPurchase}
                   {...props}
                 />
               )}
@@ -509,7 +527,6 @@ class App extends Component {
               <h2>You've Leveled UP!</h2>
               <h3>
                 <i>"Riches come to me Everyday!"</i>
-
                 <br />
                 <i style={{ color: "green" }}>
                   Reward $<b>{this.state.miningSkill * 10}</b>
