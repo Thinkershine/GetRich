@@ -508,7 +508,12 @@ class App extends Component {
               <h1>CONGRATULATIONS</h1>
               <h2>You've Leveled UP!</h2>
               <h3>
-                <i>"Riches come to me Everyday"</i>
+                <i>"Riches come to me Everyday!"</i>
+
+                <br />
+                <i style={{ color: "green" }}>
+                  Reward $<b>{this.state.miningSkill * 10}</b>
+                </i>
                 <br />
                 <i style={{ color: "green" }}>Mining Power + 1</i>
               </h3>
