@@ -17,7 +17,7 @@ export default class MyResources {
     this.silverProduction = 0;
     this.goldAmount = 0;
     this.goldProduction = 0;
-    this.dollarAmount = 100;
+    this.dollarAmount = 500;
     this.dollarProduction = 0;
     this.messenger = messenger;
   }

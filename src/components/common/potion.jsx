@@ -52,7 +52,7 @@ class Potion extends Component {
 
   render() {
     return (
-      <div className="potion">
+      <div className="potion" style={{ width: 55, height: 55 }}>
         <img
           src={this.renderPotion(this.props.potionType)}
           alt={this.renderAltText(this.props.potionType)}

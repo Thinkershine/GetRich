@@ -22,6 +22,7 @@ import Message from "./components/common/message";
 import NotFound from "./components/common/notFound";
 import ExperienceHandler from "./components/helpers/experienceHandler";
 import Confetti from "./components/common/confetti";
+import Backpack from "./components/backpack";
 
 class App extends Component {
   state = {
@@ -81,7 +82,10 @@ class App extends Component {
     goMining: null,
     showConfetti: false,
     confettiTimeoutInSeconds: 10000,
-    gameLoopClockTickTimeMiliseconds: 1000
+    gameLoopClockTickTimeMiliseconds: 1000,
+
+    potions: [],
+    backpackSize: 5
   };
 
   componentDidMount() {
@@ -244,7 +248,49 @@ class App extends Component {
       return;
     }
 
+    console.log("BACKPACK FILLED", this.state.potions.length);
+    if (this.state.potions.length >= this.state.backpackSize) {
+      this.displayMessage({
+        title: "You Can't Carry More Potions",
+        message: "Use some of your own or throw them out!",
+        badge: "danger",
+        buttonMessage: "ok..",
+        buttonOnClick: this.handleButtonMessage.bind(this),
+        isHidden: true
+      });
+      return;
+    }
+
     this.state.resources.spendResourceAmount("dollar", potion);
+    this.addPotion(potion);
+  };
+
+  addPotion = potion => {
+    // check if you can carry more potions ...
+    console.log("ADDED POTION", potion);
+    // loop through all potions
+    let amountIncremented = false;
+
+    for (let i = 0; i <= this.state.potions.length; i += 1) {
+      // check their names
+      if (this.state.potions[i] !== undefined) {
+        console.log("NAME", this.state.potions[i].id);
+        console.log("NEW Potion NAME", potion.id);
+        if (this.state.potions[i].id === potion.id) {
+          // if already exists... add + to amount
+          this.state.potions[i].amount += 1;
+          amountIncremented = true;
+        }
+      }
+    }
+
+    if (amountIncremented) {
+      return;
+    }
+
+    this.state.potions.push(JSON.parse(JSON.stringify(potion)));
+
+    console.log("POTIONS", this.state.potions);
   };
 
   makeWorkerWork = (worker, mineType) => {
@@ -518,6 +564,10 @@ class App extends Component {
               isHidden={this.state.message.isHidden}
             />
           )}
+        </div>
+
+        <div id="widgets">
+          <Backpack potions={this.state.potions} />
         </div>
 
         {this.state.showConfetti && (

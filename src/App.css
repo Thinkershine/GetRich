@@ -229,12 +229,33 @@
                                   supported by Chrome and Opera */
 }
 
+/**** Backpack ****/
+
+#backpack {
+  background-color: rgba(0, 0, 0, 0.65);
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  position: fixed;
+  top: 25%;
+  left: 0;
+  width: 125px;
+  padding: 15px;
+}
+
+.backpack-slot {
+  padding: 1px;
+  margin: 5px;
+  border-radius: 3px;
+  background-color: rgba(23, 27, 255, 0.5);
+}
+
 /**** Potion ****/
 
 .potion {
   position: relative;
   text-align: center;
   color: black;
+  margin: 0 auto;
 }
 
 .potion-size {
@@ -256,7 +277,7 @@
   font-size: 16px;
   font-weight: 800;
   position: absolute;
-  right: 108px;
+  right: 0;
   width: 22px;
   z-index: 1070;
 }

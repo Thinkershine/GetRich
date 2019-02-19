@@ -12,60 +12,76 @@ class Store extends Component {
       currentPotion: 0,
       potions: [
         {
+          id: 1,
           name: "Small Energy Potion",
           value: 20,
           strength: 10,
           type: "energy",
-          size: "small"
+          size: "small",
+          amount: 1
         },
         {
+          id: 2,
           name: "Medium Energy Potion",
           value: 40,
           strength: 20,
           type: "energy",
-          size: "medium"
+          size: "medium",
+          amount: 1
         },
         {
+          id: 3,
           name: "Energy Potion",
           value: 50,
           strength: 25,
           type: "energy",
-          size: "normal"
+          size: "normal",
+          amount: 1
         },
         {
+          id: 4,
           name: "Large Energy Potion",
           value: 100,
           strength: 50,
           type: "energy",
-          size: "large"
+          size: "large",
+          amount: 1
         },
         {
+          id: 5,
           name: "Large Energy Potion",
           value: 100,
           strength: 50,
           type: "energy",
-          size: "x-large"
+          size: "x-large",
+          amount: 1
         },
         {
+          id: 6,
           name: "Small Power Potion",
           value: 100,
           strength: 50,
           type: "power",
-          size: "small"
+          size: "small",
+          amount: 1
         },
         {
+          id: 7,
           name: "Small Combo Potion",
           value: 100,
           strength: 50,
           type: "combo",
-          size: "small"
+          size: "small",
+          amount: 1
         },
         {
+          id: 8,
           name: "Small Experience Potion",
           value: 100,
           strength: 50,
           type: "experience",
-          size: "small"
+          size: "small",
+          amount: 1
         }
       ]
     };
@@ -153,7 +169,7 @@ class Store extends Component {
             <Potion
               potionType={potions[currentPotion].type}
               potionSize={potions[currentPotion].size}
-              amount={1}
+              amount={potions[currentPotion].amount}
             />
             <p>Strength: {potions[currentPotion].strength}</p>
             <p>Cost: ${potions[currentPotion].value}</p>
