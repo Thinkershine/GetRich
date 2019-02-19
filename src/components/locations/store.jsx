@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Potion from "../common/potion";
 
 class Store extends Component {
   state = {};
@@ -10,11 +11,62 @@ class Store extends Component {
       currentItem: 0,
       currentPotion: 0,
       potions: [
-        { name: "Small Energy Potion", value: 20, strength: 10 },
-        { name: "Medium Energy Potion", value: 40, strength: 20 },
-        { name: "Energy Potion", value: 50, strength: 25 },
-        { name: "Large Energy Potion", value: 80, strength: 40 },
-        { name: "X-Large Energy Potion", value: 100, strength: 50 }
+        {
+          name: "Small Energy Potion",
+          value: 20,
+          strength: 10,
+          type: "energy",
+          size: "small"
+        },
+        {
+          name: "Medium Energy Potion",
+          value: 40,
+          strength: 20,
+          type: "energy",
+          size: "medium"
+        },
+        {
+          name: "Energy Potion",
+          value: 50,
+          strength: 25,
+          type: "energy",
+          size: "normal"
+        },
+        {
+          name: "Large Energy Potion",
+          value: 100,
+          strength: 50,
+          type: "energy",
+          size: "large"
+        },
+        {
+          name: "Large Energy Potion",
+          value: 100,
+          strength: 50,
+          type: "energy",
+          size: "x-large"
+        },
+        {
+          name: "Small Power Potion",
+          value: 100,
+          strength: 50,
+          type: "power",
+          size: "small"
+        },
+        {
+          name: "Small Combo Potion",
+          value: 100,
+          strength: 50,
+          type: "combo",
+          size: "small"
+        },
+        {
+          name: "Small Experience Potion",
+          value: 100,
+          strength: 50,
+          type: "experience",
+          size: "small"
+        }
       ]
     };
   }
@@ -98,6 +150,11 @@ class Store extends Component {
           </button>
           <div id="current-item" style={{ width: 275, margin: "0 auto" }}>
             <h4>{potions[currentPotion].name}</h4>
+            <Potion
+              potionType={potions[currentPotion].type}
+              potionSize={potions[currentPotion].size}
+              amount={1}
+            />
             <p>Strength: {potions[currentPotion].strength}</p>
             <p>Cost: ${potions[currentPotion].value}</p>
             <button

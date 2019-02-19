@@ -228,3 +228,35 @@
   user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+
+/**** Potion ****/
+
+.potion {
+  position: relative;
+  text-align: center;
+  color: black;
+}
+
+.potion-size {
+  position: absolute;
+  font-size: 24px;
+  font-weight: 400;
+  top: 62%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1070;
+}
+
+.potion-amount {
+  background-color: rgba(155, 155, 155, 0.7);
+  border-radius: 3px;
+  padding: 1px;
+  bottom: -8px;
+  color: black;
+  font-size: 16px;
+  font-weight: 800;
+  position: absolute;
+  right: 108px;
+  width: 22px;
+  z-index: 1070;
+}
