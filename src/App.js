@@ -63,7 +63,7 @@ class App extends Component {
 
     energyDrain: 1,
     energyGain: 1,
-    energyGainTimer: 1000,
+    energyGainTimer: 5000,
 
     message: {
       title: "Welcome!",
