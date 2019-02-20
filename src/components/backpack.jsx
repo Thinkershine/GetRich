@@ -11,22 +11,24 @@ class Backpack extends Component {
   }
 
   usePotion = potion => {
-    console.log("POTION USED", potion);
+    this.props.usePotion(potion);
   };
 
   renderPotions() {
     const potionsToRender = this.state.potions.map(potion => {
-      return (
-        <div id={potion.id} className="backpack-slot">
-          <Potion
-            potionType={potion.type}
-            potionSize={potion.size}
-            amount={potion.amount}
-            onClick={this.usePotion}
-          />
-          <br />
-        </div>
-      );
+      if (potion !== undefined) {
+        return (
+          <div id={potion.id} className="backpack-slot">
+            <Potion
+              potionType={potion.type}
+              potionSize={potion.size}
+              amount={potion.amount}
+              onClick={() => this.usePotion(potion)}
+            />
+            <br />
+          </div>
+        );
+      }
     });
 
     return potionsToRender;

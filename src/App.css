@@ -249,6 +249,10 @@
   background-color: rgba(23, 27, 255, 0.5);
 }
 
+#backpack .potion {
+  cursor: pointer;
+}
+
 /**** Potion ****/
 
 .potion {

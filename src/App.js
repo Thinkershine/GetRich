@@ -296,6 +296,36 @@ class App extends Component {
     console.log("POTIONS", this.state.potions);
   };
 
+  usePotion = potion => {
+    console.log("POTION USED", potion);
+    // remove potion
+    const potions = this.state.potions;
+    for (let i = 0; i <= potions.length; i += 1) {
+      if (potions[i] !== undefined) {
+        if (potions[i].id === potion.id) {
+          potions[i].amount -= 1;
+          if (potions[i].amount <= 0) {
+            potions[i] = undefined;
+          }
+        }
+      }
+    }
+    // apply potion
+    switch (potion.type) {
+      case "energy":
+        let currentEnergyPoints = (this.state.currentEnergyPoints +=
+          potion.strength);
+        if (currentEnergyPoints >= this.state.maximumEnergyPoints) {
+          currentEnergyPoints = this.state.maximumEnergyPoints;
+        }
+
+        this.setState({ currentEnergyPoints });
+        break;
+      default:
+        break;
+    }
+  };
+
   makeWorkerWork = (worker, mineType) => {
     // todo Check if Miner is Able to Mine This ...
     // block buttons if he's not able to mine ??
@@ -570,7 +600,7 @@ class App extends Component {
         </div>
 
         <div id="widgets">
-          <Backpack potions={this.state.potions} />
+          <Backpack potions={this.state.potions} usePotion={this.usePotion} />
         </div>
 
         {this.state.showConfetti && (
