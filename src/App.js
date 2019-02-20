@@ -270,16 +270,18 @@ class App extends Component {
     console.log("ADDED POTION", potion);
     // loop through all potions
     let amountIncremented = false;
+    const potions = this.state.potions;
 
-    for (let i = 0; i <= this.state.potions.length; i += 1) {
+    for (let i = 0; i <= potions.length; i += 1) {
       // check their names
-      if (this.state.potions[i] !== undefined) {
-        console.log("NAME", this.state.potions[i].id);
+      if (potions[i] !== undefined) {
+        console.log("NAME", potions[i].id);
         console.log("NEW Potion NAME", potion.id);
-        if (this.state.potions[i].id === potion.id) {
+        if (potions[i].id === potion.id) {
           // if already exists... add + to amount
-          this.state.potions[i].amount += 1;
+          potions[i].amount += 1;
           amountIncremented = true;
+          this.setState(potions);
         }
       }
     }
@@ -288,7 +290,8 @@ class App extends Component {
       return;
     }
 
-    this.state.potions.push(JSON.parse(JSON.stringify(potion)));
+    potions.push(JSON.parse(JSON.stringify(potion)));
+    this.setState(potions);
 
     console.log("POTIONS", this.state.potions);
   };

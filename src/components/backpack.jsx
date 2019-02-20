@@ -10,6 +10,10 @@ class Backpack extends Component {
     this.state.potions = this.props.potions;
   }
 
+  usePotion = potion => {
+    console.log("POTION USED", potion);
+  };
+
   renderPotions() {
     const potionsToRender = this.state.potions.map(potion => {
       return (
@@ -18,6 +22,7 @@ class Backpack extends Component {
             potionType={potion.type}
             potionSize={potion.size}
             amount={potion.amount}
+            onClick={this.usePotion}
           />
           <br />
         </div>
