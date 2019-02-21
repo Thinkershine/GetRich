@@ -19,6 +19,23 @@ class Store extends Component {
     };
   }
 
+  renderItem(itemName) {
+    switch (itemName) {
+      case "rusty pickaxe":
+        return "/graphics/rusty-pickaxe.png";
+      case "steel pickaxe":
+        return "/graphics/steel-pickaxe.png";
+      case "hardened pickaxe":
+        return "/graphics/hardened-pickaxe.png";
+      case "silver pickaxe":
+        return "/graphics/mythril-pickaxe.png";
+      case "golden pickaxe":
+        return "/graphics/golden-pickaxe.png";
+      default:
+        break;
+    }
+  }
+
   prevItem = () => {
     let currentItem = this.state.currentItem - 1;
     if (currentItem < 0) {
@@ -102,6 +119,12 @@ class Store extends Component {
             <h3>Mining Items</h3>
             <div id="current-item" style={{ width: 275, margin: "0 auto" }}>
               <h4>{items[currentItem].name.toUpperCase()}</h4>
+              <img
+                src={this.renderItem(items[currentItem].name)}
+                alt={items[currentItem].name}
+                width="50"
+                height="50"
+              />
               <p>Type: {items[currentItem].mineType.toUpperCase()}</p>
               <p>Power: {items[currentItem].miningPower}</p>
               <p>Energy Cost: {items[currentItem].energyConsumption}</p>
