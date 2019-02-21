@@ -63,6 +63,7 @@ class Potion extends Component {
           width="50"
           height="50"
         />
+        <span className="tooltiptext">{this.props.description}</span>
         <span className="potion-size">
           {this.renderPotionSize(this.props.potionSize)}
         </span>

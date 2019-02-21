@@ -16,6 +16,7 @@ class Store extends Component {
           name: "Small Energy Potion",
           value: 20,
           strength: 10,
+          description: "Potion that will replenish 10 Energy",
           type: "energy",
           size: "small",
           amount: 1
@@ -25,6 +26,7 @@ class Store extends Component {
           name: "Medium Energy Potion",
           value: 40,
           strength: 20,
+          description: "Potion that will replenish 20 Energy",
           type: "energy",
           size: "medium",
           amount: 1
@@ -34,6 +36,7 @@ class Store extends Component {
           name: "Energy Potion",
           value: 50,
           strength: 25,
+          description: "Potion that will replenish 25 Energy",
           type: "energy",
           size: "normal",
           amount: 1
@@ -43,15 +46,17 @@ class Store extends Component {
           name: "Large Energy Potion",
           value: 100,
           strength: 50,
+          description: "Potion that will replenish 50 Energy",
           type: "energy",
           size: "large",
           amount: 1
         },
         {
           id: 5,
-          name: "Large Energy Potion",
-          value: 100,
-          strength: 50,
+          name: "X-Large Energy Potion",
+          value: 250,
+          strength: 100,
+          description: "Potion that will replenish 100 Energy",
           type: "energy",
           size: "x-large",
           amount: 1
@@ -61,6 +66,7 @@ class Store extends Component {
           name: "Small Power Potion",
           value: 100,
           strength: 50,
+          description: "Potion that will give 50 Mining Power for 5 minutes",
           type: "power",
           size: "small",
           amount: 1
@@ -70,6 +76,7 @@ class Store extends Component {
           name: "Small Combo Potion",
           value: 100,
           strength: 50,
+          description: "Potion that will Boost Combo by 50% for 5 minutes",
           type: "combo",
           size: "small",
           amount: 1
@@ -79,6 +86,7 @@ class Store extends Component {
           name: "Small Experience Potion",
           value: 100,
           strength: 50,
+          description: "Potion that will give 50% Experience for 5 minutes",
           type: "experience",
           size: "small",
           amount: 1
@@ -170,6 +178,7 @@ class Store extends Component {
               potionType={potions[currentPotion].type}
               potionSize={potions[currentPotion].size}
               amount={potions[currentPotion].amount}
+              description={potions[currentPotion].description}
             />
             <p>Strength: {potions[currentPotion].strength}</p>
             <p>Cost: ${potions[currentPotion].value}</p>

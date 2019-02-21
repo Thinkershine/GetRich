@@ -319,7 +319,10 @@ class App extends Component {
           currentEnergyPoints = this.state.maximumEnergyPoints;
         }
 
-        this.setState({ currentEnergyPoints });
+        this.setState({
+          energyPoints: currentEnergyPoints,
+          currentEnergyPoints: currentEnergyPoints
+        });
         break;
       default:
         break;

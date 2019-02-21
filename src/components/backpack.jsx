@@ -23,6 +23,7 @@ class Backpack extends Component {
               potionType={potion.type}
               potionSize={potion.size}
               amount={potion.amount}
+              description={potion.description}
               onClick={() => this.usePotion(potion)}
             />
             <br />
