@@ -89,86 +89,99 @@ class Store extends Component {
       <div id="store">
         <h2>Welcome to Our Store!</h2>
         <p>Here You can get any item you may ever need as gold miner...</p>
-        <div id="item-carousel">
-          <button className="btn btn-primary" onClick={this.prevItem}>
-            PREV
-          </button>
-          -
-          <button className="btn btn-primary" onClick={this.nextItem}>
-            NEXT
-          </button>
-          <div id="current-item" style={{ width: 275, margin: "0 auto" }}>
-            <h4>{items[currentItem].name.toUpperCase()}</h4>
-            <p>Type: {items[currentItem].mineType.toUpperCase()}</p>
-            <p>Power: {items[currentItem].miningPower}</p>
-            <p>Energy Cost: {items[currentItem].energyConsumption}</p>
-            <p>Value: ${items[currentItem].value}</p>
-            <button
-              className="btn btn-success"
-              onClick={() => this.props.handleItemPurchase(items[currentItem])}
-            >
-              BUY
-            </button>
-          </div>
-        </div>
-        <div id="item-carousel">
-          <button className="btn btn-primary" onClick={this.prevPotion}>
-            PREV
-          </button>
-          -
-          <button className="btn btn-primary" onClick={this.nextPotion}>
-            NEXT
-          </button>
-          <div id="current-item" style={{ width: 275, margin: "0 auto" }}>
-            <h4>{potions[currentPotion].name}</h4>
-            <Potion
-              potionType={potions[currentPotion].type}
-              potionSize={potions[currentPotion].size}
-              amount={potions[currentPotion].amount}
-              description={potions[currentPotion].description}
-            />
-            <p>Strength: {potions[currentPotion].strength}</p>
-            <p>Cost: ${potions[currentPotion].value}</p>
-            <button
-              className="btn btn-success"
-              onClick={() =>
-                this.props.handlePotionPurchase(potions[currentPotion])
-              }
-            >
-              BUY
-            </button>
-          </div>
-        </div>
 
-        <div id="item-carousel">
-          <button className="btn btn-primary" onClick={this.prevPremiumPotion}>
-            PREV
-          </button>
-          -
-          <button className="btn btn-primary" onClick={this.nextPremiumPotion}>
-            NEXT
-          </button>
-          <h3>Premium Potions</h3>
-          <div id="current-item" style={{ width: 275, margin: "0 auto" }}>
-            <h4>{premiumPotions[currentPremiumPotion].name}</h4>
-            <Potion
-              potionType={premiumPotions[currentPremiumPotion].type}
-              potionSize={premiumPotions[currentPremiumPotion].size}
-              amount={premiumPotions[currentPremiumPotion].amount}
-              description={premiumPotions[currentPremiumPotion].description}
-            />
-            <p>Strength: {premiumPotions[currentPremiumPotion].strength}</p>
-            <p>Cost: ${premiumPotions[currentPremiumPotion].value}</p>
-            <button
-              className="btn btn-success"
-              onClick={() =>
-                this.props.handlePotionPurchase(
-                  premiumPotions[currentPremiumPotion]
-                )
-              }
-            >
-              BUY
+        <div className="row">
+          <div id="item-carousel" className="col">
+            <button className="btn btn-primary" onClick={this.prevItem}>
+              PREV
             </button>
+            -
+            <button className="btn btn-primary" onClick={this.nextItem}>
+              NEXT
+            </button>
+            <h3>Mining Items</h3>
+            <div id="current-item" style={{ width: 275, margin: "0 auto" }}>
+              <h4>{items[currentItem].name.toUpperCase()}</h4>
+              <p>Type: {items[currentItem].mineType.toUpperCase()}</p>
+              <p>Power: {items[currentItem].miningPower}</p>
+              <p>Energy Cost: {items[currentItem].energyConsumption}</p>
+              <p>Value: ${items[currentItem].value}</p>
+              <button
+                className="btn btn-success"
+                onClick={() =>
+                  this.props.handleItemPurchase(items[currentItem])
+                }
+              >
+                BUY
+              </button>
+            </div>
+          </div>
+          <div id="item-carousel" className="col">
+            <button className="btn btn-primary" onClick={this.prevPotion}>
+              PREV
+            </button>
+            -
+            <button className="btn btn-primary" onClick={this.nextPotion}>
+              NEXT
+            </button>
+            <h3>Energy Potions</h3>
+            <div id="current-item" style={{ width: 275, margin: "0 auto" }}>
+              <h4>{potions[currentPotion].name}</h4>
+              <Potion
+                potionType={potions[currentPotion].type}
+                potionSize={potions[currentPotion].size}
+                amount={potions[currentPotion].amount}
+                description={potions[currentPotion].description}
+              />
+              <p>Strength: {potions[currentPotion].strength}</p>
+              <p>Cost: ${potions[currentPotion].value}</p>
+              <button
+                className="btn btn-success"
+                onClick={() =>
+                  this.props.handlePotionPurchase(potions[currentPotion])
+                }
+              >
+                BUY
+              </button>
+            </div>
+          </div>
+
+          <div id="item-carousel" className="col">
+            <button
+              className="btn btn-primary"
+              onClick={this.prevPremiumPotion}
+            >
+              PREV
+            </button>
+            -
+            <button
+              className="btn btn-primary"
+              onClick={this.nextPremiumPotion}
+            >
+              NEXT
+            </button>
+            <h3>Premium Potions</h3>
+            <div id="current-item" style={{ width: 275, margin: "0 auto" }}>
+              <h4>{premiumPotions[currentPremiumPotion].name}</h4>
+              <Potion
+                potionType={premiumPotions[currentPremiumPotion].type}
+                potionSize={premiumPotions[currentPremiumPotion].size}
+                amount={premiumPotions[currentPremiumPotion].amount}
+                description={premiumPotions[currentPremiumPotion].description}
+              />
+              <p>Strength: {premiumPotions[currentPremiumPotion].strength}</p>
+              <p>Cost: ${premiumPotions[currentPremiumPotion].value}</p>
+              <button
+                className="btn btn-success"
+                onClick={() =>
+                  this.props.handlePotionPurchase(
+                    premiumPotions[currentPremiumPotion]
+                  )
+                }
+              >
+                BUY
+              </button>
+            </div>
           </div>
         </div>
       </div>
