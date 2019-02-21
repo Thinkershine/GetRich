@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Potion from "../common/potion";
+import { getPotions } from "../../services/fakeItemService";
 
 class Store extends Component {
   state = {};
@@ -7,91 +8,14 @@ class Store extends Component {
   constructor(props) {
     super(props);
 
+    const premium = true;
+
     this.state = {
       currentItem: 0,
       currentPotion: 0,
-      potions: [
-        {
-          id: 1,
-          name: "Small Energy Potion",
-          value: 20,
-          strength: 10,
-          description: "Potion that will replenish 10 Energy",
-          type: "energy",
-          size: "small",
-          amount: 1
-        },
-        {
-          id: 2,
-          name: "Medium Energy Potion",
-          value: 40,
-          strength: 20,
-          description: "Potion that will replenish 20 Energy",
-          type: "energy",
-          size: "medium",
-          amount: 1
-        },
-        {
-          id: 3,
-          name: "Energy Potion",
-          value: 50,
-          strength: 25,
-          description: "Potion that will replenish 25 Energy",
-          type: "energy",
-          size: "normal",
-          amount: 1
-        },
-        {
-          id: 4,
-          name: "Large Energy Potion",
-          value: 100,
-          strength: 50,
-          description: "Potion that will replenish 50 Energy",
-          type: "energy",
-          size: "large",
-          amount: 1
-        },
-        {
-          id: 5,
-          name: "X-Large Energy Potion",
-          value: 250,
-          strength: 100,
-          description: "Potion that will replenish 100 Energy",
-          type: "energy",
-          size: "x-large",
-          amount: 1
-        },
-        {
-          id: 6,
-          name: "Small Power Potion",
-          value: 100,
-          strength: 50,
-          description: "Potion that will give 50 Mining Power for 5 minutes",
-          type: "power",
-          size: "small",
-          amount: 1
-        },
-        {
-          id: 7,
-          name: "Small Combo Potion",
-          value: 100,
-          strength: 50,
-          description: "Potion that will Boost Combo by 50% for 5 minutes",
-          type: "combo",
-          size: "small",
-          amount: 1
-        },
-        {
-          id: 8,
-          name: "Small Experience Potion",
-          value: 100,
-          strength: 50,
-          description: "Potion that will give 50% Experience for 5 minutes",
-          type: "experience",
-          size: "small",
-          amount: 1
-        }
-      ]
+      currentPremiumPotion: 0,
+      potions: getPotions(),
+      premiumPotions: getPotions(premium)
     };
   }
 
@@ -100,7 +24,7 @@ class Store extends Component {
     if (currentItem < 0) {
       currentItem = this.props.itemsForSale.length - 1;
     }
-    console.log("CURRENT ITEM ", currentItem);
+
     this.setState({
       currentItem
     });
@@ -111,7 +35,7 @@ class Store extends Component {
     if (currentItem > this.props.itemsForSale.length - 1) {
       currentItem = 0;
     }
-    console.log("CURRENT ITEM ", currentItem);
+
     this.setState({
       currentItem
     });
@@ -134,9 +58,32 @@ class Store extends Component {
     this.setState({ currentPotion });
   };
 
+  prevPremiumPotion = () => {
+    let currentPremiumPotion = this.state.currentPremiumPotion - 1;
+    if (currentPremiumPotion < 0) {
+      currentPremiumPotion = this.state.premiumPotions.length - 1;
+    }
+
+    this.setState({ currentPremiumPotion });
+  };
+
+  nextPremiumPotion = () => {
+    let currentPremiumPotion = this.state.currentPremiumPotion + 1;
+    if (currentPremiumPotion > this.state.premiumPotions.length - 1) {
+      currentPremiumPotion = 0;
+    }
+    this.setState({ currentPremiumPotion });
+  };
+
   render() {
     const items = this.props.itemsForSale;
-    const { potions, currentPotion, currentItem } = this.state;
+    const {
+      potions,
+      currentPotion,
+      premiumPotions,
+      currentPremiumPotion,
+      currentItem
+    } = this.state;
 
     return (
       <div id="store">
@@ -186,6 +133,38 @@ class Store extends Component {
               className="btn btn-success"
               onClick={() =>
                 this.props.handlePotionPurchase(potions[currentPotion])
+              }
+            >
+              BUY
+            </button>
+          </div>
+        </div>
+
+        <div id="item-carousel">
+          <button className="btn btn-primary" onClick={this.prevPremiumPotion}>
+            PREV
+          </button>
+          -
+          <button className="btn btn-primary" onClick={this.nextPremiumPotion}>
+            NEXT
+          </button>
+          <h3>Premium Potions</h3>
+          <div id="current-item" style={{ width: 275, margin: "0 auto" }}>
+            <h4>{premiumPotions[currentPremiumPotion].name}</h4>
+            <Potion
+              potionType={premiumPotions[currentPremiumPotion].type}
+              potionSize={premiumPotions[currentPremiumPotion].size}
+              amount={premiumPotions[currentPremiumPotion].amount}
+              description={premiumPotions[currentPremiumPotion].description}
+            />
+            <p>Strength: {premiumPotions[currentPremiumPotion].strength}</p>
+            <p>Cost: ${premiumPotions[currentPremiumPotion].value}</p>
+            <button
+              className="btn btn-success"
+              onClick={() =>
+                this.props.handlePotionPurchase(
+                  premiumPotions[currentPremiumPotion]
+                )
               }
             >
               BUY
