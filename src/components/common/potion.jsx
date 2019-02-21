@@ -6,13 +6,13 @@ class Potion extends Component {
   renderPotion(potionType) {
     switch (potionType) {
       case "energy":
-        return "/graphics/energy-potion.png";
+        return "/graphics/energy-potion-small.png";
       case "combo":
-        return "/graphics/combo-potion.png";
+        return "/graphics/combo-potion-small.png";
       case "experience":
-        return "/graphics/experience-potion.png";
+        return "/graphics/experience-potion-small.png";
       case "power":
-        return "/graphics/power-potion.png";
+        return "/graphics/power-potion-small.png";
       default:
         break;
     }
