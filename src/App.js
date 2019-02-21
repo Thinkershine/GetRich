@@ -305,7 +305,7 @@ class App extends Component {
         if (potions[i].id === potion.id) {
           potions[i].amount -= 1;
           if (potions[i].amount <= 0) {
-            potions[i] = undefined;
+            potions.splice(i, 1);
           }
         }
       }
@@ -603,7 +603,9 @@ class App extends Component {
         </div>
 
         <div id="widgets">
-          <Backpack potions={this.state.potions} usePotion={this.usePotion} />
+          {this.state.potions.length !== 0 && (
+            <Backpack potions={this.state.potions} usePotion={this.usePotion} />
+          )}
         </div>
 
         {this.state.showConfetti && (
