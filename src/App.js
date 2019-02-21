@@ -141,6 +141,11 @@ class App extends Component {
   }
 
   componentDidUpdate() {
+    let navigationHeight = document.getElementById("top-bar").clientHeight + 15;
+    if (navigationHeight !== this.state.navigationHeight) {
+      this.setState({ navigationHeight: navigationHeight });
+    }
+
     const { workers } = this.state;
     if (workers.workersAmountChanged) {
       workers.workersAmountChanged = false;
