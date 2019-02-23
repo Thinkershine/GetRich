@@ -4,6 +4,8 @@ import {
   getExperienceDifferenceForLvl
 } from "./../../services/fakeExperienceService";
 
+import { apiUrl } from "../config.json";
+
 export default class ExperienceHandler {
   experienceTable = [];
 
