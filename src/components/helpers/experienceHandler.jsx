@@ -4,13 +4,26 @@ import {
   getExperienceDifferenceForLvl
 } from "./../../services/fakeExperienceService";
 
-import { apiUrl } from "../config.json";
+import {
+  getRealLevels,
+  getRealExperienceForLevel
+} from "../../services/experienceService";
+
+// TODO : Cashing Locally Next Level Req Exp etc.
 
 export default class ExperienceHandler {
   experienceTable = [];
+  isPlayingOnLine = false;
 
   constructor() {
-    this.experienceTable = getLevels();
+    // if playing Single Player Off-Line
+    if (this.isPlayingOnLine) {
+      this.experienceTable = getRealLevels();
+    } else {
+      this.experienceTable = getLevels();
+    }
+
+    console.log("Experience Table: ", this.experienceTable);
   }
 
   handleExperienceGain(expAmount, experience) {
@@ -24,9 +37,18 @@ export default class ExperienceHandler {
   }
 
   calculateLevelUp(experience) {
-    let nextMiningLevelExperience = getExperienceForLevel(
-      experience.miningSkill + 1
-    );
+    let nextMiningLevelExperience = 0;
+    if (this.isPlayingOnLine) {
+      nextMiningLevelExperience = getRealExperienceForLevel(
+        experience.miningSkill + 1
+      );
+    } else {
+      nextMiningLevelExperience = getExperienceForLevel(
+        experience.miningSkill + 1
+      );
+    }
+
+    console.log("NEXT MINING EXP", nextMiningLevelExperience);
 
     if (experience.miningSkillExperience >= nextMiningLevelExperience) {
       experience.miningSkill += 1;
@@ -42,9 +64,17 @@ export default class ExperienceHandler {
   }
 
   calculateNextLevelExperience(experience) {
-    experience.nextMiningSkillExperience = getExperienceForLevel(
-      experience.miningSkill + 1
-    );
+    if (this.isPlayingOnLine) {
+      experience.nextMiningSkillExperience = getRealExperienceForLevel(
+        experience.miningSkill + 1
+      );
+    } else {
+      experience.nextMiningSkillExperience = getExperienceForLevel(
+        experience.miningSkill + 1
+      );
+    }
+
+    console.log("NEXT LVL EXP ", experience.nextMiningLevelExperience);
 
     return experience;
   }

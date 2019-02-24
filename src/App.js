@@ -23,36 +23,7 @@ import NotFound from "./components/common/notFound";
 import ExperienceHandler from "./components/helpers/experienceHandler";
 import Confetti from "./components/common/confetti";
 import Backpack from "./components/backpack";
-import PropTypes from "prop-types";
-
-class Player extends Component {
-  state = {};
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      miningEquipment: [],
-      resources: new MyResources(this.props.messenger)
-    };
-  }
-
-  componentDidMount() {
-    console.log("Game Tick");
-  }
-
-  render() {
-    return (
-      <div id="player">
-        <h1>Thinkershine</h1>
-      </div>
-    );
-  }
-}
-
-Player.propTypes = {
-  miningEquipment: PropTypes.array
-};
+import Player from "./components/player";
 
 class App extends Component {
   state = {
