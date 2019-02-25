@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Stats from "../components/stats";
 
 class Player extends Component {
   state = {};
@@ -40,44 +41,42 @@ class Player extends Component {
     };
   }
 
-  componentDidMount() {
-    console.log("Game Tick");
+  componentWillReceiveProps(nextProps) {
+    // Calling this.setState Here Won't Trigger Additional Render
+    console.log("NEXT PROPS", nextProps);
+    if (this.state.experience !== nextProps.playerData.experience) {
+      this.setState({ experience: nextProps.playerData.experience });
+    }
+
+    if (this.state.stats !== nextProps.playerData.stats) {
+      this.setState({ stats: nextProps.playerData.stats });
+    }
   }
-
-  handleExperienceGain = expAmount => {
-    let experience = {
-      miningSkill: this.state.miningSkill,
-      miningSkillExperience: this.state.miningSkillExperience,
-      miningSkillCurrentPercentage: this.state.miningSkillCurrentPercentage,
-      currentMiningSkillExperience: this.state.currentMiningSkillExperience,
-      nextMiningSkillExperience: this.state.nextMiningLevelExperience,
-      miningPower: this.state.miningPowerLevel
-    };
-
-    experience = this.state.experienceHandler.handleExperienceGain(
-      expAmount,
-      experience
-    );
-
-    // Trigger Gratulations & Confetti at APP.js
-    // if (this.state.miningSkill !== experience.miningSkill) {
-    //   this.gratulations();
-    // }
-
-    this.setState({
-      miningSkillExperience: experience.miningSkillExperience,
-      currentMiningSkillExperience: experience.currentMiningSkillExperience,
-      miningSkill: experience.miningSkill,
-      miningPowerLevel: experience.miningPower,
-      nextMiningLevelExperience: experience.nextMiningSkillExperience,
-      miningSkillCurrentPercentage: experience.miningSkillCurrentPercentage
-    });
-  };
+  componentDidMount() {}
 
   render() {
+    const { stats, experience } = this.state;
+    const miningPower = 1 + experience.miningSkill;
+    // console.log("STATS", stats);
+    // console.log("EXP", experience);
+    const statsToPass = {
+      miningPower: miningPower,
+      miningPowerLevel: stats.miningPowerLevel,
+      maximumMiningPowerLevel: 100,
+      miningSkill: experience.miningSkill,
+      miningSkillCurrentPercentage: experience.miningSkillCurrentPercentage,
+      miningSkillExperience: experience.miningSkillExperience,
+      nextMiningSkillExperience: experience.nextMiningSkillExperience,
+      energyLevel: stats.energyLevel,
+      energyPoints: stats.energyPoints,
+      currentEnergyPoints: stats.currentEnergyPoints,
+      maximumEnergyPoints: stats.maximumEnergyPoints
+    };
+
     return (
       <div id="player">
         <h1>Thinkershine</h1>
+        <Stats {...statsToPass} />
       </div>
     );
   }

@@ -56,6 +56,7 @@ class App extends Component {
     energyPoints: 100,
     currentEnergyPoints: 100,
     maximumEnergyPoints: 100,
+    // yet to go
     currentRequiredEnergy: 0,
     noEnergy: false,
 

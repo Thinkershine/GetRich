@@ -18,7 +18,13 @@ export default class PlayerData {
   workers = [];
   achievements = [];
   seasonsCompleted = [];
-  stats = {};
+  stats = {
+    miningPowerLevel: 1,
+    energyLevel: 1,
+    energyPoints: 100,
+    currentEnergyPoints: 100,
+    maximumEnergyPoints: 100
+  };
   profile = {};
   rank = {};
   settings = {};
@@ -56,5 +62,9 @@ export default class PlayerData {
     // }
 
     //If Leveled Up Return LEVELED UP!
+  };
+
+  spendEnergy = energyAmount => {
+    console.log("ENERGY SPENT");
   };
 }
