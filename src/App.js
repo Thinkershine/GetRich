@@ -24,9 +24,11 @@ import ExperienceHandler from "./components/helpers/experienceHandler";
 import Confetti from "./components/common/confetti";
 import Backpack from "./components/backpack";
 import Player from "./components/player";
+import PlayerData from "./models/playerData";
 
 class App extends Component {
   state = {
+    playerData: new PlayerData(this.handleButtonMessage.bind(this)),
     navigationHeight: 0,
     isEquipped: false,
     itemsForSale: getItems(),
@@ -46,15 +48,11 @@ class App extends Component {
     ),
 
     experienceHandler: new ExperienceHandler(),
-    experienceForLevels: getLevels(),
+
+    // This Will Be Moved to Player Component
     miningSkill: 0,
     miningSkillExperience: 0,
     miningPowerLevel: 1,
-
-    lvlExperienceDifference: 15,
-    miningSkillCurrentPercentage: 0,
-    currentMiningSkillExperience: 0,
-    nextMiningLevelExperience: 0,
 
     energyLevel: 1,
     energyPoints: 100,
@@ -159,32 +157,36 @@ class App extends Component {
   }
 
   handleExperienceGain = expAmount => {
-    let experience = {
-      miningSkill: this.state.miningSkill,
-      miningSkillExperience: this.state.miningSkillExperience,
-      miningSkillCurrentPercentage: this.state.miningSkillCurrentPercentage,
-      currentMiningSkillExperience: this.state.currentMiningSkillExperience,
-      nextMiningSkillExperience: this.state.nextMiningLevelExperience,
-      miningPower: this.state.miningPowerLevel
-    };
+    // GainedExp
+    // Pass as New Prop to Player
+    this.state.playerData.handleExperienceGain(expAmount);
 
-    experience = this.state.experienceHandler.handleExperienceGain(
-      expAmount,
-      experience
-    );
+    // let experience = {
+    //   miningSkill: this.state.miningSkill,
+    //   miningSkillExperience: this.state.miningSkillExperience,
+    //   miningSkillCurrentPercentage: this.state.miningSkillCurrentPercentage,
+    //   currentMiningSkillExperience: this.state.currentMiningSkillExperience,
+    //   nextMiningSkillExperience: this.state.nextMiningLevelExperience,
+    //   miningPower: this.state.miningPowerLevel
+    // };
 
-    if (this.state.miningSkill !== experience.miningSkill) {
-      this.gratulations();
-    }
+    // experience = this.state.experienceHandler.handleExperienceGain(
+    //   expAmount,
+    //   experience
+    // );
 
-    this.setState({
-      miningSkillExperience: experience.miningSkillExperience,
-      currentMiningSkillExperience: experience.currentMiningSkillExperience,
-      miningSkill: experience.miningSkill,
-      miningPowerLevel: experience.miningPower,
-      nextMiningLevelExperience: experience.nextMiningSkillExperience,
-      miningSkillCurrentPercentage: experience.miningSkillCurrentPercentage
-    });
+    // if (this.state.playerData.miningSkill !== experience.miningSkill) {
+    //   this.gratulations();
+    // }
+
+    // this.setState({
+    //   miningSkillExperience: experience.miningSkillExperience,
+    //   currentMiningSkillExperience: experience.currentMiningSkillExperience,
+    //   miningSkill: experience.miningSkill,
+    //   miningPowerLevel: experience.miningPower,
+    //   nextMiningLevelExperience: experience.nextMiningSkillExperience,
+    //   miningSkillCurrentPercentage: experience.miningSkillCurrentPercentage
+    // });
   };
 
   gratulations() {
@@ -488,22 +490,29 @@ class App extends Component {
   render() {
     const { currentEquipment } = this.state;
     const miningPower = this.state.isEquipped
-      ? 1 + currentEquipment.miningPower + this.state.miningSkill
-      : 1 + this.state.miningSkill;
+      ? 1 +
+        currentEquipment.miningPower +
+        this.state.playerData.experience.miningSkill
+      : 1 + this.state.playerData.experience.miningSkill;
 
     const stats = {
       miningPower: miningPower,
       miningPowerLevel: this.state.miningPowerLevel,
       maximumMiningPowerLevel: 100,
-      miningSkill: this.state.miningSkill,
-      miningSkillCurrentPercentage: this.state.miningSkillCurrentPercentage,
-      miningSkillExperience: this.state.miningSkillExperience,
-      nextMiningLevelExperience: this.state.nextMiningLevelExperience,
+      miningSkill: this.state.playerData.experience.miningSkill,
+      miningSkillCurrentPercentage: this.state.playerData.experience
+        .miningSkillCurrentPercentage,
+      miningSkillExperience: this.state.playerData.experience
+        .miningSkillExperience,
+      nextMiningSkillExperience: this.state.playerData.experience
+        .nextMiningSkillExperience,
       energyLevel: this.state.energyLevel,
       energyPoints: this.state.energyPoints,
       currentEnergyPoints: this.state.currentEnergyPoints,
       maximumEnergyPoints: this.state.maximumEnergyPoints
     };
+
+    console.log("STATS:", stats);
 
     const currentResources = {
       currentGoldAmount: this.state.resources.getResourceAmount("gold"),
@@ -513,7 +522,10 @@ class App extends Component {
 
     return (
       <div className="App">
-        <Player messenger={this.handleButtonMessage} />
+        <Player
+          playerData={this.state.playerData}
+          messenger={this.handleButtonMessage}
+        />
         <header id="top-bar">
           <DropdownNavigation goMining={this.goMining} />
         </header>
@@ -544,7 +556,7 @@ class App extends Component {
                   changedMining={this.changedMining}
                   stopMining={this.stopMining}
                   miningPower={miningPower}
-                  miningSkill={this.state.miningSkill}
+                  miningSkill={stats.miningSkill}
                   resources={this.state.resources}
                   handleMining={this.handleMining}
                   spendEnergy={this.spendEnergy}
@@ -624,7 +636,7 @@ class App extends Component {
                 <i>"Riches come to me Everyday!"</i>
                 <br />
                 <i style={{ color: "green" }}>
-                  Reward $<b>{this.state.miningSkill * 10}</b>
+                  Reward $<b>{stats.miningSkill * 10}</b>
                 </i>
                 <br />
                 <i style={{ color: "green" }}>Mining Power + 1</i>
@@ -633,7 +645,7 @@ class App extends Component {
             </div>
             <Confetti
               text={""}
-              particlesAmount={this.state.miningSkill}
+              particlesAmount={stats.miningSkill}
               particleTypes={["dollar"]}
             />
           </div>

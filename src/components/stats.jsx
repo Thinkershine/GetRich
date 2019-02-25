@@ -25,7 +25,7 @@ const Stats = props => {
             levelToDisplay={props.miningSkill}
             percentageOfCompletion={props.miningSkillCurrentPercentage}
             currentValue={props.miningSkillExperience}
-            maxValue={props.nextMiningLevelExperience}
+            maxValue={props.nextMiningSkillExperience}
             badge={"success"}
             bgColor={"dark"}
             size={"medium"}

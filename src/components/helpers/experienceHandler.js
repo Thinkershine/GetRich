@@ -2,7 +2,7 @@ import {
   getLevels,
   getExperienceForLevel,
   getExperienceDifferenceForLvl
-} from "./../../services/fakeExperienceService";
+} from "../../services/fakeExperienceService";
 
 import {
   getRealLevels,
@@ -37,20 +37,20 @@ export default class ExperienceHandler {
   }
 
   calculateLevelUp(experience) {
-    let nextMiningLevelExperience = 0;
+    let nextMiningSkillExperience = 0;
     if (this.isPlayingOnLine) {
-      nextMiningLevelExperience = getRealExperienceForLevel(
+      nextMiningSkillExperience = getRealExperienceForLevel(
         experience.miningSkill + 1
       );
     } else {
-      nextMiningLevelExperience = getExperienceForLevel(
+      nextMiningSkillExperience = getExperienceForLevel(
         experience.miningSkill + 1
       );
     }
 
-    console.log("NEXT MINING EXP", nextMiningLevelExperience);
+    console.log("NEXT MINING EXP", nextMiningSkillExperience);
 
-    if (experience.miningSkillExperience >= nextMiningLevelExperience) {
+    if (experience.miningSkillExperience >= nextMiningSkillExperience) {
       experience.miningSkill += 1;
       experience.miningPower += 1;
       experience.currentMiningSkillExperience = 0;
@@ -74,7 +74,7 @@ export default class ExperienceHandler {
       );
     }
 
-    console.log("NEXT LVL EXP ", experience.nextMiningLevelExperience);
+    console.log("NEXT LVL EXP ", experience.nextMiningSkillExperience);
 
     return experience;
   }
