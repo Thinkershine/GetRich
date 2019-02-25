@@ -50,8 +50,6 @@ class App extends Component {
     experienceHandler: new ExperienceHandler(),
 
     // This Will Be Moved to Player Component
-    miningSkill: 0,
-    miningSkillExperience: 0,
     miningPowerLevel: 1,
 
     energyLevel: 1,
@@ -114,10 +112,7 @@ class App extends Component {
       minersWorkingIntervalID: this.minersWorkingIntervalID,
       resourceUpdatingIntervalID: this.resourceUpdatingIntervalID,
       goldWorkers: workers.getGoldWorkersCount(),
-      goldProduction: workers.getGoldWorkersTotalStrength(),
-      nextMiningLevelExperience: getExperienceForLevel(
-        this.state.miningSkill + 1
-      )
+      goldProduction: workers.getGoldWorkersTotalStrength()
     });
   }
 
@@ -157,36 +152,12 @@ class App extends Component {
   }
 
   handleExperienceGain = expAmount => {
-    // GainedExp
-    // Pass as New Prop to Player
     this.state.playerData.handleExperienceGain(expAmount);
 
-    // let experience = {
-    //   miningSkill: this.state.miningSkill,
-    //   miningSkillExperience: this.state.miningSkillExperience,
-    //   miningSkillCurrentPercentage: this.state.miningSkillCurrentPercentage,
-    //   currentMiningSkillExperience: this.state.currentMiningSkillExperience,
-    //   nextMiningSkillExperience: this.state.nextMiningLevelExperience,
-    //   miningPower: this.state.miningPowerLevel
-    // };
-
-    // experience = this.state.experienceHandler.handleExperienceGain(
-    //   expAmount,
-    //   experience
-    // );
-
+    // todo Gratulations on LevelUP
     // if (this.state.playerData.miningSkill !== experience.miningSkill) {
     //   this.gratulations();
     // }
-
-    // this.setState({
-    //   miningSkillExperience: experience.miningSkillExperience,
-    //   currentMiningSkillExperience: experience.currentMiningSkillExperience,
-    //   miningSkill: experience.miningSkill,
-    //   miningPowerLevel: experience.miningPower,
-    //   nextMiningLevelExperience: experience.nextMiningSkillExperience,
-    //   miningSkillCurrentPercentage: experience.miningSkillCurrentPercentage
-    // });
   };
 
   gratulations() {
