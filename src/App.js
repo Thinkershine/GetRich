@@ -117,7 +117,7 @@ class App extends Component {
 
   setMainContentMarginTop() {
     let navigationHeight = document.getElementById("top-bar").clientHeight;
-    console.log("NAV HEIGHT", navigationHeight);
+
     this.setState({
       navigationHeight: navigationHeight + 15
     });
@@ -287,8 +287,8 @@ class App extends Component {
     // apply potion
     switch (potion.type) {
       case "energy":
-        let currentEnergyPoints = (this.state.currentEnergyPoints +=
-          potion.strength);
+        let currentEnergyPoints =
+          this.state.currentEnergyPoints + potion.strength;
         if (currentEnergyPoints >= this.state.maximumEnergyPoints) {
           currentEnergyPoints = this.state.maximumEnergyPoints;
         }
