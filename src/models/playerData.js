@@ -10,7 +10,7 @@ export default class PlayerData {
     lvlExperienceDifference: 15,
     miningSkillCurrentPercentage: 0,
     currentMiningSkillExperience: 0,
-    nextMiningSkillExperience: 0
+    nextMiningSkillExperience: 15
   };
   equipment = [];
   items = [];
