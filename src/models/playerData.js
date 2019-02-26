@@ -65,6 +65,6 @@ export default class PlayerData {
   };
 
   spendEnergy = energyAmount => {
-    console.log("ENERGY SPENT");
+    console.log("ENERGY SPENT", energyAmount);
   };
 }

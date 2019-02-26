@@ -373,6 +373,7 @@ class App extends Component {
   }
 
   spendEnergy = energySpent => {
+    this.state.playerData.spendEnergy(energySpent);
     const {
       isEquipped,
       currentEquipment,
@@ -498,7 +499,7 @@ class App extends Component {
         </header>
         <main className="container">
           <Resources resources={this.state.resources} />
-          <Stats {...stats} />
+          {/* <Stats {...stats} /> */}
           <Switch>
             <Route
               path="/store"

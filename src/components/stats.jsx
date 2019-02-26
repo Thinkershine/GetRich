@@ -2,6 +2,7 @@ import React from "react";
 import ProgressBar from "./common/progressBar";
 
 const Stats = props => {
+  console.log("PROPS AT STATS", props);
   return (
     <div id="stats">
       <h3>Stats</h3>
