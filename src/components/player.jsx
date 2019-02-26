@@ -72,9 +72,13 @@ class Player extends Component {
       currentEnergyPoints: stats.currentEnergyPoints,
       maximumEnergyPoints: stats.maximumEnergyPoints
     };
-
+    console.log("MARGIN TOP", this.props.height);
     return (
-      <div id="player" className="container">
+      <div
+        id="player"
+        className="container"
+        style={{ marginTop: this.props.height }}
+      >
         <h1>Thinkershine</h1>
         <Stats {...statsToPass} />
       </div>

@@ -491,15 +491,12 @@ class App extends Component {
         <Player
           playerData={this.state.playerData}
           messenger={this.handleButtonMessage}
+          height={this.state.navigationHeight}
         />
         <header id="top-bar">
           <DropdownNavigation goMining={this.goMining} />
         </header>
-        <main
-          id="main"
-          className="container"
-          style={{ marginTop: this.state.navigationHeight }}
-        >
+        <main className="container">
           <Resources resources={this.state.resources} />
           <Stats {...stats} />
           <Switch>
