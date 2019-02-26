@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Potion from "../common/potion";
 import { getPotions } from "../../services/fakeItemService";
+import { getItems } from "../../services/fakeItemService.js";
 
 class Store extends Component {
   state = {};
@@ -15,7 +16,8 @@ class Store extends Component {
       currentPotion: 0,
       currentPremiumPotion: 0,
       potions: getPotions(),
-      premiumPotions: getPotions(premium)
+      premiumPotions: getPotions(premium),
+      itemsForSale: getItems()
     };
   }
 
@@ -93,7 +95,7 @@ class Store extends Component {
   };
 
   render() {
-    const items = this.props.itemsForSale;
+    const items = this.state.itemsForSale;
     const {
       potions,
       currentPotion,

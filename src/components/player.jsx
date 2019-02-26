@@ -74,7 +74,7 @@ class Player extends Component {
     };
 
     return (
-      <div id="player">
+      <div id="player" className="container">
         <h1>Thinkershine</h1>
         <Stats {...statsToPass} />
       </div>

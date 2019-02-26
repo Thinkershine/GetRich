@@ -1,11 +1,6 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 import "./App.css";
-import { getItems } from "./services/fakeItemService.js";
-import {
-  getLevels,
-  getExperienceForLevel
-} from "./services/fakeExperienceService.js";
 import MyWorkers from "./models/workers";
 import MyResources from "./models/myResources.js";
 import DropdownNavigation from "./components/dropdownNavigation";
@@ -31,7 +26,6 @@ class App extends Component {
     playerData: new PlayerData(this.handleButtonMessage.bind(this)),
     navigationHeight: 0,
     isEquipped: false,
-    itemsForSale: getItems(),
     currentEquipment: {},
     miningEquipment: [],
     miningRequirements: {
@@ -513,7 +507,6 @@ class App extends Component {
               path="/store"
               render={props => (
                 <Store
-                  itemsForSale={this.state.itemsForSale}
                   handleItemPurchase={this.handleItemPurchase}
                   handlePotionPurchase={this.handlePotionPurchase}
                   {...props}
