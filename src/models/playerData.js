@@ -64,7 +64,7 @@ export default class PlayerData {
     return leveledUP;
   };
 
-  spendEnergy = energyAmount => {
-    console.log("ENERGY SPENT", energyAmount);
+  spendEnergy = energySpent => {
+    console.log("ENERGY SPENT", energySpent);
   };
 }

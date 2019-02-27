@@ -9,14 +9,12 @@ import {
   getRealExperienceForLevel
 } from "../../services/experienceService";
 
-// TODO : Cashing Locally Next Level Req Exp etc.
-
 export default class ExperienceHandler {
   experienceTable = [];
   isPlayingOnLine = false;
 
   constructor() {
-    // if playing Single Player Off-Line
+    // if playing Single Player On-Line
     if (this.isPlayingOnLine) {
       this.experienceTable = getRealLevels();
     } else {
@@ -37,20 +35,9 @@ export default class ExperienceHandler {
   }
 
   calculateLevelUp(experience) {
-    let nextMiningSkillExperience = 0;
-    if (this.isPlayingOnLine) {
-      nextMiningSkillExperience = getRealExperienceForLevel(
-        experience.miningSkill + 1
-      );
-    } else {
-      nextMiningSkillExperience = getExperienceForLevel(
-        experience.miningSkill + 1
-      );
-    }
-
-    console.log("NEXT MINING EXP", nextMiningSkillExperience);
-
-    if (experience.miningSkillExperience >= nextMiningSkillExperience) {
+    if (
+      experience.miningSkillExperience >= experience.nextMiningSkillExperience
+    ) {
       experience.miningSkill += 1;
       experience.miningPower += 1;
       experience.currentMiningSkillExperience = 0;
@@ -73,8 +60,6 @@ export default class ExperienceHandler {
         experience.miningSkill + 1
       );
     }
-
-    console.log("NEXT LVL EXP ", experience.nextMiningSkillExperience);
 
     return experience;
   }
