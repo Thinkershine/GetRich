@@ -53,15 +53,15 @@ export default class PlayerData {
       experience
     );
 
-    console.log("EXPERIENCE ATFTER HANDLER", experience);
+    let leveledUP = false;
+
+    if (this.experience.miningSkill !== experience.miningSkill) {
+      leveledUP = true;
+    }
+
     this.experience = experience;
 
-    // Trigger Gratulations & Confetti at APP.js
-    // if (this.state.miningSkill !== experience.miningSkill) {
-    //   this.gratulations();
-    // }
-
-    //If Leveled Up Return LEVELED UP!
+    return leveledUP;
   };
 
   spendEnergy = energyAmount => {

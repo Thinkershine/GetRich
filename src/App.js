@@ -147,12 +147,11 @@ class App extends Component {
   }
 
   handleExperienceGain = expAmount => {
-    this.state.playerData.handleExperienceGain(expAmount);
+    let leveledUP = this.state.playerData.handleExperienceGain(expAmount);
 
-    // todo Gratulations on LevelUP
-    // if (this.state.playerData.miningSkill !== experience.miningSkill) {
-    //   this.gratulations();
-    // }
+    if (leveledUP) {
+      this.gratulations();
+    }
   };
 
   gratulations() {
