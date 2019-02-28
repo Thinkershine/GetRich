@@ -12,7 +12,20 @@ export default class PlayerData {
     currentMiningSkillExperience: 0,
     nextMiningSkillExperience: 15
   };
-  equipment = [];
+  equipment = {
+    currentEquipmentIndex: 0,
+    isEquipped: false,
+    equipmentBackpack: [
+      {
+        name: "none",
+        mineType: "none",
+        miningPower: 0,
+        value: 0,
+        energyConsumption: 0
+      }
+    ],
+    equipmentCapacity: 5
+  };
   items = [];
   potions = [];
   workers = [];
@@ -34,6 +47,7 @@ export default class PlayerData {
   constructor(messenger) {
     this.resources = new MyResources(messenger);
     this.experienceHandler = new ExperienceHandler();
+    this.energyHandler = new EnergyHandler();
   }
 
   handleExperienceGain = expAmount => {
@@ -66,5 +80,6 @@ export default class PlayerData {
 
   spendEnergy = energySpent => {
     console.log("ENERGY SPENT", energySpent);
+    this.energyHandler.spendEnergy(energySpent);
   };
 }
