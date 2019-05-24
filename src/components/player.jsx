@@ -51,7 +51,10 @@ class Player extends Component {
     if (this.state.stats !== nextProps.playerData.stats) {
       this.setState({ stats: nextProps.playerData.stats });
     }
+
+    this.render();
   }
+
   componentDidMount() {}
 
   render() {
