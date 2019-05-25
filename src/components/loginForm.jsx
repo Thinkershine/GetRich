@@ -3,18 +3,13 @@ import Joi from "joi-browser";
 import Form from "./common/form";
 import * as userService from "../services/userService";
 
-class RegisterForm extends Form {
+class LoginForm extends Form {
   state = {
-    data: { username: "", email: "", password: "" },
+    data: { email: "", password: "" },
     errors: {}
   };
 
   schema = {
-    username: Joi.string()
-      .required()
-      .min(5)
-      .max(60)
-      .label("Username"),
     password: Joi.string()
       .required()
       .min(8)
@@ -28,7 +23,11 @@ class RegisterForm extends Form {
 
   doSubmit = async () => {
     try {
-      await userService.register(this.state.data);
+      const { data } = this.state;
+      const { data: jwt } = await userService.login(data.email, data.password);
+      console.log(jwt);
+      localStorage.setItem("token", jwt.token);
+      this.props.history.push("/");
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         // User Did Something Wrong
@@ -36,8 +35,8 @@ class RegisterForm extends Form {
         if (ex.response.data.email) {
           errors.email = ex.response.data.email;
         }
-        if (ex.response.data.username) {
-          errors.username = ex.response.data.username;
+        if (ex.response.data.password) {
+          errors.password = ex.response.data.password;
         }
 
         this.setState({ errors });
@@ -48,16 +47,15 @@ class RegisterForm extends Form {
   render() {
     return (
       <div id="register-form">
-        <h1>Register</h1>
+        <h1>Login</h1>
         <form onSubmit={this.handleSubmit} style={{ padding: 5 }}>
-          {this.renderInput("username", "Username")}
           {this.renderInput("email", "Email")}
           {this.renderInput("password", "Password", "password")}
-          {this.renderButton("Register")}
+          {this.renderButton("Login")}
         </form>
       </div>
     );
   }
 }
 
-export default RegisterForm;
+export default LoginForm;
