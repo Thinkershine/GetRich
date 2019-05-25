@@ -23,6 +23,7 @@ import Player from "./components/player";
 import PlayerData from "./models/playerData";
 import RegisterForm from "./components/registerForm";
 import LoginForm from "./components/loginForm";
+import Logout from "./components/logout";
 import "./App.css";
 
 class App extends Component {
@@ -590,6 +591,7 @@ class App extends Component {
               <Route path="/bank" component={Bank} />
               <Route path="/register" component={RegisterForm} />
               <Route path="/login" component={LoginForm} />
+              <Route path="/logout" component={Logout} />
 
               <Route path="/" exact component={Home} />
               <Route path="/not-found" component={NotFound} />
