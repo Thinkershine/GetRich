@@ -147,24 +147,50 @@ class DropdownNavigation extends Component {
                   Bank
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  to="/register"
-                  onClick={this.hideNavbar}
-                >
-                  Register
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  to="/login"
-                  onClick={this.hideNavbar}
-                >
-                  Login
-                </Link>
-              </li>
+              {!this.props.currentUser && (
+                <React.Fragment>
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link"
+                      to="/login"
+                      onClick={this.hideNavbar}
+                    >
+                      Login
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link"
+                      to="/register"
+                      onClick={this.hideNavbar}
+                    >
+                      Register
+                    </Link>
+                  </li>
+                </React.Fragment>
+              )}
+              {this.props.currentUser && (
+                <React.Fragment>
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link"
+                      to="/profile"
+                      onClick={this.hideNavbar}
+                    >
+                      Profile
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link"
+                      to="/logout"
+                      onClick={this.hideNavbar}
+                    >
+                      Logout
+                    </Link>
+                  </li>
+                </React.Fragment>
+              )}
             </ul>
           </div>
         </nav>

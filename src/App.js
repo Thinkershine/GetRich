@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import "./App.css";
+import jwtDecode from "jwt-decode";
 import MyWorkers from "./models/workers";
 import MyResources from "./models/myResources.js";
 import DropdownNavigation from "./components/dropdownNavigation";
@@ -23,6 +23,7 @@ import Player from "./components/player";
 import PlayerData from "./models/playerData";
 import RegisterForm from "./components/registerForm";
 import LoginForm from "./components/loginForm";
+import "./App.css";
 
 class App extends Component {
   state = {
@@ -80,7 +81,9 @@ class App extends Component {
     gameLoopClockTickTimeMiliseconds: 1000,
 
     potions: [],
-    backpackSize: 5
+    backpackSize: 5,
+
+    currentUser: null
   };
 
   componentDidMount() {
@@ -105,6 +108,18 @@ class App extends Component {
 
     this.setMainContentMarginTop();
 
+    try {
+      // Get Current User
+      const jwt = localStorage.getItem("token");
+      const currentUser = jwtDecode(jwt);
+      console.log(currentUser, "CURRENT USER");
+      this.setState({
+        currentUser
+      });
+    } catch (ex) {
+      console.log("NO USER", ex);
+    }
+
     this.setState({
       energyGainingIntervalID: this.energyGainingIntervalID,
       minersWorkingIntervalID: this.minersWorkingIntervalID,
@@ -113,6 +128,8 @@ class App extends Component {
       goldProduction: workers.getGoldWorkersTotalStrength()
     });
   }
+
+  ComponentWillUpdate() {}
 
   handleResources = () => {
     this.state.resources.gameLoopUpdate();
@@ -490,135 +507,143 @@ class App extends Component {
     };
 
     return (
-      <div className="App">
-        <ToastContainer />
-        <Player
-          playerData={this.state.playerData}
-          messenger={this.handleButtonMessage}
-          height={this.state.navigationHeight}
-        />
-        <header id="top-bar">
-          <DropdownNavigation goMining={this.goMining} />
-        </header>
-        <main className="container">
-          <Resources resources={this.state.resources} />
-          {/* <Stats {...stats} /> */}
-          <Switch>
-            <Route
-              path="/store"
-              render={props => (
-                <Store
-                  handleItemPurchase={this.handleItemPurchase}
-                  handlePotionPurchase={this.handlePotionPurchase}
-                  {...props}
-                />
-              )}
+      <React.Fragment>
+        <div className="App">
+          <ToastContainer />
+          <Player
+            playerData={this.state.playerData}
+            messenger={this.handleButtonMessage}
+            height={this.state.navigationHeight}
+          />
+          <header id="top-bar">
+            <DropdownNavigation
+              goMining={this.goMining}
+              currentUser={this.state.currentUser}
             />
-            <Route
-              path="/mining"
-              render={props => (
-                <Mining
-                  goMining={this.state.goMining}
-                  changedMining={this.changedMining}
-                  stopMining={this.stopMining}
-                  miningPower={miningPower}
-                  miningSkill={stats.miningSkill}
-                  resources={this.state.resources}
-                  handleMining={this.handleMining}
-                  spendEnergy={this.spendEnergy}
-                  noEnergy={this.state.noEnergy}
-                  gainExperience={this.handleExperienceGain}
-                  messenger={this.state.handleMessenger}
-                  miningRequirements={this.state.miningRequirements}
-                  {...props}
-                />
-              )}
-            />
-            <Route
-              path="/equipment"
-              render={props => (
-                <Equipment
-                  isEquipped={this.state.isEquipped}
-                  currentEquipment={this.state.currentEquipment}
-                  miningEquipment={this.state.miningEquipment}
-                  {...props}
-                />
-              )}
-            />
-            <Route
-              path="/workers"
-              render={props => (
-                <Workers
-                  playerWorkers={this.state.workers.getPlayerWorkers()}
-                  hireWorker={this.hireNewWorker}
-                  work={this.makeWorkerWork}
-                  {...props}
-                />
-              )}
-            />
-            <Route
-              path="/market"
-              render={props => (
-                <Market
-                  sellResource={this.handleSellResource}
-                  availableResources={currentResources}
-                  {...props}
-                />
-              )}
-            />
-            <Route path="/bank" component={Bank} />
-            <Route path="/register" component={RegisterForm} />
-            <Route path="/login" component={LoginForm} />
+          </header>
+          <main className="container">
+            <Resources resources={this.state.resources} />
+            {/* <Stats {...stats} /> */}
+            <Switch>
+              <Route
+                path="/store"
+                render={props => (
+                  <Store
+                    handleItemPurchase={this.handleItemPurchase}
+                    handlePotionPurchase={this.handlePotionPurchase}
+                    {...props}
+                  />
+                )}
+              />
+              <Route
+                path="/mining"
+                render={props => (
+                  <Mining
+                    goMining={this.state.goMining}
+                    changedMining={this.changedMining}
+                    stopMining={this.stopMining}
+                    miningPower={miningPower}
+                    miningSkill={stats.miningSkill}
+                    resources={this.state.resources}
+                    handleMining={this.handleMining}
+                    spendEnergy={this.spendEnergy}
+                    noEnergy={this.state.noEnergy}
+                    gainExperience={this.handleExperienceGain}
+                    messenger={this.state.handleMessenger}
+                    miningRequirements={this.state.miningRequirements}
+                    {...props}
+                  />
+                )}
+              />
+              <Route
+                path="/equipment"
+                render={props => (
+                  <Equipment
+                    isEquipped={this.state.isEquipped}
+                    currentEquipment={this.state.currentEquipment}
+                    miningEquipment={this.state.miningEquipment}
+                    {...props}
+                  />
+                )}
+              />
+              <Route
+                path="/workers"
+                render={props => (
+                  <Workers
+                    playerWorkers={this.state.workers.getPlayerWorkers()}
+                    hireWorker={this.hireNewWorker}
+                    work={this.makeWorkerWork}
+                    {...props}
+                  />
+                )}
+              />
+              <Route
+                path="/market"
+                render={props => (
+                  <Market
+                    sellResource={this.handleSellResource}
+                    availableResources={currentResources}
+                    {...props}
+                  />
+                )}
+              />
+              <Route path="/bank" component={Bank} />
+              <Route path="/register" component={RegisterForm} />
+              <Route path="/login" component={LoginForm} />
 
-            <Route path="/" exact component={Home} />
-            <Route path="/not-found" component={NotFound} />
-            <Redirect to="/not-found" />
-          </Switch>
-        </main>
+              <Route path="/" exact component={Home} />
+              <Route path="/not-found" component={NotFound} />
+              <Redirect to="/not-found" />
+            </Switch>
+          </main>
 
-        <div id="tools">
-          {this.state.displayMessage && (
-            <Message
-              messageTitle={this.state.message.title}
-              message={this.state.message.message}
-              badge={this.state.message.badge}
-              buttonMessage={this.state.message.buttonMessage}
-              buttonOnClick={this.state.message.buttonOnClick}
-              isHidden={this.state.message.isHidden}
-            />
-          )}
-        </div>
-
-        <div id="widgets">
-          {this.state.potions.length !== 0 && (
-            <Backpack potions={this.state.potions} usePotion={this.usePotion} />
-          )}
-        </div>
-
-        {this.state.showConfetti && (
-          <div id="congratulations">
-            <div id="congratulations-header">
-              <h1>CONGRATULATIONS</h1>
-              <h2>You've Leveled UP!</h2>
-              <h3>
-                <i>"Riches come to me Everyday!"</i>
-                <br />
-                <i style={{ color: "green" }}>
-                  Reward $<b>{stats.miningSkill * 10}</b>
-                </i>
-                <br />
-                <i style={{ color: "green" }}>Mining Power + 1</i>
-              </h3>
-              <h3>$.$</h3>
-            </div>
-            <Confetti
-              text={""}
-              particlesAmount={stats.miningSkill}
-              particleTypes={["dollar"]}
-            />
+          <div id="tools">
+            {this.state.displayMessage && (
+              <Message
+                messageTitle={this.state.message.title}
+                message={this.state.message.message}
+                badge={this.state.message.badge}
+                buttonMessage={this.state.message.buttonMessage}
+                buttonOnClick={this.state.message.buttonOnClick}
+                isHidden={this.state.message.isHidden}
+              />
+            )}
           </div>
-        )}
-      </div>
+
+          <div id="widgets">
+            {this.state.potions.length !== 0 && (
+              <Backpack
+                potions={this.state.potions}
+                usePotion={this.usePotion}
+              />
+            )}
+          </div>
+
+          {this.state.showConfetti && (
+            <div id="congratulations">
+              <div id="congratulations-header">
+                <h1>CONGRATULATIONS</h1>
+                <h2>You've Leveled UP!</h2>
+                <h3>
+                  <i>"Riches come to me Everyday!"</i>
+                  <br />
+                  <i style={{ color: "green" }}>
+                    Reward $<b>{stats.miningSkill * 10}</b>
+                  </i>
+                  <br />
+                  <i style={{ color: "green" }}>Mining Power + 1</i>
+                </h3>
+                <h3>$.$</h3>
+              </div>
+              <Confetti
+                text={""}
+                particlesAmount={stats.miningSkill}
+                particleTypes={["dollar"]}
+              />
+            </div>
+          )}
+        </div>
+      </React.Fragment>
     );
   }
 }
