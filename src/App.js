@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import "./App.css";
 import MyWorkers from "./models/workers";
 import MyResources from "./models/myResources.js";
@@ -488,6 +489,7 @@ class App extends Component {
 
     return (
       <div className="App">
+        <ToastContainer />
         <Player
           playerData={this.state.playerData}
           messenger={this.handleButtonMessage}
