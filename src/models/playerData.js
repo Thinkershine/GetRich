@@ -47,7 +47,7 @@ export default class PlayerData {
   constructor(messenger) {
     this.resources = new MyResources(messenger);
     this.experienceHandler = new ExperienceHandler();
-    this.energyHandler = new EnergyHandler();
+    // this.energyHandler = new EnergyHandler();
   }
 
   handleExperienceGain = expAmount => {
@@ -80,6 +80,6 @@ export default class PlayerData {
 
   spendEnergy = energySpent => {
     console.log("ENERGY SPENT", energySpent);
-    this.energyHandler.spendEnergy(energySpent);
+    //this.energyHandler.spendEnergy(energySpent);
   };
 }

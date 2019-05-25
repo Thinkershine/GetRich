@@ -46,6 +46,11 @@ const Navigation = props => {
             Bank
           </Link>
         </li>
+        <li className="nav-item">
+          <Link className={classNamesForLinks} to="/register">
+            Register
+          </Link>
+        </li>
       </ul>
     </nav>
   );

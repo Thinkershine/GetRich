@@ -147,6 +147,15 @@ class DropdownNavigation extends Component {
                   Bank
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/register"
+                  onClick={this.hideNavbar}
+                >
+                  Register
+                </Link>
+              </li>
             </ul>
           </div>
         </nav>

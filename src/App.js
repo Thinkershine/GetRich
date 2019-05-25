@@ -21,6 +21,7 @@ import Confetti from "./components/common/confetti";
 import Backpack from "./components/backpack";
 import Player from "./components/player";
 import PlayerData from "./models/playerData";
+import RegisterForm from "./components/registerForm";
 
 class App extends Component {
   state = {
@@ -565,6 +566,7 @@ class App extends Component {
               )}
             />
             <Route path="/bank" component={Bank} />
+            <Route path="/register" component={RegisterForm} />
 
             <Route path="/" exact component={Home} />
             <Route path="/not-found" component={NotFound} />

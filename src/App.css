@@ -152,7 +152,8 @@
 #workers,
 #mining,
 #equipment,
-#home {
+#home,
+#register-form {
   border-radius: 3px;
   box-shadow: 5px 6px 0px #1e1e1e;
   border: 1px solid #1e1e1e;
