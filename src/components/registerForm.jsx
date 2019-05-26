@@ -1,7 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import * as userService from "../services/userService";
+import auth from "../services/userService";
 
 class RegisterForm extends Form {
   state = {
@@ -28,9 +28,9 @@ class RegisterForm extends Form {
 
   doSubmit = async () => {
     try {
-      const response = await userService.register(this.state.data);
-      localStorage.setItem("token", response.data.token);
-      this.props.history.push("/");
+      const response = await auth.register(this.state.data);
+      auth.loginWithJwt(response.data.token);
+      window.location = "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         // User Did Something Wrong

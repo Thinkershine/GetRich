@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import jwtDecode from "jwt-decode";
+import { ToastContainer, toast } from "react-toastify";
 import MyWorkers from "./models/workers";
 import MyResources from "./models/myResources.js";
 import DropdownNavigation from "./components/dropdownNavigation";
@@ -24,7 +23,9 @@ import PlayerData from "./models/playerData";
 import RegisterForm from "./components/registerForm";
 import LoginForm from "./components/loginForm";
 import Logout from "./components/logout";
+import auth from "./services/userService";
 import "./App.css";
+import "react-toastify/dist/ReactToastify.min.css";
 
 class App extends Component {
   state = {
@@ -82,9 +83,7 @@ class App extends Component {
     gameLoopClockTickTimeMiliseconds: 1000,
 
     potions: [],
-    backpackSize: 5,
-
-    currentUser: null
+    backpackSize: 5
   };
 
   componentDidMount() {
@@ -109,16 +108,13 @@ class App extends Component {
 
     this.setMainContentMarginTop();
 
-    try {
-      // Get Current User
-      const jwt = localStorage.getItem("token");
-      const currentUser = jwtDecode(jwt);
-      console.log(currentUser, "CURRENT USER");
-      this.setState({
-        currentUser
-      });
-    } catch (ex) {
-      console.log("NO USER", ex);
+    const currentUser = auth.getCurrentUser();
+    this.setState({
+      currentUser
+    });
+
+    if (currentUser !== null) {
+      toast("Logged In");
     }
 
     this.setState({

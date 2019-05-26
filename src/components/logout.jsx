@@ -1,9 +1,9 @@
 import React, { Component } from "react";
+import auth from "../services/userService";
 
 class Logout extends Component {
   componentDidMount() {
-    // Remove User Token
-    localStorage.removeItem("token");
+    auth.logout();
     // Refresh APP
     window.location = "/";
   }
