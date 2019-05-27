@@ -4,7 +4,7 @@ import { apiUrl } from "../config.json";
 export let levels = [];
 
 export function getRealLevels() {
-  http.get(apiUrl + "experience").then(function(response) {
+  http.get(apiUrl + "/experience").then(function(response) {
     if (response) {
       console.log("RETURNING", response.data);
       levels = response.data;
@@ -14,10 +14,15 @@ export function getRealLevels() {
 }
 
 export function getRealExperienceForLevel(forLevel) {
-  http.get(apiUrl + "experience/" + forLevel).then(function(response) {
+  http.get(apiUrl + "/experience/" + forLevel).then(function(response) {
     if (response) {
-      console.log("RES FOR LEVEL", response.data);
+      console.log("RESPONSE FOR LEVEL", response.data);
       return response.data;
     }
   });
 }
+
+export default {
+  getRealLevels,
+  getRealExperienceForLevel
+};

@@ -5,6 +5,8 @@ import jwtDecode from "jwt-decode";
 const apiEndPoint = apiUrl + "/auth";
 const tokenKey = "token";
 
+http.setJwt(getJwt());
+
 export function register(user) {
   return http.post(apiEndPoint + "/register", {
     email: user.email,
@@ -39,10 +41,15 @@ export function getCurrentUser() {
   }
 }
 
+export function getJwt() {
+  return localStorage.getItem(tokenKey);
+}
+
 export default {
   register,
   login,
   loginWithJwt,
   logout,
-  getCurrentUser
+  getCurrentUser,
+  getJwt
 };

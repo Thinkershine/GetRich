@@ -27,6 +27,8 @@ import auth from "./services/userService";
 import "./App.css";
 import "react-toastify/dist/ReactToastify.min.css";
 
+import * as experienceService from "./services/experienceService";
+
 class App extends Component {
   state = {
     playerData: new PlayerData(this.handleButtonMessage.bind(this)),
@@ -116,6 +118,10 @@ class App extends Component {
     if (currentUser !== null) {
       toast("Logged In");
     }
+
+    // get Exp
+    const expForNextLevel = experienceService.getRealExperienceForLevel(2);
+    console.log("REAL EXPERIENCE FROM API", expForNextLevel);
 
     this.setState({
       energyGainingIntervalID: this.energyGainingIntervalID,
