@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Stats from "../components/stats";
+import Resources from "../components/resources";
 
 class Player extends Component {
   state = {};
@@ -36,8 +37,7 @@ class Player extends Component {
       rank: playerData.rank,
       settings: playerData.settings,
       isPremium: playerData.isPremium,
-      isPlayingOnLine: playerData.isPlayingOnLine,
-      messenger: this.props.messenger
+      isPlayingOnLine: playerData.isPlayingOnLine
     };
   }
 
@@ -77,17 +77,14 @@ class Player extends Component {
     };
 
     return (
-      <div
-        id="player"
-        className="container"
-        style={{ marginTop: this.props.height }}
-      >
+      <div id="player" className="container">
         <h1>
           Thinkershine{" "}
           <span style={{ fontSize: 24 }}>Lvl. {this.state.lvl}</span>
         </h1>
 
         <Stats {...statsToPass} />
+        <Resources resources={this.props.resources} />
       </div>
     );
   }

@@ -20,6 +20,7 @@ import Confetti from "./components/common/confetti";
 import Backpack from "./components/backpack";
 import Player from "./components/player";
 import PlayerData from "./models/playerData";
+import Profile from "./components/profile";
 import RegisterForm from "./components/registerForm";
 import LoginForm from "./components/loginForm";
 import Logout from "./components/logout";
@@ -501,8 +502,6 @@ class App extends Component {
       maximumEnergyPoints: this.state.maximumEnergyPoints
     };
 
-    console.log("STATS:", stats);
-
     const currentResources = {
       currentGoldAmount: this.state.resources.getResourceAmount("gold"),
       currentSilverAmount: this.state.resources.getResourceAmount("silver"),
@@ -513,20 +512,16 @@ class App extends Component {
       <React.Fragment>
         <div className="App">
           <ToastContainer />
-          <Player
-            playerData={this.state.playerData}
-            messenger={this.handleButtonMessage}
-            height={this.state.navigationHeight}
-          />
           <header id="top-bar">
             <DropdownNavigation
               goMining={this.goMining}
               currentUser={this.state.currentUser}
             />
           </header>
-          <main className="container">
-            <Resources resources={this.state.resources} />
-            {/* <Stats {...stats} /> */}
+          <main
+            className="container"
+            style={{ marginTop: this.state.navigationHeight }}
+          >
             <Switch>
               <Route
                 path="/store"
@@ -591,6 +586,18 @@ class App extends Component {
                 )}
               />
               <Route path="/bank" component={Bank} />
+
+              <Route
+                path="/profile"
+                render={props => (
+                  <Profile
+                    playerData={this.state.playerData}
+                    navigationHeight={this.state.navigationHeight}
+                    resources={this.state.resources}
+                  />
+                )}
+              />
+
               <Route path="/register" component={RegisterForm} />
               <Route path="/login" component={LoginForm} />
               <Route path="/logout" component={Logout} />
