@@ -42,6 +42,10 @@ class LoginForm extends Form {
     }
   };
 
+  redirectToRegister = () => {
+    this.props.history.push("/register");
+  };
+
   render() {
     return (
       <div id="register-form">
@@ -50,6 +54,13 @@ class LoginForm extends Form {
           {this.renderInput("email", "Email")}
           {this.renderInput("password", "Password", "password")}
           {this.renderButton("Login")}
+          <button
+            className="btn btn-success"
+            onClick={() => this.redirectToRegister()}
+            style={{ marginLeft: 5 }}
+          >
+            Create a New Account
+          </button>
         </form>
       </div>
     );
