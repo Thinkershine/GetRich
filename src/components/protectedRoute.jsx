@@ -1,8 +1,10 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import auth from "../services/userService";
+import { toast } from "react-toastify";
 
 const ProtectedRoute = ({ path, component: Component, render, ...rest }) => {
+  toast.warn("You Need To Login For Access");
   return (
     <Route
       {...rest}

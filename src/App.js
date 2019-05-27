@@ -524,7 +524,7 @@ class App extends Component {
             style={{ marginTop: this.state.navigationHeight }}
           >
             <Switch>
-              <Route
+              <ProtectedRoute
                 path="/store"
                 render={props => (
                   <Store
@@ -534,7 +534,7 @@ class App extends Component {
                   />
                 )}
               />
-              <Route
+              <ProtectedRoute
                 path="/mining"
                 render={props => (
                   <Mining
@@ -554,7 +554,7 @@ class App extends Component {
                   />
                 )}
               />
-              <Route
+              <ProtectedRoute
                 path="/equipment"
                 render={props => (
                   <Equipment
@@ -565,7 +565,7 @@ class App extends Component {
                   />
                 )}
               />
-              <Route
+              <ProtectedRoute
                 path="/workers"
                 render={props => (
                   <Workers
@@ -576,7 +576,7 @@ class App extends Component {
                   />
                 )}
               />
-              <Route
+              <ProtectedRoute
                 path="/market"
                 render={props => (
                   <Market
@@ -586,7 +586,7 @@ class App extends Component {
                   />
                 )}
               />
-              <Route path="/bank" component={Bank} />
+              <ProtectedRoute path="/bank" component={Bank} />
 
               <ProtectedRoute
                 path="/profile"
@@ -599,22 +599,11 @@ class App extends Component {
                 )}
               />
 
-              {/* <Route
-                path="/profile"
-                render={props => (
-                  <Profile
-                    playerData={this.state.playerData}
-                    navigationHeight={this.state.navigationHeight}
-                    resources={this.state.resources}
-                  />
-                )}
-              /> */}
-
               <Route path="/register" component={RegisterForm} />
               <Route path="/login" component={LoginForm} />
               <Route path="/logout" component={Logout} />
 
-              <Route path="/" exact component={Home} />
+              <ProtectedRoute path="/" exact component={Home} />
               <Route path="/not-found" component={NotFound} />
               <Redirect to="/not-found" />
             </Switch>
