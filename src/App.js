@@ -24,6 +24,7 @@ import Profile from "./components/profile";
 import RegisterForm from "./components/registerForm";
 import LoginForm from "./components/loginForm";
 import Logout from "./components/logout";
+import ProtectedRoute from "./components/protectedRoute";
 import auth from "./services/userService";
 import "./App.css";
 import "react-toastify/dist/ReactToastify.min.css";
@@ -587,7 +588,7 @@ class App extends Component {
               />
               <Route path="/bank" component={Bank} />
 
-              <Route
+              <ProtectedRoute
                 path="/profile"
                 render={props => (
                   <Profile
@@ -597,6 +598,17 @@ class App extends Component {
                   />
                 )}
               />
+
+              {/* <Route
+                path="/profile"
+                render={props => (
+                  <Profile
+                    playerData={this.state.playerData}
+                    navigationHeight={this.state.navigationHeight}
+                    resources={this.state.resources}
+                  />
+                )}
+              /> */}
 
               <Route path="/register" component={RegisterForm} />
               <Route path="/login" component={LoginForm} />
