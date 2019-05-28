@@ -55,7 +55,7 @@ class DropdownNavigation extends Component {
           <div className={collapsibleMenuClass} id="navbarSupportedContent">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item active">
-                <Link className="nav-link" to="/" onClick={this.hideNavbar}>
+                <Link className="nav-link" to="/home" onClick={this.hideNavbar}>
                   Home <span className="sr-only">(current)</span>
                 </Link>
               </li>

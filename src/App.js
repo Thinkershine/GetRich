@@ -5,6 +5,7 @@ import MyWorkers from "./models/workers";
 import MyResources from "./models/myResources.js";
 import DropdownNavigation from "./components/dropdownNavigation";
 import Stats from "./components/stats";
+import Main from "./components/locations/main";
 import Home from "./components/locations/home";
 import Store from "./components/locations/store";
 import Mining from "./components/locations/mining";
@@ -602,8 +603,9 @@ class App extends Component {
               <Route path="/register" component={RegisterForm} />
               <Route path="/login" component={LoginForm} />
               <Route path="/logout" component={Logout} />
+              <ProtectedRoute path="/home" component={Home} />
 
-              <ProtectedRoute path="/" exact component={Home} />
+              <Route path="/" exact component={Main} />
               <Route path="/not-found" component={NotFound} />
               <Redirect to="/not-found" />
             </Switch>
